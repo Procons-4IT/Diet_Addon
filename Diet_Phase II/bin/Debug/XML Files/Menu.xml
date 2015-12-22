@@ -1,0 +1,71 @@
+<Application>
+  <Menus>
+    <action type="add">
+
+      <!--SetUP -->
+      <Menu Checked="0" Enabled="1" FatherUID="43520" Image="" Position="13" String="DIET"
+            Type="2" UniqueID="mnu_Z_DT">	</Menu>
+      <Menu Checked="0" Enabled="1" FatherUID="mnu_Z_DT" Image="" Position="0" String="Setup"
+            Type="2" UniqueID="mnu_Z_DT_SetUp">	</Menu>
+      
+      <Menu Checked="0" Enabled="1" FatherUID="mnu_Z_DT_SetUp" Image="" Position="1" String="Allergic/ Dislike Items"
+            Type="1" UniqueID="mnu_Z_ODLK">	</Menu>
+      <!--<Menu Checked="0" Enabled="1" FatherUID="mnu_Z_DT_SetUp" Image="" Position="2" String="Calories Plan"
+            Type="1" UniqueID="mnu_Z_OCLP">	</Menu>-->
+      <Menu Checked="0" Enabled="1" FatherUID="mnu_Z_DT_SetUp" Image="" Position="3" String="Calories Adjustments"
+            Type="1" UniqueID="mnu_Z_OCAJ">	</Menu>
+      <Menu Checked="0" Enabled="1" FatherUID="mnu_Z_DT_SetUp" Image="" Position="4" String="Medical Status"
+            Type="1" UniqueID="mnu_Z_OMST">	</Menu>
+      <Menu Checked="0" Enabled="1" FatherUID="mnu_Z_DT_SetUp" Image="" Position="6" String="Checkup Timing"
+                  Type="1" UniqueID="mnu_Z_OTTI">	</Menu>
+      <Menu Checked="0" Enabled="1" FatherUID="mnu_Z_DT_SetUp" Image="" Position="7" String="Calories Ratio"
+                  Type="1" UniqueID="mnu_Z_OCRT">	</Menu>
+      <Menu Checked="0" Enabled="1" FatherUID="mnu_Z_DT_SetUp" Image="" Position="8" String="Filter SetUp"
+                  Type="1" UniqueID="mnu_Z_OFCI">	</Menu>
+
+      <!--Transaction -->
+      <Menu Checked="0" Enabled="1" FatherUID="mnu_Z_DT" Image="" Position="1" String="Transactions"
+           Type="2" UniqueID="mnu_Z_DT_Trans">	</Menu>
+      <Menu Checked="0" Enabled="1" FatherUID="mnu_Z_DT_Trans" Image="" Position="0" String="Menu Definition"
+            Type="1" UniqueID="mnu_Z_OMED">	</Menu>
+      <Menu Checked="0" Enabled="1" FatherUID="mnu_Z_DT_Trans" Image="" Position="1" String="Customer Registration"
+            Type="1" UniqueID="mnu_Z_OCRG">	</Menu>
+      <Menu Checked="0" Enabled="1" FatherUID="mnu_Z_DT_Trans" Image="" Position="2" String="Program Registration"
+            Type="1" UniqueID="mnu_Z_OCPM">	</Menu>
+      <!--<Menu Checked="0" Enabled="1" FatherUID="mnu_Z_DT_Trans" Image="" Position="4" String="Pre Sales Order"
+            Type="1" UniqueID="mnu_Z_OPSL">	</Menu>-->     
+      <Menu Checked="0" Enabled="1" FatherUID="mnu_Z_DT_Trans" Image="" Position="5" String="Program Transfer"
+            Type="1" UniqueID="mnu_Z_OPGT"> </Menu>
+            
+      <!--Tools -->
+      <Menu Checked="0" Enabled="1" FatherUID="mnu_Z_DT" Image="" Position="3" String="Tools"
+           Type="2" UniqueID="mnu_Z_DT_Tools">	</Menu>
+      <Menu Checked="0" Enabled="1" FatherUID="mnu_Z_DT_Tools" Image="" Position="0" String="Missed Client"
+                  Type="1" UniqueID="mnu_Z_OMCT"> </Menu>
+      <Menu Checked="0" Enabled="1" FatherUID="mnu_Z_DT_Tools" Image="" Position="1" String="Order Modify Tools"
+              Type="1" UniqueID="mnu_Z_OMOT"> </Menu>
+      <Menu Checked="0" Enabled="1" FatherUID="mnu_Z_DT_Tools" Image="" Position="2" String="Delivery Wizard"
+          Type="1" UniqueID="mnu_Z_ODWT"> </Menu>
+      <Menu Checked="0" Enabled="1" FatherUID="mnu_Z_DT_Tools" Image="" Position="3" String="Invoice Generation"
+          Type="1" UniqueID="mnu_Z_OIVG"> </Menu>
+
+
+      <!--<Menu Checked="0" Enabled="1" FatherUID="mnu_Z_DT_Trans" Image="" Position="3" String="Customer Program"
+            Type="1" UniqueID="mnu_Z_OCPM">	</Menu>
+      <Menu Checked="0" Enabled="1" FatherUID="mnu_Z_DT_Trans" Image="" Position="2" String="Customer Profile"
+            Type="1" UniqueID="mnu_Z_OCPR">	</Menu>            
+      <Menu Checked="0" Enabled="1" FatherUID="mnu_Z_DT_SetUp" Image="" Position="0" String="Program Type"
+      Type="1" UniqueID="mnu_Z_OPRM">	</Menu>
+      <Menu Checked="0" Enabled="1" FatherUID="mnu_Z_DT_SetUp" Image="" Position="5" String="Diet Exclude"
+      Type="1" UniqueID="mnu_Z_OEXD">	</Menu>
+      -->
+
+      <!--Reports -->
+      <Menu Checked="0" Enabled="1" FatherUID="mnu_Z_DT" Image="" Position="3" String="Reports"
+          Type="2" UniqueID="mnu_Z_DT_Report">	</Menu>
+      <Menu Checked="0" Enabled="1" FatherUID="mnu_Z_DT_Report" Image="" Position="1" String="Search Customer(Wizard)"
+            Type="1" UniqueID="mnu_Z_OCSR">	</Menu>
+
+    </action>
+  </Menus>
+</Application>
