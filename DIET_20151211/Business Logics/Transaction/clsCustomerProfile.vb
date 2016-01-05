@@ -253,8 +253,15 @@ Public Class clsCustomerProfile
                                                 If oRecordExist.EoF Then
                                                     If Not oApplication.Utilities.validateDate(oForm, strFDate, -1) Then
                                                         Dim strMessage As String = "Exclude From Date Should be Greater than Or Equal Yesterday Date..."
-                                                        If Not oApplication.Utilities.valCustomerProgramDate(oForm, oDBDataSource.GetValue("U_CardCode", 0).ToString, strFDate) Then
-                                                            strMessage += " & Open Delivery Document Exists "
+                                                        If Not oApplication.Utilities.valCustomerProgramDate(oForm, oDBDataSource.GetValue("U_CardCode", 0).ToString.Trim(), strFDate) Then
+                                                            strMessage = " Open Delivery Document Exists & Linked to Invoice "
+                                                            oApplication.Utilities.Message(strMessage, SAPbouiCOM.BoStatusBarMessageType.smt_Error)
+                                                            BubbleEvent = False
+                                                            Exit Sub
+                                                        End If
+                                                    Else
+                                                        If Not oApplication.Utilities.valCustomerProgramDate(oForm, oDBDataSource.GetValue("U_CardCode", 0).ToString.Trim(), strFDate) Then
+                                                            Dim strMessage As String = " Open Delivery Document Exists & Linked to Invoice "
                                                             oApplication.Utilities.Message(strMessage, SAPbouiCOM.BoStatusBarMessageType.smt_Error)
                                                             BubbleEvent = False
                                                             Exit Sub
@@ -266,10 +273,9 @@ Public Class clsCustomerProfile
                                                     'oApplication.Utilities.Message("Exclude From Date Should be Greater than Or Equal Yesterday Date...", SAPbouiCOM.BoStatusBarMessageType.smt_Error)
                                                     'BubbleEvent = False
                                                     'Exit Sub
-
                                                     Dim strMessage As String = "Exclude From Date Should be Greater than Or Equal Yesterday Date..."
-                                                    If Not oApplication.Utilities.valCustomerProgramDate(oForm, oDBDataSource.GetValue("U_CardCode", 0).ToString, strFDate) Then
-                                                        strMessage += " & Open Delivery Document Exists "
+                                                    If Not oApplication.Utilities.valCustomerProgramDate(oForm, oDBDataSource.GetValue("U_CardCode", 0).ToString.Trim(), strFDate) Then
+                                                        strMessage = " Open Delivery Document Exists & Linked to Invoice  "
                                                         oApplication.Utilities.Message(strMessage, SAPbouiCOM.BoStatusBarMessageType.smt_Error)
                                                         BubbleEvent = False
                                                         Exit Sub
@@ -308,7 +314,7 @@ Public Class clsCustomerProfile
                                             Dim oRecordExist As SAPbobsCOM.Recordset
                                             oRecordExist = oApplication.Company.GetBusinessObject(SAPbobsCOM.BoObjectTypes.BoRecordset)
                                             If oForm.Mode = SAPbouiCOM.BoFormMode.fm_UPDATE_MODE Or oForm.Mode = SAPbouiCOM.BoFormMode.fm_OK_MODE Then
-                                                strQuery = " Select LineId From [@Z_CPR8] Where DocEntry = '" & oDBDataSource.GetValue("DocEntry", 0).ToString & "'"
+                                                strQuery = " Select LineId From [@Z_CPR8] Where DocEntry = '" & oDBDataSource.GetValue("DocEntry", 0).ToString.Trim() & "'"
                                                 strQuery += " AND '" & strFDate & "' Between  Convert(VarChar(8),U_FDate,112) And Convert(VarChar(8),U_TDate,112) "
                                                 oRecordExist.DoQuery(strQuery)
                                                 If oRecordExist.EoF Then
@@ -316,17 +322,37 @@ Public Class clsCustomerProfile
                                                         'oApplication.Utilities.Message("Exclude From Date Should be Greater than Or Equal Yesterday Date...", SAPbouiCOM.BoStatusBarMessageType.smt_Error)
                                                         'BubbleEvent = False
                                                         'Exit Sub
-
-                                                        Dim strMessage As String = "Exclude From Date Should be Greater than Or Equal Yesterday Date..."
-                                                        If Not oApplication.Utilities.valCustomerProgramDate(oForm, oDBDataSource.GetValue("U_CardCode", 0).ToString, strFDate) Then
-                                                            strMessage += " & Open Delivery Document Exists "
+                                                        Dim strMessage As String = "Remove From Date Should be Greater than Or Equal Yesterday Date..."
+                                                        If Not oApplication.Utilities.valCustomerProgramDate(oForm, oDBDataSource.GetValue("U_CardCode", 0).ToString.Trim(), strFDate) Then
+                                                            strMessage = " Open Delivery Document Exists & Linked to Invoice  "
                                                             oApplication.Utilities.Message(strMessage, SAPbouiCOM.BoStatusBarMessageType.smt_Error)
                                                             BubbleEvent = False
                                                             Exit Sub
                                                         End If
-
+                                                    Else
+                                                        If Not oApplication.Utilities.valCustomerProgramDate(oForm, oDBDataSource.GetValue("U_CardCode", 0).ToString.Trim(), strFDate) Then
+                                                            Dim strMessage As String = " Open Delivery Document Exists & Linked to Invoice "
+                                                            oApplication.Utilities.Message(strMessage, SAPbouiCOM.BoStatusBarMessageType.smt_Error)
+                                                            BubbleEvent = False
+                                                            Exit Sub
+                                                        End If
                                                     End If
                                                 End If
+
+                                                'strQuery = " Select LineId From [@Z_CPR8] Where DocEntry = '" & oDBDataSource.GetValue("DocEntry", 0).ToString & "'"
+                                                'strQuery += " AND '" & strFDate & "' Between  Convert(VarChar(8),U_FDate,112) And Convert(VarChar(8),U_Tdate,112) "
+                                                'oRecordExist.DoQuery(strQuery)
+                                                'If oRecordExist.EoF Then
+                                                '    'Block Remove Date when Invoiced.
+                                                '    If Not oApplication.Utilities.valCustomerProgramDate(oForm, oDBDataSource.GetValue("U_CardCode", 0).ToString.Trim(), strFDate) Then
+                                                '        Dim strMessage As String = " Open Delivery Document Exists & Linked to Invoice..."
+                                                '        oApplication.Utilities.Message(strMessage, SAPbouiCOM.BoStatusBarMessageType.smt_Error)
+                                                '        BubbleEvent = False
+                                                '        Exit Sub
+                                                '    End If
+                                                'End If
+                                                
+
                                             ElseIf oForm.Mode = SAPbouiCOM.BoFormMode.fm_ADD_MODE Then
                                                 If Not oApplication.Utilities.validateDate(oForm, strFDate, -1) Then
 
@@ -334,9 +360,9 @@ Public Class clsCustomerProfile
                                                     'BubbleEvent = False
                                                     'Exit Sub
 
-                                                    Dim strMessage As String = "Exclude From Date Should be Greater than Or Equal Yesterday Date..."
-                                                    If Not oApplication.Utilities.valCustomerProgramDate(oForm, oDBDataSource.GetValue("U_CardCode", 0).ToString, strFDate) Then
-                                                        strMessage += " & Open Delivery Document Exists "
+                                                    Dim strMessage As String = "Remove From Date Should be Greater than Or Equal Yesterday Date..."
+                                                    If Not oApplication.Utilities.valCustomerProgramDate(oForm, oDBDataSource.GetValue("U_CardCode", 0).ToString.Trim, strFDate) Then
+                                                        strMessage = " Open Delivery Document Exists & Linked to Invoice..."
                                                         oApplication.Utilities.Message(strMessage, SAPbouiCOM.BoStatusBarMessageType.smt_Error)
                                                         BubbleEvent = False
                                                         Exit Sub
@@ -380,6 +406,13 @@ Public Class clsCustomerProfile
                                                         oApplication.Utilities.Message("Exclude From Date Should be Greater than Or Equal Yesterday Date...", SAPbouiCOM.BoStatusBarMessageType.smt_Error)
                                                         BubbleEvent = False
                                                         Exit Sub
+                                                    Else
+                                                        If Not oApplication.Utilities.valCustomerProgramDate(oForm, oDBDataSource.GetValue("U_CardCode", 0).ToString.Trim(), strFDate) Then
+                                                            Dim strMessage As String = " Open Delivery Document Exists & Linked to Invoice "
+                                                            oApplication.Utilities.Message(strMessage, SAPbouiCOM.BoStatusBarMessageType.smt_Error)
+                                                            BubbleEvent = False
+                                                            Exit Sub
+                                                        End If
                                                     End If
                                                 End If
                                             ElseIf oForm.Mode = SAPbouiCOM.BoFormMode.fm_ADD_MODE Then
@@ -628,29 +661,31 @@ Public Class clsCustomerProfile
                                 If strItem = "6" Then
                                     If intSelectedMatrixrow > 0 Then
                                         oMatrix = oForm.Items.Item(strItem).Specific
-                                        If CType(oMatrix.Columns.Item("V_2").Cells.Item(intSelectedMatrixrow).Specific, SAPbouiCOM.ComboBox).Value = "Y" Then
-                                            'oApplication.Utilities.Message("Cannot Delete Row As its Already Applied...", SAPbouiCOM.BoStatusBarMessageType.smt_Error)
-                                            'BubbleEvent = False
-                                            Exit Sub
-                                        End If
+                                        'If CType(oMatrix.Columns.Item("V_2").Cells.Item(intSelectedMatrixrow).Specific, SAPbouiCOM.ComboBox).Value = "Y" Then
+                                        'oApplication.Utilities.Message("Cannot Delete Row As its Already Applied...", SAPbouiCOM.BoStatusBarMessageType.smt_Error)
+                                        'BubbleEvent = False
+                                        'Exit Sub
+                                        'End If
                                     End If
                                 ElseIf strItem = "45" Then
                                     If intSelectedMatrixrow > 0 Then
                                         oMatrix = oForm.Items.Item(strItem).Specific
-                                        If CType(oMatrix.Columns.Item("V_3").Cells.Item(intSelectedMatrixrow).Specific, SAPbouiCOM.ComboBox).Value = "Y" Then
-                                            'oApplication.Utilities.Message("Cannot Delete Row As its Already Applied...", SAPbouiCOM.BoStatusBarMessageType.smt_Error)
-                                            'BubbleEvent = False
-                                            Exit Sub
-                                        End If
+                                        'Dim strFDate As String = CType(oMatrix.Columns.Item("V_0").Cells.Item(intSelectedMatrixrow).Specific, SAPbouiCOM.EditText).Value
+                                        'Dim strTDate As String = CType(oMatrix.Columns.Item("V_1").Cells.Item(intSelectedMatrixrow).Specific, SAPbouiCOM.EditText).Value
+                                        'If CType(oMatrix.Columns.Item("V_3").Cells.Item(intSelectedMatrixrow).Specific, SAPbouiCOM.ComboBox).Value = "Y" Then
+                                        '    oApplication.Utilities.Message("Cannot Delete Row As  Applied...", SAPbouiCOM.BoStatusBarMessageType.smt_Error)
+                                        '    BubbleEvent = False
+                                        '    Exit Sub
+                                        'End If
                                     End If
                                 ElseIf strItem = "46" Then
                                     If intSelectedMatrixrow > 0 Then
                                         oMatrix = oForm.Items.Item(strItem).Specific
-                                        If CType(oMatrix.Columns.Item("V_3").Cells.Item(intSelectedMatrixrow).Specific, SAPbouiCOM.ComboBox).Value = "Y" Then
-                                            'oApplication.Utilities.Message("Cannot Delete Row As its Already Applied...", SAPbouiCOM.BoStatusBarMessageType.smt_Error)
-                                            'BubbleEvent = False
-                                            Exit Sub
-                                        End If
+                                        'If CType(oMatrix.Columns.Item("V_3").Cells.Item(intSelectedMatrixrow).Specific, SAPbouiCOM.ComboBox).Value = "Y" Then
+                                        'oApplication.Utilities.Message("Cannot Delete Row As its Already Applied...", SAPbouiCOM.BoStatusBarMessageType.smt_Error)
+                                        'BubbleEvent = False
+                                        'Exit Sub
+                                        'End If
                                     End If
                                 End If
                             End If

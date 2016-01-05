@@ -5976,14 +5976,34 @@ Public Class clsUtilities
         Try
             Dim oRecordSet As SAPbobsCOM.Recordset
             oRecordSet = DirectCast(oApplication.Company.GetBusinessObject(SAPbobsCOM.BoObjectTypes.BoRecordset), SAPbobsCOM.Recordset)
-            Dim strQry As String = " Select DocEntry FROM DLN1 "
-            strQry += " Where Convert(VarChar,U_DelDate,112) = '" & strFrmDate & "'"
-            strQry += " AND BaseCard = '" & strCustomer & "' And LineStatus = 'O' "
+            Dim strQry As String = " Select T0.DocEntry FROM DLN1 T0 JOIN ODLN T1 On T0.DocEntry = T1.DocEntry "
+            strQry += " Where Convert(VarChar,T0.U_DelDate,112) = '" & strFrmDate & "'"
+            strQry += " AND T0.BaseCard = '" & strCustomer & "' And T0.LineStatus = 'O' And T1.U_InvRef <> '' "
             oRecordSet.DoQuery(strQry)
             If Not oRecordSet.EoF Then
                 _retVal = False
             Else
                 _retVal = True
+            End If
+        Catch ex As Exception
+            Throw ex
+        End Try
+        Return _retVal
+    End Function
+
+    Public Function valCustomerInvoiceDate(ByVal oForm As SAPbouiCOM.Form, strCustomer As String, ByVal strFrmDate As String) As Boolean
+        Dim _retVal As Boolean = True
+        Try
+            Dim oRecordSet As SAPbobsCOM.Recordset
+            oRecordSet = DirectCast(oApplication.Company.GetBusinessObject(SAPbobsCOM.BoObjectTypes.BoRecordset), SAPbobsCOM.Recordset)
+            Dim strQry As String = " Select DocEntry FROM INV1 "
+            strQry += " Where Convert(VarChar,U_FDate,112) = '" & strFrmDate & "'"
+            strQry += " AND BaseCard = '" & strCustomer & "' "
+            oRecordSet.DoQuery(strQry)
+            If Not oRecordSet.EoF Then
+                _retVal = True
+            Else
+                _retVal = False
             End If
         Catch ex As Exception
             Throw ex
