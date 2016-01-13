@@ -21,6 +21,7 @@ Public Class clsDelivery
                 Case mnu_ADD
             End Select
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             oApplication.Utilities.Message(ex.Message, SAPbouiCOM.BoStatusBarMessageType.smt_Error)
         End Try
     End Sub
@@ -33,7 +34,7 @@ Public Class clsDelivery
                 Select Case pVal.BeforeAction
                     Case True
                         Select Case pVal.EventType
-                         
+
                         End Select
                     Case False
                         Select Case pVal.EventType
@@ -43,6 +44,7 @@ Public Class clsDelivery
                 End Select
             End If
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             oForm = oApplication.SBO_Application.Forms.ActiveForm()
             oForm.Freeze(False)
             oApplication.Utilities.Message(ex.Message, SAPbouiCOM.BoStatusBarMessageType.smt_Error)
@@ -59,10 +61,11 @@ Public Class clsDelivery
 
                 Case False
                     Select Case BusinessObjectInfo.EventType
-                      
+
                     End Select
             End Select
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             oApplication.Utilities.Message(ex.Message, SAPbouiCOM.BoStatusBarMessageType.smt_Error)
         End Try
     End Sub
@@ -72,9 +75,11 @@ Public Class clsDelivery
 
     Private Sub initializeControls(ByVal oForm As SAPbouiCOM.Form)
         Try
-            
+
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             Throw ex
+            'oApplication.Log.oApplication.Log.Trace_DIET_AddOn_Error(ex)
         End Try
     End Sub
 

@@ -59,9 +59,12 @@ Public Class DBConnection
 
             End Select
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             Throw ex
+            'oApplication.Log.oApplication.Log.Trace_DIET_AddOn_Error(ex)
         End Try
     End Sub
 
 #End Region
+
 End Class

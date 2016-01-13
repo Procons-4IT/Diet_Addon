@@ -51,7 +51,9 @@ Public Class clsMenuDefinition
             oForm.Items.Item("7").Click(SAPbouiCOM.BoCellClickType.ct_Regular)
             oForm.Freeze(False)
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             Throw ex
+            'oApplication.Log.oApplication.Log.Trace_DIET_AddOn_Error(ex)
         Finally
             oForm.Freeze(False)
         End Try
@@ -76,7 +78,9 @@ Public Class clsMenuDefinition
             oForm.DataSources.UserDataSources.Add("PicSource", SAPbouiCOM.BoDataType.dt_LONG_TEXT, 1000)
             oForm.Items.Item("1").Click(SAPbouiCOM.BoCellClickType.ct_Regular)
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             Throw ex
+            'oApplication.Log.oApplication.Log.Trace_DIET_AddOn_Error(ex)
         Finally
             oForm.Freeze(False)
         End Try
@@ -362,6 +366,7 @@ Public Class clsMenuDefinition
                                         End If
                                     End If
                                 Catch ex As Exception
+                                    oApplication.Log.Trace_DIET_AddOn_Error(ex)
 
                                 End Try
                             Case SAPbouiCOM.BoEventTypes.et_LOST_FOCUS
@@ -446,6 +451,7 @@ Public Class clsMenuDefinition
                                     Try
                                         reDrawForm(oForm)
                                     Catch ex As Exception
+                                        oApplication.Log.Trace_DIET_AddOn_Error(ex)
 
                                     End Try
                                 End If
@@ -457,6 +463,7 @@ Public Class clsMenuDefinition
                 End Select
             End If
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             oApplication.Utilities.Message(ex.Message, SAPbouiCOM.BoStatusBarMessageType.smt_Error)
         End Try
     End Sub
@@ -534,6 +541,7 @@ Public Class clsMenuDefinition
                     End If
             End Select
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             oApplication.Utilities.Message(ex.Message, SAPbouiCOM.BoStatusBarMessageType.smt_Error)
             oForm.Freeze(False)
         End Try
@@ -615,6 +623,7 @@ Public Class clsMenuDefinition
                 End Select
             End If
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             oApplication.Utilities.Message(ex.Message, SAPbouiCOM.BoStatusBarMessageType.smt_Error)
         End Try
     End Sub
@@ -662,6 +671,7 @@ Public Class clsMenuDefinition
             Try
                 oForm.Items.Item("7_").Visible = False
             Catch ex As Exception
+                oApplication.Log.Trace_DIET_AddOn_Error(ex)
 
             End Try
 
@@ -675,7 +685,9 @@ Public Class clsMenuDefinition
             MatrixId = "3"
             oForm.Update()
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             Throw ex
+            'oApplication.Log.oApplication.Log.Trace_DIET_AddOn_Error(ex)
         End Try
     End Sub
 
@@ -718,8 +730,10 @@ Public Class clsMenuDefinition
             oMatrix.LoadFromDataSource()
             aForm.Freeze(False)
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             aForm.Freeze(False)
             Throw ex
+            'oApplication.Log.oApplication.Log.Trace_DIET_AddOn_Error(ex)
         End Try
     End Sub
 
@@ -733,7 +747,9 @@ Public Class clsMenuDefinition
             oDBDataSourceLines5 = oForm.DataSources.DBDataSources.Item("@Z_MED5")
             oDBDataSourceLines6 = oForm.DataSources.DBDataSources.Item("@Z_MED6")
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             Throw ex
+            'oApplication.Log.oApplication.Log.Trace_DIET_AddOn_Error(ex)
         End Try
     End Sub
 
@@ -749,7 +765,9 @@ Public Class clsMenuDefinition
             oMatrix.ClearRowData(oMatrix.RowCount)
             AssignLineNo(oForm, strItem)
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             Throw ex
+            'oApplication.Log.oApplication.Log.Trace_DIET_AddOn_Error(ex)
         End Try
     End Sub
 
@@ -795,8 +813,10 @@ Public Class clsMenuDefinition
 
             aForm.Freeze(False)
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             aForm.Freeze(False)
             Throw ex
+            'oApplication.Log.oApplication.Log.Trace_DIET_AddOn_Error(ex)
         End Try
     End Sub
 
@@ -836,8 +856,10 @@ Public Class clsMenuDefinition
                 End If
             Next
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             aForm.Freeze(False)
             Throw ex
+            'oApplication.Log.oApplication.Log.Trace_DIET_AddOn_Error(ex)
         End Try
     End Sub
 
@@ -874,8 +896,10 @@ Public Class clsMenuDefinition
             oMatrix.LoadFromDataSource()
             oMatrix.FlushToDataSource()
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             aForm.Freeze(False)
             Throw ex
+            'oApplication.Log.oApplication.Log.Trace_DIET_AddOn_Error(ex)
         End Try
     End Sub
 
@@ -1131,6 +1155,7 @@ Public Class clsMenuDefinition
 
             Return True
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             aForm.Freeze(False)
             oApplication.Utilities.Message(ex.Message, SAPbouiCOM.BoStatusBarMessageType.smt_Error)
             Return False
@@ -1157,7 +1182,9 @@ Public Class clsMenuDefinition
             oForm.Items.Item("47_").Enabled = blnEnable
 
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             Throw ex
+            'oApplication.Log.oApplication.Log.Trace_DIET_AddOn_Error(ex)
         End Try
     End Sub
 
@@ -1182,7 +1209,9 @@ Public Class clsMenuDefinition
             End Select
             Return _retVal
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             Throw ex
+            'oApplication.Log.oApplication.Log.Trace_DIET_AddOn_Error(ex)
         End Try
     End Function
 
@@ -1208,7 +1237,9 @@ Public Class clsMenuDefinition
             _retVal = oForm.PaneLevel
             Return _retVal
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             Throw ex
+            'oApplication.Log.oApplication.Log.Trace_DIET_AddOn_Error(ex)
         End Try
     End Function
 
@@ -1831,7 +1862,9 @@ Public Class clsMenuDefinition
             oCFL.SetConditions(oCons)
 
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             Throw ex
+            'oApplication.Log.oApplication.Log.Trace_DIET_AddOn_Error(ex)
         End Try
     End Sub
 
@@ -1844,6 +1877,7 @@ Public Class clsMenuDefinition
 
             oForm.Freeze(False)
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             'oApplication.Utilities.Message(ex.Message, SAPbouiCOM.BoStatusBarMessageType.smt_Error)
             oForm.Freeze(False)
         End Try
@@ -1858,7 +1892,9 @@ Public Class clsMenuDefinition
             My.Computer.FileSystem.CopyFile(strSource, strDest, True)
             _retVal = True
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             Throw ex
+            'oApplication.Log.oApplication.Log.Trace_DIET_AddOn_Error(ex)
         End Try
         Return _retVal
     End Function
@@ -1871,7 +1907,9 @@ Public Class clsMenuDefinition
             oPicture.DataBind.SetBound(True, "", "PicSource")
             aForm.DataSources.UserDataSources.Item("PicSource").ValueEx = strDest
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             Throw ex
+            'oApplication.Log.oApplication.Log.Trace_DIET_AddOn_Error(ex)
         End Try
     End Sub
 
@@ -1879,7 +1917,9 @@ Public Class clsMenuDefinition
         Try
             aForm.DataSources.UserDataSources.Item("PicSource").ValueEx = ""
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             Throw ex
+            'oApplication.Log.oApplication.Log.Trace_DIET_AddOn_Error(ex)
         End Try
     End Sub
 
@@ -1971,8 +2011,10 @@ Public Class clsMenuDefinition
             End If
             oForm.Freeze(False)
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             oForm.Freeze(False)
             Throw ex
+            'oApplication.Log.oApplication.Log.Trace_DIET_AddOn_Error(ex)
         End Try
     End Sub
 

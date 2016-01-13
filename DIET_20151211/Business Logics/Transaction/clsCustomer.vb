@@ -42,6 +42,7 @@ Public Class clsCustomer
                     End If
             End Select
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             oForm.Freeze(False)
             oApplication.Utilities.Message(ex.Message, SAPbouiCOM.BoStatusBarMessageType.smt_Error)
         End Try
@@ -63,6 +64,7 @@ Public Class clsCustomer
                 End Select
             End If
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             oForm = oApplication.SBO_Application.Forms.ActiveForm()
             oForm.Freeze(False)
             oApplication.Utilities.Message(ex.Message, SAPbouiCOM.BoStatusBarMessageType.smt_Error)
@@ -83,6 +85,7 @@ Public Class clsCustomer
                     End Select
             End Select
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             oForm.Freeze(False)
             oApplication.Utilities.Message(ex.Message, SAPbouiCOM.BoStatusBarMessageType.smt_Error)
         End Try
@@ -114,6 +117,7 @@ Public Class clsCustomer
                             End If
                         End If
                     Catch ex As Exception
+                        oApplication.Log.Trace_DIET_AddOn_Error(ex)
                         MessageBox.Show(ex.Message)
                     End Try
                 Else
@@ -123,6 +127,7 @@ Public Class clsCustomer
                 End If
             End If
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             oForm.Freeze(False)
             oApplication.Utilities.Message(ex.Message, SAPbouiCOM.BoStatusBarMessageType.smt_Error)
         End Try
@@ -135,7 +140,9 @@ Public Class clsCustomer
         Try
 
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             Throw ex
+            'oApplication.Log.oApplication.Log.Trace_DIET_AddOn_Error(ex)
         End Try
     End Sub
 

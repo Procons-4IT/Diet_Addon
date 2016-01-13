@@ -31,6 +31,7 @@ Public Class clsModifyOrder
             addChooseFromListConditions(oForm)
             oForm.Freeze(False)
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             oApplication.Utilities.Message(ex.Message, SAPbouiCOM.BoStatusBarMessageType.smt_Error)
         End Try
     End Sub
@@ -59,6 +60,7 @@ Public Class clsModifyOrder
             oOptionbutton.Selected = True
             loadCombo(oForm)
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             oApplication.Utilities.Message(ex.Message, SAPbouiCOM.BoStatusBarMessageType.smt_Error)
         End Try
     End Sub
@@ -72,6 +74,7 @@ Public Class clsModifyOrder
                 Case mnu_FIRST, mnu_LAST, mnu_NEXT, mnu_PREVIOUS
             End Select
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             oApplication.Utilities.Message(ex.Message, SAPbouiCOM.BoStatusBarMessageType.smt_Error)
             oForm.Freeze(False)
         End Try
@@ -130,6 +133,7 @@ Public Class clsModifyOrder
                                                         End If
                                                         oLoadForm.Close()
                                                     Catch ex As Exception
+                                                        oApplication.Log.Trace_DIET_AddOn_Error(ex)
                                                         oLoadForm.Close()
                                                     End Try
                                                 End If
@@ -318,6 +322,7 @@ Public Class clsModifyOrder
                                     Try
                                         reDrawForm(oForm)
                                     Catch ex As Exception
+                                        oApplication.Log.Trace_DIET_AddOn_Error(ex)
 
                                     End Try
                                 End If
@@ -325,6 +330,7 @@ Public Class clsModifyOrder
                 End Select
             End If
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             oForm.Freeze(False)
             oApplication.Utilities.Message(ex.Message, SAPbouiCOM.BoStatusBarMessageType.smt_Error)
             oForm = oApplication.SBO_Application.Forms.Item(FormUID)
@@ -367,6 +373,7 @@ Public Class clsModifyOrder
             Try
                 strFType = CType(oForm.Items.Item("28").Specific, SAPbouiCOM.ComboBox).Selected.Value
             Catch ex As Exception
+                oApplication.Log.Trace_DIET_AddOn_Error(ex)
 
             End Try
 
@@ -536,7 +543,7 @@ Public Class clsModifyOrder
                     strqry += " And T0.CardCode Between '" + strFromCardCode + "' AND '" + strToCardCode + "'"
                 End If
 
-              
+
                 If (strFromDeliveryDate.Length > 0 And strToDeliveryDate.Length > 0) Then
                     strqry += " And Convert(VarChar(8),T1.ShipDate,112) Between '" + strFromDeliveryDate + "' AND '" + strToDeliveryDate + "'"
                 End If
@@ -589,6 +596,7 @@ Public Class clsModifyOrder
             fillHeader(oForm, "16")
             oForm.Freeze(False)
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             oForm.Freeze(False)
         End Try
 
@@ -888,7 +896,9 @@ Public Class clsModifyOrder
 
             End If
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             Throw ex
+            'oApplication.Log.oApplication.Log.Trace_DIET_AddOn_Error(ex)
         End Try
     End Sub
 
@@ -978,7 +988,9 @@ Public Class clsModifyOrder
             fillHeader(oform, "21")
 
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             Throw ex
+            'oApplication.Log.oApplication.Log.Trace_DIET_AddOn_Error(ex)
         End Try
     End Sub
 
@@ -993,8 +1005,10 @@ Public Class clsModifyOrder
             Next
             aForm.Freeze(False)
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             aForm.Freeze(False)
             Throw ex
+            'oApplication.Log.oApplication.Log.Trace_DIET_AddOn_Error(ex)
         End Try
     End Sub
 
@@ -1057,6 +1071,7 @@ Public Class clsModifyOrder
                     Try
                         strFType = CType(oForm.Items.Item("28").Specific, SAPbouiCOM.ComboBox).Selected.Value
                     Catch ex As Exception
+                        oApplication.Log.Trace_DIET_AddOn_Error(ex)
 
                     End Try
 
@@ -1096,6 +1111,7 @@ Public Class clsModifyOrder
 
             Return _retVal
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             oApplication.Utilities.Message(ex.Message, SAPbouiCOM.BoStatusBarMessageType.smt_Error)
             Return False
         End Try
@@ -1690,6 +1706,7 @@ Public Class clsModifyOrder
                                     Try
                                         strFType = CType(oForm.Items.Item("28").Specific, SAPbouiCOM.ComboBox).Selected.Value
                                     Catch ex As Exception
+                                        oApplication.Log.Trace_DIET_AddOn_Error(ex)
 
                                     End Try
                                     If strFType <> "" Then
@@ -1744,7 +1761,9 @@ Public Class clsModifyOrder
             _retVal = True
             Return _retVal
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             Throw ex
+            'oApplication.Log.oApplication.Log.Trace_DIET_AddOn_Error(ex)
         End Try
     End Function
 
@@ -1816,6 +1835,7 @@ Public Class clsModifyOrder
                 CType(oForm.Items.Item("29").Specific, SAPbouiCOM.StaticText).Caption = "Include Food"
             End If
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             oApplication.Utilities.Message(ex.Message, SAPbouiCOM.BoStatusBarMessageType.smt_Error)
         End Try
     End Sub
@@ -1861,6 +1881,7 @@ Public Class clsModifyOrder
 
             oForm.Freeze(False)
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             oForm.Freeze(False)
             oApplication.Utilities.Message(ex.Message, SAPbouiCOM.BoStatusBarMessageType.smt_Error)
         End Try
@@ -1880,6 +1901,7 @@ Public Class clsModifyOrder
             oCombo.Select("S", SAPbouiCOM.BoSearchKey.psk_ByValue)
             oCombo.ExpandType = SAPbouiCOM.BoExpandType.et_DescriptionOnly
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             oApplication.Utilities.Message(ex.Message, SAPbouiCOM.BoStatusBarMessageType.smt_Error)
         End Try
     End Sub
@@ -2534,6 +2556,7 @@ Public Class clsModifyOrder
             oCFL.SetConditions(oCons)
 
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
 
         End Try
     End Sub
@@ -2554,6 +2577,7 @@ Public Class clsModifyOrder
 
             oForm.Freeze(False)
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             oForm.Freeze(False)
         End Try
     End Sub
@@ -2567,7 +2591,9 @@ Public Class clsModifyOrder
             Next
             oForm.Freeze(False)
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             Throw ex
+            'oApplication.Log.oApplication.Log.Trace_DIET_AddOn_Error(ex)
         End Try
     End Sub
 
@@ -2580,7 +2606,9 @@ Public Class clsModifyOrder
             Next
             oForm.Freeze(False)
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             Throw ex
+            'oApplication.Log.oApplication.Log.Trace_DIET_AddOn_Error(ex)
         End Try
     End Sub
 

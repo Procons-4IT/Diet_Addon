@@ -15,6 +15,7 @@ Public Class clsItemGroup
     Private Sub LoadForm()
         Try
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             oForm.Freeze(False)
         End Try
     End Sub
@@ -28,6 +29,7 @@ Public Class clsItemGroup
                 Case False
             End Select
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             oApplication.Utilities.Message(ex.Message, SAPbouiCOM.BoStatusBarMessageType.smt_Error)
             oForm.Freeze(False)
         End Try
@@ -53,6 +55,7 @@ Public Class clsItemGroup
                 End Select
             End If
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             oForm = oApplication.SBO_Application.Forms.ActiveForm()
             oForm.Freeze(False)
             oApplication.Utilities.Message(ex.Message, SAPbouiCOM.BoStatusBarMessageType.smt_Error)
@@ -66,10 +69,11 @@ Public Class clsItemGroup
             Dim oForm As SAPbouiCOM.Form
             oForm = oApplication.SBO_Application.Forms.Item(BusinessObjectInfo.FormUID)
             Select Case BusinessObjectInfo.FormTypeEx
-               
+
             End Select
 
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             oApplication.Utilities.Message(ex.Message, SAPbouiCOM.BoStatusBarMessageType.smt_Error)
         End Try
     End Sub
@@ -139,7 +143,9 @@ Public Class clsItemGroup
             oForm.Items.Item("_131").Height = oForm.Items.Item("123").Height
 
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             Throw ex
+            'oApplication.Log.oApplication.Log.Trace_DIET_AddOn_Error(ex)
         End Try
     End Sub
 
@@ -162,9 +168,11 @@ Public Class clsItemGroup
 
             oCheckBox = oForm.Items.Item("_131").Specific
             oCheckBox.DataBind.SetBound(True, "OITB", "U_DS")
-          
+
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             Throw ex
+            'oApplication.Log.oApplication.Log.Trace_DIET_AddOn_Error(ex)
         End Try
     End Sub
 End Class

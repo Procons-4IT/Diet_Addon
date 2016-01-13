@@ -36,6 +36,7 @@ Public MustInherit Class clsBase
             LookUpFrmUID = _Object.FrmUID
             oApplication.LookUpCollection.Add(LookUpFrmUID, _FormUID)
         Catch ex As Exception
+            'oApplication.Log.oApplication.Log.Trace_DIET_AddOn_Error(ex)
             Throw ex
         End Try
     End Sub

@@ -21,6 +21,7 @@ Public Class clsSalesOpp
                 Case mnu_ADD
             End Select
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             oApplication.Utilities.Message(ex.Message, SAPbouiCOM.BoStatusBarMessageType.smt_Error)
         End Try
     End Sub
@@ -43,6 +44,7 @@ Public Class clsSalesOpp
                 End Select
             End If
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             oForm = oApplication.SBO_Application.Forms.ActiveForm()
             oForm.Freeze(False)
             oApplication.Utilities.Message(ex.Message, SAPbouiCOM.BoStatusBarMessageType.smt_Error)
@@ -55,9 +57,10 @@ Public Class clsSalesOpp
         Try
             oForm = oApplication.SBO_Application.Forms.Item(BusinessObjectInfo.FormUID)
             Select Case BusinessObjectInfo.BeforeAction
-               
+
             End Select
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             oApplication.Utilities.Message(ex.Message, SAPbouiCOM.BoStatusBarMessageType.smt_Error)
         End Try
     End Sub
@@ -69,7 +72,9 @@ Public Class clsSalesOpp
         Try
 
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             Throw ex
+            'oApplication.Log.oApplication.Log.Trace_DIET_AddOn_Error(ex)
         End Try
     End Sub
 

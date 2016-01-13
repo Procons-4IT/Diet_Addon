@@ -17,6 +17,7 @@ Public Class clsStart
                     CompanyThousandSeprator = .GetAdminInfo.ThousandsSeparator
                 End With
             Catch ex As Exception
+                oApplication.Log.Trace_DIET_AddOn_Error(ex)
                 MessageBox.Show(ex.Message, "Connection Error", MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly)
                 Exit Sub
             End Try
@@ -36,6 +37,7 @@ Public Class clsStart
             oApplication.Utilities.NotifyAlert()
             System.Windows.Forms.Application.Run()
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             oApplication.Utilities.Message(ex.Message, SAPbouiCOM.BoStatusBarMessageType.smt_Error)
         End Try
     End Sub

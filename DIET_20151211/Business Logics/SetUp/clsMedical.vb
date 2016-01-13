@@ -37,7 +37,9 @@ Public Class clsMedical
             EnableControls(oForm, True)
             oForm.Freeze(False)
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             Throw ex
+            'oApplication.Log.oApplication.Log.Trace_DIET_AddOn_Error(ex)
         Finally
             oForm.Freeze(False)
         End Try
@@ -61,7 +63,9 @@ Public Class clsMedical
             oForm.Items.Item("16").Specific.value = strDocEntry
             oForm.Items.Item("1").Click(SAPbouiCOM.BoCellClickType.ct_Regular)
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             Throw ex
+            'oApplication.Log.oApplication.Log.Trace_DIET_AddOn_Error(ex)
         Finally
             oForm.Freeze(False)
         End Try
@@ -154,6 +158,7 @@ Public Class clsMedical
                                         End If
                                     End If
                                 Catch ex As Exception
+                                    oApplication.Log.Trace_DIET_AddOn_Error(ex)
 
                                 End Try
                             Case SAPbouiCOM.BoEventTypes.et_LOST_FOCUS
@@ -180,6 +185,7 @@ Public Class clsMedical
                                     Try
                                         reDrawForm(oForm)
                                     Catch ex As Exception
+                                        oApplication.Log.Trace_DIET_AddOn_Error(ex)
 
                                     End Try
                                 End If
@@ -187,6 +193,7 @@ Public Class clsMedical
                 End Select
             End If
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             oApplication.Utilities.Message(ex.Message, SAPbouiCOM.BoStatusBarMessageType.smt_Error)
         End Try
     End Sub
@@ -248,6 +255,7 @@ Public Class clsMedical
                     End If
             End Select
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             oApplication.Utilities.Message(ex.Message, SAPbouiCOM.BoStatusBarMessageType.smt_Error)
             oForm.Freeze(False)
         End Try
@@ -267,6 +275,7 @@ Public Class clsMedical
                         oMenuItem.SubMenus.Item(mnu_Remove).String = "Delete Document"
                     End If
                 Catch ex As Exception
+                    oApplication.Log.Trace_DIET_AddOn_Error(ex)
                     oApplication.Utilities.Message(ex.Message, SAPbouiCOM.BoStatusBarMessageType.smt_Error)
                 End Try
             End If
@@ -294,6 +303,7 @@ Public Class clsMedical
                 End Select
             End If
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             oApplication.Utilities.Message(ex.Message, SAPbouiCOM.BoStatusBarMessageType.smt_Error)
         End Try
     End Sub
@@ -326,7 +336,9 @@ Public Class clsMedical
             'oForm.ActiveItem = "6"
             oMatrix.ClearRowData(oMatrix.RowCount)
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             Throw ex
+            'oApplication.Log.oApplication.Log.Trace_DIET_AddOn_Error(ex)
         End Try
     End Sub
 
@@ -343,8 +355,10 @@ Public Class clsMedical
             oMatrix.LoadFromDataSource()
             aForm.Freeze(False)
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             aForm.Freeze(False)
             Throw ex
+            'oApplication.Log.oApplication.Log.Trace_DIET_AddOn_Error(ex)
         End Try
     End Sub
 #End Region
@@ -379,8 +393,10 @@ Public Class clsMedical
             End Select
             aForm.Freeze(False)
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             aForm.Freeze(False)
             Throw ex
+            'oApplication.Log.oApplication.Log.Trace_DIET_AddOn_Error(ex)
         End Try
     End Sub
 
@@ -414,8 +430,10 @@ Public Class clsMedical
                 End If
             Next
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             aForm.Freeze(False)
             Throw ex
+            'oApplication.Log.oApplication.Log.Trace_DIET_AddOn_Error(ex)
         End Try
     End Sub
 
@@ -439,8 +457,10 @@ Public Class clsMedical
             Next
             oMatrix.LoadFromDataSource()
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             aForm.Freeze(False)
             Throw ex
+            'oApplication.Log.oApplication.Log.Trace_DIET_AddOn_Error(ex)
         End Try
     End Sub
 #End Region
@@ -499,6 +519,7 @@ Public Class clsMedical
 
             Return True
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             aForm.Freeze(False)
             oApplication.Utilities.Message(ex.Message, SAPbouiCOM.BoStatusBarMessageType.smt_Error)
             Return False
@@ -514,7 +535,9 @@ Public Class clsMedical
             oForm.Items.Item("6").Enabled = blnEnable
             oForm.Items.Item("7").Enabled = True
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             Throw ex
+            'oApplication.Log.oApplication.Log.Trace_DIET_AddOn_Error(ex)
         End Try
     End Sub
 
@@ -546,7 +569,9 @@ Public Class clsMedical
             oCFL.SetConditions(oCons)
 
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             Throw ex
+            'oApplication.Log.oApplication.Log.Trace_DIET_AddOn_Error(ex)
         End Try
     End Sub
 
@@ -559,6 +584,7 @@ Public Class clsMedical
 
             oForm.Freeze(False)
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             'oApplication.Utilities.Message(ex.Message, SAPbouiCOM.BoStatusBarMessageType.smt_Error)
             oForm.Freeze(False)
         End Try

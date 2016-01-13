@@ -14,6 +14,7 @@ Public Class clsItemMaster
     Private Sub LoadForm()
         Try
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             oForm.Freeze(False)
         End Try
     End Sub
@@ -27,6 +28,7 @@ Public Class clsItemMaster
                 Case False
             End Select
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             oApplication.Utilities.Message(ex.Message, SAPbouiCOM.BoStatusBarMessageType.smt_Error)
             oForm.Freeze(False)
         End Try
@@ -45,7 +47,7 @@ Public Class clsItemMaster
                         Select Case pVal.EventType
                             Case SAPbouiCOM.BoEventTypes.et_FORM_LOAD
                                 oForm = oApplication.SBO_Application.Forms.Item(FormUID)
-                              
+
                                 initializeControls(oForm)
                                 dataBind(oForm)
                                 oForm.Items.Item("163").Click(SAPbouiCOM.BoCellClickType.ct_Regular)
@@ -53,6 +55,7 @@ Public Class clsItemMaster
                 End Select
             End If
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             oForm = oApplication.SBO_Application.Forms.ActiveForm()
             oForm.Freeze(False)
             oApplication.Utilities.Message(ex.Message, SAPbouiCOM.BoStatusBarMessageType.smt_Error)
@@ -70,6 +73,7 @@ Public Class clsItemMaster
             End Select
 
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             oApplication.Utilities.Message(ex.Message, SAPbouiCOM.BoStatusBarMessageType.smt_Error)
         End Try
     End Sub
@@ -139,7 +143,9 @@ Public Class clsItemMaster
             oForm.Items.Item("_131").Height = oForm.Items.Item("1320002076").Height
 
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             Throw ex
+            'oApplication.Log.oApplication.Log.Trace_DIET_AddOn_Error(ex)
         End Try
     End Sub
 
@@ -164,7 +170,9 @@ Public Class clsItemMaster
             oCheckBox.DataBind.SetBound(True, "OITM", "U_DS")
 
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             Throw ex
+            'oApplication.Log.oApplication.Log.Trace_DIET_AddOn_Error(ex)
         End Try
     End Sub
 End Class

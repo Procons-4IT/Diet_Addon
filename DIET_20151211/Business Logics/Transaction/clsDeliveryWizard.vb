@@ -29,6 +29,7 @@ Public Class clsDeliveryWizard
             addChooseFromListConditions(oForm)
             oForm.Freeze(False)
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             oApplication.Utilities.Message(ex.Message, SAPbouiCOM.BoStatusBarMessageType.smt_Error)
         End Try
     End Sub
@@ -46,6 +47,7 @@ Public Class clsDeliveryWizard
             oForm.DataSources.DataTables.Add("dtFailure")
 
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             oApplication.Utilities.Message(ex.Message, SAPbouiCOM.BoStatusBarMessageType.smt_Error)
         End Try
     End Sub
@@ -59,6 +61,7 @@ Public Class clsDeliveryWizard
                 Case mnu_FIRST, mnu_LAST, mnu_NEXT, mnu_PREVIOUS
             End Select
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             oApplication.Utilities.Message(ex.Message, SAPbouiCOM.BoStatusBarMessageType.smt_Error)
             oForm.Freeze(False)
         End Try
@@ -118,6 +121,7 @@ Public Class clsDeliveryWizard
                                                 End If
                                                 oLoadForm.Close()
                                             Catch ex As Exception
+                                                oApplication.Log.Trace_DIET_AddOn_Error(ex)
                                                 oLoadForm.Close()
                                                 oSuccessGrid = oForm.Items.Item("19").Specific
                                                 oSuccessGrid.DataTable = oForm.DataSources.DataTables.Item("dtSuccess")
@@ -180,7 +184,7 @@ Public Class clsDeliveryWizard
                                 End If
                             Case SAPbouiCOM.BoEventTypes.et_LOST_FOCUS
                                 oForm = oApplication.SBO_Application.Forms.Item(FormUID)
-                               If pVal.ItemUID = "8" Then
+                                If pVal.ItemUID = "8" Then
                                     If CType(oForm.Items.Item(pVal.ItemUID).Specific, SAPbouiCOM.EditText).Value = "" Then
                                         CType(oForm.Items.Item("7").Specific, SAPbouiCOM.EditText).Value = ""
                                     End If
@@ -195,6 +199,7 @@ Public Class clsDeliveryWizard
                                     Try
                                         reDrawForm(oForm)
                                     Catch ex As Exception
+                                        oApplication.Log.Trace_DIET_AddOn_Error(ex)
 
                                     End Try
                                 End If
@@ -202,6 +207,7 @@ Public Class clsDeliveryWizard
                 End Select
             End If
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             oForm.Freeze(False)
             oApplication.Utilities.Message(ex.Message, SAPbouiCOM.BoStatusBarMessageType.smt_Error)
             oForm = oApplication.SBO_Application.Forms.Item(FormUID)
@@ -263,6 +269,7 @@ Public Class clsDeliveryWizard
             fillHeader(oForm, "16")
             oForm.Freeze(False)
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             oForm.Freeze(False)
         End Try
 
@@ -311,7 +318,9 @@ Public Class clsDeliveryWizard
             'oOrderGrid.CollapseLevel = 1
 
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             Throw ex
+            'oApplication.Log.oApplication.Log.Trace_DIET_AddOn_Error(ex)
         End Try
     End Sub
 
@@ -326,8 +335,10 @@ Public Class clsDeliveryWizard
             Next
             aForm.Freeze(False)
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             aForm.Freeze(False)
             Throw ex
+            'oApplication.Log.oApplication.Log.Trace_DIET_AddOn_Error(ex)
         End Try
     End Sub
 
@@ -336,8 +347,10 @@ Public Class clsDeliveryWizard
     '        oSuccessGrid = oform.Items.Item("19").Specific
     '        oFailureGrid = oform.Items.Item("21").Specific
 
-    '    Catch ex As Exception
-    '        Throw ex
+    '    Catch ex As Exception 
+    'oApplication.Log.Trace_DIET_AddOn_Error(ex)
+    '        Throw ex 
+    ''oApplication.Log.oApplication.Log.Trace_DIET_AddOn_Error(ex)
     '    End Try
     'End Sub
 
@@ -400,7 +413,9 @@ Public Class clsDeliveryWizard
 
 
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             Throw ex
+            'oApplication.Log.oApplication.Log.Trace_DIET_AddOn_Error(ex)
         End Try
     End Sub
 
@@ -413,7 +428,9 @@ Public Class clsDeliveryWizard
             Next
             oForm.Freeze(False)
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             Throw ex
+            'oApplication.Log.oApplication.Log.Trace_DIET_AddOn_Error(ex)
         End Try
     End Sub
 
@@ -426,7 +443,9 @@ Public Class clsDeliveryWizard
             Next
             oForm.Freeze(False)
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             Throw ex
+            'oApplication.Log.oApplication.Log.Trace_DIET_AddOn_Error(ex)
         End Try
     End Sub
 
@@ -446,6 +465,7 @@ Public Class clsDeliveryWizard
 
             oForm.Freeze(False)
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             oForm.Freeze(False)
         End Try
     End Sub
@@ -775,7 +795,9 @@ Public Class clsDeliveryWizard
             _retVal = True
             Return _retVal
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             Throw ex
+            'oApplication.Log.oApplication.Log.Trace_DIET_AddOn_Error(ex)
         End Try
     End Function
 
@@ -820,6 +842,7 @@ Public Class clsDeliveryWizard
 
             Return True
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             oApplication.Utilities.Message(ex.Message, SAPbouiCOM.BoStatusBarMessageType.smt_Error)
             Return False
         End Try
@@ -979,6 +1002,7 @@ Public Class clsDeliveryWizard
             oCFL.SetConditions(oCons)
 
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
 
         End Try
     End Sub

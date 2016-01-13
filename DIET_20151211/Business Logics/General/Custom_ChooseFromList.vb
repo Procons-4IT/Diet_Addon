@@ -224,7 +224,9 @@ Public Class Custom_ChooseFromList
             oForm.Visible = True
 
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             Throw ex
+            'oApplication.Log.oApplication.Log.Trace_DIET_AddOn_Error(ex)
         Finally
             If Not oParentForm Is Nothing Then
                 System.Runtime.InteropServices.Marshal.ReleaseComObject(oParentForm)
@@ -292,7 +294,9 @@ Public Class Custom_ChooseFromList
             oCFL_Type = CFL_Type.cfl_ORDER_RETURN
 
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             Throw ex
+            'oApplication.Log.oApplication.Log.Trace_DIET_AddOn_Error(ex)
         Finally
             oForm.Visible = True
         End Try
@@ -356,7 +360,9 @@ Public Class Custom_ChooseFromList
                 oMatrix = Nothing
             End If
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             Throw ex
+            'oApplication.Log.oApplication.Log.Trace_DIET_AddOn_Error(ex)
         Finally
             GC.WaitForPendingFinalizers()
             GC.Collect()

@@ -49,7 +49,9 @@ Public Class clsCustomerProgram
             oForm.Items.Item("7").Click(SAPbouiCOM.BoCellClickType.ct_Regular)
             oForm.Freeze(False)
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             Throw ex
+            'oApplication.Log.oApplication.Log.Trace_DIET_AddOn_Error(ex)
         Finally
             oForm.Freeze(False)
         End Try
@@ -87,7 +89,9 @@ Public Class clsCustomerProgram
             oForm.Items.Item("37").Click(SAPbouiCOM.BoCellClickType.ct_Regular)
             oForm.Freeze(False)
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             Throw ex
+            'oApplication.Log.oApplication.Log.Trace_DIET_AddOn_Error(ex)
         Finally
             oForm.Freeze(False)
         End Try
@@ -121,7 +125,9 @@ Public Class clsCustomerProgram
             oForm.EnableMenu(mnu_FIND, False)
             'oForm.Mode = SAPbouiCOM.BoFormMode.fm_VIEW_MODE
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             Throw ex
+            'oApplication.Log.oApplication.Log.Trace_DIET_AddOn_Error(ex)
         Finally
             oForm.Freeze(False)
         End Try
@@ -560,6 +566,7 @@ Public Class clsCustomerProgram
                                     Try
                                         reDrawForm(oForm)
                                     Catch ex As Exception
+                                        oApplication.Log.Trace_DIET_AddOn_Error(ex)
 
                                     End Try
                                 End If
@@ -567,6 +574,7 @@ Public Class clsCustomerProgram
                 End Select
             End If
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             oForm.Freeze(False)
             oApplication.Utilities.Message(ex.Message, SAPbouiCOM.BoStatusBarMessageType.smt_Error)
         End Try
@@ -737,7 +745,7 @@ Public Class clsCustomerProgram
                                     End If
 
 
-                                    
+
                                 End If
                             End If
                         Case mnu_DELETE_ROW
@@ -829,6 +837,7 @@ Public Class clsCustomerProgram
                     End Select
             End Select
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             oApplication.Utilities.Message(ex.Message, SAPbouiCOM.BoStatusBarMessageType.smt_Error)
             oForm.Freeze(False)
         End Try
@@ -845,8 +854,7 @@ Public Class clsCustomerProgram
 
                     Case False
                         Select Case BusinessObjectInfo.EventType
-                            Case SAPbouiCOM.BoEventTypes.et_FORM_DATA_ADD, _
-                            SAPbouiCOM.BoEventTypes.et_FORM_DATA_UPDATE
+                            Case SAPbouiCOM.BoEventTypes.et_FORM_DATA_ADD, SAPbouiCOM.BoEventTypes.et_FORM_DATA_UPDATE
                                 If BusinessObjectInfo.ActionSuccess Then
                                     oForm = oApplication.SBO_Application.Forms.ActiveForm()
                                     Dim oXmlDoc As System.Xml.XmlDocument = New Xml.XmlDocument()
@@ -961,12 +969,14 @@ Public Class clsCustomerProgram
                                     oForm.Items.Item("34").Click(SAPbouiCOM.BoCellClickType.ct_Regular)
                                     oForm.Freeze(False)
                                 Catch ex As Exception
+                                    oApplication.Log.Trace_DIET_AddOn_Error(ex)
                                     oForm.Freeze(False)
                                 End Try
                         End Select
                 End Select
             End If
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             oApplication.Utilities.Message(ex.Message, SAPbouiCOM.BoStatusBarMessageType.smt_Error)
         End Try
     End Sub
@@ -1049,6 +1059,7 @@ Public Class clsCustomerProgram
                     End If
 
                 Catch ex As Exception
+                    oApplication.Log.Trace_DIET_AddOn_Error(ex)
                     oApplication.Utilities.Message(ex.Message, SAPbouiCOM.BoStatusBarMessageType.smt_Error)
                 End Try
             Else
@@ -1117,7 +1128,9 @@ Public Class clsCustomerProgram
             oForm.Items.Item("7").Click(SAPbouiCOM.BoCellClickType.ct_Regular)
 
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             Throw ex
+            'oApplication.Log.oApplication.Log.Trace_DIET_AddOn_Error(ex)
         End Try
     End Sub
 
@@ -1316,6 +1329,7 @@ Public Class clsCustomerProgram
 
             Return True
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             oApplication.Utilities.Message(ex.Message, SAPbouiCOM.BoStatusBarMessageType.smt_Error)
             Return False
         End Try
@@ -1330,7 +1344,7 @@ Public Class clsCustomerProgram
 
             Dim strToDate As String = CType(oForm.Items.Item("13").Specific, SAPbouiCOM.EditText).Value
             Dim strNoofDays As String = CType(oForm.Items.Item("14").Specific, SAPbouiCOM.EditText).Value
-          
+
             oMatrix = oForm.Items.Item("40").Specific
             For index As Integer = 1 To oMatrix.VisualRowCount
                 Dim dblNoofDay, dblQty As Double
@@ -1358,6 +1372,7 @@ Public Class clsCustomerProgram
 
             Return True
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             oApplication.Utilities.Message(ex.Message, SAPbouiCOM.BoStatusBarMessageType.smt_Error)
             Return False
         End Try
@@ -1384,8 +1399,10 @@ Public Class clsCustomerProgram
     '                End If
     '            Next
     '        End If
-    '    Catch ex As Exception
-    '        Throw ex
+    '    Catch ex As Exception 
+    '.Log.Trace_DIET_AddOn_Error(ex)
+    '        Throw ex 
+    ' 'oApplication.Log.oApplication.Log.Trace_DIET_AddOn_Error(ex)
     '    End Try
     'End Sub
 
@@ -1406,8 +1423,10 @@ Public Class clsCustomerProgram
     '                End If
     '            Next
     '        End If
-    '    Catch ex As Exception
-    '        Throw ex
+    '    Catch ex As Exception 
+    '.Log.Trace_DIET_AddOn_Error(ex)
+    '        Throw ex 
+    '.Log.oApplication.Log.Trace_DIET_AddOn_Error(ex)
     '    End Try
     'End Sub
 
@@ -1429,7 +1448,9 @@ Public Class clsCustomerProgram
             End If
 
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             Throw ex
+            'oApplication.Log.oApplication.Log.Trace_DIET_AddOn_Error(ex)
         End Try
     End Sub
 
@@ -1452,7 +1473,9 @@ Public Class clsCustomerProgram
             End If
 
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             Throw ex
+            'oApplication.Log.oApplication.Log.Trace_DIET_AddOn_Error(ex)
         End Try
     End Sub
 
@@ -1501,8 +1524,10 @@ Public Class clsCustomerProgram
             End Select
             aForm.Freeze(False)
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             aForm.Freeze(False)
             Throw ex
+            'oApplication.Log.oApplication.Log.Trace_DIET_AddOn_Error(ex)
         End Try
     End Sub
 
@@ -1543,8 +1568,10 @@ Public Class clsCustomerProgram
                 End If
             Next
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             aForm.Freeze(False)
             Throw ex
+            'oApplication.Log.oApplication.Log.Trace_DIET_AddOn_Error(ex)
         End Try
     End Sub
 
@@ -1568,8 +1595,10 @@ Public Class clsCustomerProgram
             oMatrix.LoadFromDataSource()
             aForm.Freeze(False)
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             aForm.Freeze(False)
             Throw ex
+            'oApplication.Log.oApplication.Log.Trace_DIET_AddOn_Error(ex)
         End Try
     End Sub
 
@@ -1595,8 +1624,10 @@ Public Class clsCustomerProgram
                 oMatrix.LoadFromDataSource()
             End If
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             aForm.Freeze(False)
             Throw ex
+            'oApplication.Log.oApplication.Log.Trace_DIET_AddOn_Error(ex)
         End Try
     End Sub
 
@@ -1859,7 +1890,9 @@ Public Class clsCustomerProgram
             'oCFL.SetConditions(oCons)
 
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             Throw ex
+            'oApplication.Log.oApplication.Log.Trace_DIET_AddOn_Error(ex)
         End Try
     End Sub
 
@@ -1872,6 +1905,7 @@ Public Class clsCustomerProgram
 
             oForm.Freeze(False)
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             'oApplication.Utilities.Message(ex.Message, SAPbouiCOM.BoStatusBarMessageType.smt_Error)
             oForm.Freeze(False)
         End Try
@@ -1941,7 +1975,9 @@ Public Class clsCustomerProgram
             oMatrix.FlushToDataSource()
 
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             Throw ex
+            'oApplication.Log.oApplication.Log.Trace_DIET_AddOn_Error(ex)
         End Try
     End Sub
 
@@ -2016,7 +2052,9 @@ Public Class clsCustomerProgram
             Next
 
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             Throw ex
+            'oApplication.Log.oApplication.Log.Trace_DIET_AddOn_Error(ex)
         End Try
     End Sub
 
@@ -2080,7 +2118,9 @@ Public Class clsCustomerProgram
             oMatrix.FlushToDataSource()
 
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             Throw ex
+            'oApplication.Log.oApplication.Log.Trace_DIET_AddOn_Error(ex)
         End Try
     End Sub
 
@@ -2133,7 +2173,9 @@ Public Class clsCustomerProgram
 
             oForm.Update()
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             Throw ex
+            'oApplication.Log.oApplication.Log.Trace_DIET_AddOn_Error(ex)
         End Try
     End Sub
 
@@ -2200,7 +2242,9 @@ Public Class clsCustomerProgram
             End If
 
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             Throw ex
+            'oApplication.Log.oApplication.Log.Trace_DIET_AddOn_Error(ex)
         End Try
     End Sub
 
@@ -2476,7 +2520,9 @@ Public Class clsCustomerProgram
 
             End If
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             Throw ex
+            'oApplication.Log.oApplication.Log.Trace_DIET_AddOn_Error(ex)
         End Try
     End Sub
 
@@ -2540,7 +2586,9 @@ Public Class clsCustomerProgram
                 End If
             End If
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             Throw ex
+            'oApplication.Log.oApplication.Log.Trace_DIET_AddOn_Error(ex)
         End Try
     End Sub
 
@@ -2560,7 +2608,9 @@ Public Class clsCustomerProgram
                 Return dblRate
             End If
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             Throw ex
+            'oApplication.Log.oApplication.Log.Trace_DIET_AddOn_Error(ex)
         End Try
         Return dblRate
     End Function
@@ -2600,7 +2650,9 @@ Public Class clsCustomerProgram
             End If
 
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             Throw ex
+            'oApplication.Log.oApplication.Log.Trace_DIET_AddOn_Error(ex)
         End Try
     End Sub
 
@@ -2640,8 +2692,10 @@ End Class
 '            oForm.EnableMenu(mnu_ADD_ROW, True)
 '            oForm.EnableMenu(mnu_DELETE_ROW, True)
 '            oForm.Freeze(False)
-'        Catch ex As Exception
-'            Throw ex
+'        Catch ex As Exception 
+'oApplication.Log.Trace_DIET_AddOn_Error(ex)
+'            Throw ex 
+' 'oApplication.Log.oApplication.Log.Trace_DIET_AddOn_Error(ex)
 '        Finally
 '            oForm.Freeze(False)
 '        End Try
@@ -2660,8 +2714,10 @@ End Class
 '            oForm.Items.Item("1").Click(SAPbouiCOM.BoCellClickType.ct_Regular)
 '            oForm.Items.Item("11").Specific.value = strCardCode
 '            oForm.Freeze(False)
-'        Catch ex As Exception
-'            Throw ex
+'        Catch ex As Exception 
+'.Log.Trace_DIET_AddOn_Error(ex)
+'            Throw ex 
+' 'oApplication.Log.oApplication.Log.Trace_DIET_AddOn_Error(ex)
 '        Finally
 '            oForm.Freeze(False)
 '        End Try
@@ -2762,13 +2818,15 @@ End Class
 '                                            If oForm.Mode = SAPbouiCOM.BoFormMode.fm_OK_MODE Then oForm.Mode = SAPbouiCOM.BoFormMode.fm_UPDATE_MODE
 '                                        End If
 '                                    End If
-'                                Catch ex As Exception
+'                                Catch ex As Exception 
+'.Log.Trace_DIET_AddOn_Error(ex)
 
 '                                End Try
 '                        End Select
 '                End Select
 '            End If
-'        Catch ex As Exception
+'        Catch ex As Exception 
+'.Log.Trace_DIET_AddOn_Error(ex)
 '            oApplication.Utilities.Message(ex.Message, SAPbouiCOM.BoStatusBarMessageType.smt_Error)
 '        End Try
 '    End Sub
@@ -2792,7 +2850,8 @@ End Class
 '                        End If
 '                End Select
 '            End If
-'        Catch ex As Exception
+'        Catch ex As Exception 
+'oApplication.Log.Trace_DIET_AddOn_Error(ex)
 '            oApplication.Utilities.Message(ex.Message, SAPbouiCOM.BoStatusBarMessageType.smt_Error)
 '            oForm.Freeze(False)
 '        End Try
@@ -2822,7 +2881,8 @@ End Class
 '                        End Select
 '                End Select
 '            End If
-'        Catch ex As Exception
+'        Catch ex As Exception 
+'oApplication.Log.Trace_DIET_AddOn_Error(ex)
 '            oApplication.Utilities.Message(ex.Message, SAPbouiCOM.BoStatusBarMessageType.smt_Error)
 '        End Try
 '    End Sub
@@ -2848,8 +2908,10 @@ End Class
 '            End If
 
 '            MatrixId = "3"
-'        Catch ex As Exception
-'            Throw ex
+'        Catch ex As Exception 
+'.Log.Trace_DIET_AddOn_Error(ex)
+'            Throw ex 
+' 'oApplication.Log.oApplication.Log.Trace_DIET_AddOn_Error(ex)
 '        End Try
 '    End Sub
 
@@ -2864,9 +2926,11 @@ End Class
 '            Next
 '            oMatrix.LoadFromDataSource()
 '            aForm.Freeze(False)
-'        Catch ex As Exception
+'        Catch ex As Exception 
+'oApplication.Log.Trace_DIET_AddOn_Error(ex)
 '            aForm.Freeze(False)
-'            Throw ex
+'            Throw ex 
+''oApplication.Log.oApplication.Log.Trace_DIET_AddOn_Error(ex)
 '        End Try
 '    End Sub
 
@@ -2895,9 +2959,11 @@ End Class
 '                    AssignLineNo(aForm)
 '            End Select
 '            aForm.Freeze(False)
-'        Catch ex As Exception
+'        Catch ex As Exception 
+'.Log.Trace_DIET_AddOn_Error(ex)
 '            aForm.Freeze(False)
-'            Throw ex
+'            Throw ex 
+' 'oApplication.Log.oApplication.Log.Trace_DIET_AddOn_Error(ex)
 '        End Try
 '    End Sub
 
@@ -2930,9 +2996,11 @@ End Class
 '                    Exit Sub
 '                End If
 '            Next
-'        Catch ex As Exception
+'        Catch ex As Exception 
+'oApplication.Log.Trace_DIET_AddOn_Error(ex)
 '            aForm.Freeze(False)
-'            Throw ex
+'            Throw ex 
+''oApplication.Log.oApplication.Log.Trace_DIET_AddOn_Error(ex)
 '        End Try
 '    End Sub
 
@@ -2957,9 +3025,11 @@ End Class
 '            Next
 '            oMatrix.LoadFromDataSource()
 
-'        Catch ex As Exception
+'        Catch ex As Exception 
+'.Log.Trace_DIET_AddOn_Error(ex)
 '            aForm.Freeze(False)
-'            Throw ex
+'            Throw ex 
+' 'oApplication.Log.oApplication.Log.Trace_DIET_AddOn_Error(ex)
 '        End Try
 '    End Sub
 
@@ -2973,9 +3043,11 @@ End Class
 '            oTest = oApplication.Company.GetBusinessObject(SAPbobsCOM.BoObjectTypes.BoRecordset)
 
 '            Return True
-'        Catch ex As Exception
+'        Catch ex As Exception 
+'.Log.Trace_DIET_AddOn_Error(ex)
 '            aForm.Freeze(False)
-'            Throw ex
+'            Throw ex 
+' 'oApplication.Log.oApplication.Log.Trace_DIET_AddOn_Error(ex)
 '        End Try
 '    End Function
 
@@ -2993,8 +3065,10 @@ End Class
 '                    oForm.Items.Item("15").Enabled = False
 '                End If
 '            End If
-'        Catch ex As Exception
-'            Throw ex
+'        Catch ex As Exception 
+'.Log.Trace_DIET_AddOn_Error(ex)
+'            Throw ex 
+' 'oApplication.Log.oApplication.Log.Trace_DIET_AddOn_Error(ex)
 '        End Try
 '    End Sub
 
@@ -3021,8 +3095,10 @@ End Class
 '            dblPriceAfterDis = dblNoofDays * (dblPrice - ((dblPrice * dblDiscount) / 100))
 '            oDBDataSourceLines.SetValue("U_LineTotal", intRow - 1, dblPriceAfterDis)
 '            oMatrix.LoadFromDataSource()
-'        Catch ex As Exception
-'            Throw ex
+'        Catch ex As Exception 
+'oApplication.Log.Trace_DIET_AddOn_Error(ex)
+'            Throw ex 
+''oApplication.Log.oApplication.Log.Trace_DIET_AddOn_Error(ex)
 '        End Try
 '    End Sub
 

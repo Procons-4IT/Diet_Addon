@@ -3,7 +3,6 @@ Imports System.Collections.Specialized
 Imports System.IO
 Imports SAPbobsCOM
 
-
 Public Class clsUtilities
 
     Private strThousSep As String = ","
@@ -39,7 +38,9 @@ Public Class clsUtilities
             End If
 
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             Throw ex
+            'oApplication.Log.oApplication.Log.Trace_DIET_AddOn_Error(ex)
         End Try
     End Sub
 #End Region
@@ -55,6 +56,7 @@ Public Class clsUtilities
             aGrid.Columns.Item("RowsHeader").TitleObject.Caption = "#"
             aform.Freeze(False)
         Catch ex As Exception
+            'oApplication.Log.oApplication.Log.Trace_DIET_AddOn_Error(ex)
 
         End Try
     End Sub
@@ -78,7 +80,9 @@ Public Class clsUtilities
             sCode = Format(MaxCode, "00000000")
             Return sCode
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             Throw ex
+            'oApplication.Log.oApplication.Log.Trace_DIET_AddOn_Error(ex)
         Finally
             oRS = Nothing
         End Try
@@ -135,7 +139,9 @@ Public Class clsUtilities
             oCFL = oCFLs.Add(oCFLCreationParams)
 
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             Throw ex
+            'oApplication.Log.oApplication.Log.Trace_DIET_AddOn_Error(ex)
         End Try
     End Sub
 #End Region
@@ -157,7 +163,9 @@ Public Class clsUtilities
             oRecordSet.DoQuery(SQL)
 
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             Throw ex
+            'oApplication.Log.oApplication.Log.Trace_DIET_AddOn_Error(ex)
         End Try
     End Sub
 #End Region
@@ -166,6 +174,13 @@ Public Class clsUtilities
     Public Function getApplicationPath() As String
 
         Return Application.StartupPath.Trim
+
+        'Return IO.Directory.GetParent(Application.StartupPath).ToString
+    End Function
+
+    Public Function getUserTempPath() As String
+
+        Return System.IO.Path.GetTempPath()
 
         'Return IO.Directory.GetParent(Application.StartupPath).ToString
     End Function
@@ -196,7 +211,9 @@ Public Class clsUtilities
 
             Return oDate
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             Throw ex
+            'oApplication.Log.oApplication.Log.Trace_DIET_AddOn_Error(ex)
         End Try
 
     End Function
@@ -242,7 +259,9 @@ Public Class clsUtilities
             Return GetDateFormat
 
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             Throw ex
+            'oApplication.Log.oApplication.Log.Trace_DIET_AddOn_Error(ex)
         End Try
     End Function
 #End Region
@@ -287,7 +306,9 @@ Public Class clsUtilities
             Return NumSBODateFormat
 
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             Throw ex
+            'oApplication.Log.oApplication.Log.Trace_DIET_AddOn_Error(ex)
         End Try
     End Function
 #End Region
@@ -355,6 +376,7 @@ Public Class clsUtilities
 
             WorkDays = lngWorkDays
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             MsgBox(ex.Message)
         End Try
 
@@ -455,7 +477,9 @@ Public Class clsUtilities
             Return oDataTable
 
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             Throw ex
+            'oApplication.Log.oApplication.Log.Trace_DIET_AddOn_Error(ex)
         Finally
             oRow = Nothing
         End Try
@@ -475,7 +499,9 @@ Public Class clsUtilities
             oXMLDoc.Load(sFilePath)
             oApplication.SBO_Application.LoadBatchActions(oXMLDoc.InnerXml)
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             Throw ex
+            'oApplication.Log.oApplication.Log.Trace_DIET_AddOn_Error(ex)
         Finally
             oXMLDoc = Nothing
         End Try
@@ -505,7 +531,9 @@ Public Class clsUtilities
             Return FrmUID
 
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             Throw ex
+            'oApplication.Log.oApplication.Log.Trace_DIET_AddOn_Error(ex)
         Finally
             oXmlDoc = Nothing
         End Try
@@ -554,7 +582,9 @@ Public Class clsUtilities
             objFormCreationParams.UniqueID = FormUID
             Return oApplication.SBO_Application.Forms.AddEx(objFormCreationParams)
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             Throw ex
+            'oApplication.Log.oApplication.Log.Trace_DIET_AddOn_Error(ex)
 
         End Try
 
@@ -571,7 +601,9 @@ Public Class clsUtilities
                 oApplication.Collection.Add(oObject.FrmUID, oObject)
             End If
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             Throw ex
+            'oApplication.Log.oApplication.Log.Trace_DIET_AddOn_Error(ex)
         End Try
     End Sub
 #End Region
@@ -587,7 +619,9 @@ Public Class clsUtilities
             oCreateTable = New clsTable
             oCreateTable.CreateTables()
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             Throw ex
+            'oApplication.Log.oApplication.Log.Trace_DIET_AddOn_Error(ex)
         Finally
             oCreateTable = Nothing
         End Try
@@ -601,8 +635,10 @@ Public Class clsUtilities
         'Try
         '    oAlert = New clsPromptAlert
         '    oAlert.AlertforEndingOrdr()
-        'Catch ex As Exception
-        '    Throw ex
+        'Catch ex As Exception 
+        'oApplication.Log.Trace_DIET_AddOn_Error(ex)
+        '    Throw ex 
+        ''oApplication.Log.oApplication.Log.Trace_DIET_AddOn_Error(ex)
         'Finally
         '    oAlert = Nothing
         'End Try
@@ -850,7 +886,9 @@ Public Class clsUtilities
             End If
 
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             Throw ex
+            'oApplication.Log.oApplication.Log.Trace_DIET_AddOn_Error(ex)
         Finally
             oUserTable = Nothing
         End Try
@@ -1244,7 +1282,9 @@ Public Class clsUtilities
 
 
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             Throw ex
+            'oApplication.Log.oApplication.Log.Trace_DIET_AddOn_Error(ex)
         End Try
     End Sub
 #End Region
@@ -1261,6 +1301,7 @@ Public Class clsUtilities
                 process.Start()
             End If
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
 
         End Try
     End Sub
@@ -1288,6 +1329,7 @@ Public Class clsUtilities
                 Return False
             End If
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
 
         End Try
     End Function
@@ -1348,6 +1390,7 @@ Public Class clsUtilities
             addChildAuthorization("mnu_Z_OCRR", "Event Type - setup", 3, "frm_Z_OCRR", "DT_Report", SAPbobsCOM.BoUPTOptions.bou_FullNone)
 
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             MsgBox(ex.Message.ToString())
         End Try
     End Sub
@@ -1458,7 +1501,9 @@ Public Class clsUtilities
             oGeneralService.Add(oGeneralData)
             Return strCode
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             Throw ex
+            'oApplication.Log.oApplication.Log.Trace_DIET_AddOn_Error(ex)
         End Try
         Return strCode
     End Function
@@ -1485,7 +1530,9 @@ Public Class clsUtilities
                 oGeneralService.Delete(oGeneralDataParams)
             End If
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             Throw ex
+            'oApplication.Log.oApplication.Log.Trace_DIET_AddOn_Error(ex)
         End Try
     End Sub
 
@@ -1686,12 +1733,15 @@ Public Class clsUtilities
                 End If
                 Return _retVal
             Catch ex As Exception
+                oApplication.Log.Trace_DIET_AddOn_Error(ex)
                 _retVal = False
                 oApplication.SBO_Application.MessageBox(ex.Message, 1, "OK", "", "")
             End Try
             Return _retVal
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             Throw ex
+            'oApplication.Log.oApplication.Log.Trace_DIET_AddOn_Error(ex)
         End Try
     End Function
 
@@ -1819,7 +1869,9 @@ Public Class clsUtilities
 
             Return _retVal
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             Throw ex
+            'oApplication.Log.oApplication.Log.Trace_DIET_AddOn_Error(ex)
         End Try
     End Function
 
@@ -1831,7 +1883,9 @@ Public Class clsUtilities
             strFileName = Path.GetFileName(strFilepath)
             CType(oForm.Items.Item(strFile).Specific, SAPbouiCOM.EditText).Value = strFileName
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             Throw ex
+            'oApplication.Log.oApplication.Log.Trace_DIET_AddOn_Error(ex)
         End Try
     End Sub
 
@@ -1843,7 +1897,9 @@ Public Class clsUtilities
             mythr.Start()
             mythr.Join()
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             Throw ex
+            'oApplication.Log.oApplication.Log.Trace_DIET_AddOn_Error(ex)
         End Try
     End Sub
 
@@ -1869,11 +1925,14 @@ Public Class clsUtilities
                     Next
                 End If
             Catch ex As Exception
+                oApplication.Log.Trace_DIET_AddOn_Error(ex)
                 oApplication.Utilities.Message(ex.Message, SAPbouiCOM.BoStatusBarMessageType.smt_Error)
             Finally
             End Try
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             Throw ex
+            'oApplication.Log.oApplication.Log.Trace_DIET_AddOn_Error(ex)
         End Try
     End Sub
 #End Region
@@ -1885,7 +1944,9 @@ Public Class clsUtilities
             oCompanyService = oApplication.Company.GetCompanyService
             _retVal = oCompanyService.GetPathAdmin().PicturesFolderPath
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             Throw ex
+            'oApplication.Log.oApplication.Log.Trace_DIET_AddOn_Error(ex)
         End Try
         Return _retVal
     End Function
@@ -1902,7 +1963,9 @@ Public Class clsUtilities
                 End If
             Next
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             Throw ex
+            'oApplication.Log.oApplication.Log.Trace_DIET_AddOn_Error(ex)
         End Try
     End Sub
 
@@ -1977,7 +2040,9 @@ Public Class clsUtilities
             End If
             Return _retVal
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             Throw ex
+            'oApplication.Log.oApplication.Log.Trace_DIET_AddOn_Error(ex)
         Finally
             System.Runtime.InteropServices.Marshal.ReleaseComObject(oCustomer)
         End Try
@@ -2015,7 +2080,9 @@ Public Class clsUtilities
             End If
             Return _retVal
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             Throw ex
+            'oApplication.Log.oApplication.Log.Trace_DIET_AddOn_Error(ex)
         Finally
             System.Runtime.InteropServices.Marshal.ReleaseComObject(oCustomer)
         End Try
@@ -2073,7 +2140,9 @@ Public Class clsUtilities
             End If
             Return strCode
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             Throw ex
+            'oApplication.Log.oApplication.Log.Trace_DIET_AddOn_Error(ex)
         End Try
         Return strCode
     End Function
@@ -2109,7 +2178,9 @@ Public Class clsUtilities
             End If
             Return strCode
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             Throw ex
+            'oApplication.Log.oApplication.Log.Trace_DIET_AddOn_Error(ex)
         End Try
         Return strCode
     End Function
@@ -2149,7 +2220,9 @@ Public Class clsUtilities
             End If
             Return _retVal
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             Throw ex
+            'oApplication.Log.oApplication.Log.Trace_DIET_AddOn_Error(ex)
         End Try
     End Function
 
@@ -2268,7 +2341,9 @@ Public Class clsUtilities
             End If
             Return strCode
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             Throw ex
+            'oApplication.Log.oApplication.Log.Trace_DIET_AddOn_Error(ex)
         End Try
         Return strCode
     End Function
@@ -2360,7 +2435,9 @@ Public Class clsUtilities
 
             Return _retVal
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             Throw ex
+            'oApplication.Log.oApplication.Log.Trace_DIET_AddOn_Error(ex)
         End Try
     End Function
 
@@ -2425,7 +2502,9 @@ Public Class clsUtilities
 
             Return _retVal
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             Throw ex
+            'oApplication.Log.oApplication.Log.Trace_DIET_AddOn_Error(ex)
         End Try
     End Function
 
@@ -2448,7 +2527,9 @@ Public Class clsUtilities
 
             Return _retVal
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             Throw ex
+            'oApplication.Log.oApplication.Log.Trace_DIET_AddOn_Error(ex)
         End Try
     End Function
 
@@ -2468,7 +2549,9 @@ Public Class clsUtilities
             _retVal = Years.ToString()
             Return _retVal
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             Throw ex
+            'oApplication.Log.oApplication.Log.Trace_DIET_AddOn_Error(ex)
         End Try
     End Function
 
@@ -2480,8 +2563,10 @@ Public Class clsUtilities
     '        Dim days As Integer = DateDiff(DateInterval.Day, dtFromDate, dtToDate)
     '        _retVal = days.ToString()
     '        Return _retVal
-    '    Catch ex As Exception
-    '        Throw ex
+    '    Catch ex As Exception 
+    '.Log.Trace_DIET_AddOn_Error(ex)
+    '        Throw ex 
+    ''oApplication.Log.oApplication.Log.Trace_DIET_AddOn_Error(ex)
     '    End Try
     'End Function
 
@@ -2507,7 +2592,9 @@ Public Class clsUtilities
             End If
             Return _retVal
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             Throw ex
+            'oApplication.Log.oApplication.Log.Trace_DIET_AddOn_Error(ex)
         End Try
     End Function
 
@@ -2524,7 +2611,9 @@ Public Class clsUtilities
             End If
             Return _retVal
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             Throw ex
+            'oApplication.Log.oApplication.Log.Trace_DIET_AddOn_Error(ex)
         End Try
     End Function
 
@@ -2540,8 +2629,10 @@ Public Class clsUtilities
     '            _retVal = oRecordSet.Fields.Item(0).Value
     '        End If
     '        Return _retVal
-    '    Catch ex As Exception
-    '        Throw ex
+    '    Catch ex As Exception 
+    '.Log.Trace_DIET_AddOn_Error(ex)
+    '        Throw ex 
+    ''oApplication.Log.oApplication.Log.Trace_DIET_AddOn_Error(ex)
     '    End Try
     'End Function
 
@@ -2558,7 +2649,9 @@ Public Class clsUtilities
             End If
             Return _retVal
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             Throw ex
+            'oApplication.Log.oApplication.Log.Trace_DIET_AddOn_Error(ex)
         End Try
     End Function
 
@@ -2575,7 +2668,9 @@ Public Class clsUtilities
             End If
             Return _retVal
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             Throw ex
+            'oApplication.Log.oApplication.Log.Trace_DIET_AddOn_Error(ex)
         End Try
     End Function
 
@@ -2587,6 +2682,7 @@ Public Class clsUtilities
             _retVal = strCode
             Return _retVal
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             oApplication.SBO_Application.SetStatusBarMessage(oApplication.Company.GetLastErrorDescription(), SAPbouiCOM.BoMessageTime.bmt_Medium, True)
         End Try
     End Function
@@ -2612,7 +2708,9 @@ Public Class clsUtilities
                 End If
             End If
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             Throw ex
+            'oApplication.Log.oApplication.Log.Trace_DIET_AddOn_Error(ex)
         End Try
     End Function
 
@@ -2700,8 +2798,10 @@ Public Class clsUtilities
     '                End If
     '            End If
     '        End If
-    '    Catch ex As Exception
-    '        Throw ex
+    '    Catch ex As Exception 
+    'oApplication.Log.Trace_DIET_AddOn_Error(ex)
+    '        Throw ex 
+    ''oApplication.Log.oApplication.Log.Trace_DIET_AddOn_Error(ex)
     '    End Try
     'End Sub
 
@@ -2787,7 +2887,9 @@ Public Class clsUtilities
                 End If
             End If
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             Throw ex
+            'oApplication.Log.oApplication.Log.Trace_DIET_AddOn_Error(ex)
         End Try
     End Sub
 
@@ -2809,7 +2911,9 @@ Public Class clsUtilities
             End If
             Return _retVal
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             Throw ex
+            'oApplication.Log.oApplication.Log.Trace_DIET_AddOn_Error(ex)
         End Try
     End Function
 
@@ -2832,7 +2936,9 @@ Public Class clsUtilities
             End If
             Return _retVal
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             Throw ex
+            'oApplication.Log.oApplication.Log.Trace_DIET_AddOn_Error(ex)
         End Try
     End Function
 
@@ -2859,7 +2965,9 @@ Public Class clsUtilities
             _retVal = True
             Return _retVal
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             Throw ex
+            'oApplication.Log.oApplication.Log.Trace_DIET_AddOn_Error(ex)
         End Try
     End Function
 
@@ -2916,6 +3024,7 @@ Public Class clsUtilities
                 Try
                     dtProgramFrom = CDate(oRecordSet.Fields.Item("U_PFromDate").Value)
                 Catch ex As Exception
+                    oApplication.Log.Trace_DIET_AddOn_Error(ex)
 
                 End Try
 
@@ -3202,7 +3311,9 @@ Public Class clsUtilities
             End If
             Return _retVal
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             Throw ex
+            'oApplication.Log.oApplication.Log.Trace_DIET_AddOn_Error(ex)
         End Try
         Return _retVal
     End Function
@@ -3244,7 +3355,9 @@ Public Class clsUtilities
             End If
 
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             Throw ex
+            'oApplication.Log.oApplication.Log.Trace_DIET_AddOn_Error(ex)
         End Try
     End Sub
 
@@ -3258,8 +3371,10 @@ Public Class clsUtilities
     '            _retVal = oRecordSet.Fields.Item(0).Value
     '        End If
     '        Return _retVal
-    '    Catch ex As Exception
-    '        Throw ex
+    '    Catch ex As Exception 
+    ' oApplication.Log.Trace_DIET_AddOn_Error(ex)
+    '        Throw ex 
+    ''oApplication.Log.oApplication.Log.Trace_DIET_AddOn_Error(ex)
     '    End Try
     'End Function
 
@@ -3339,7 +3454,9 @@ Public Class clsUtilities
             End If
             Return _retVal
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             Throw ex
+            'oApplication.Log.oApplication.Log.Trace_DIET_AddOn_Error(ex)
         End Try
     End Function
 
@@ -3369,7 +3486,8 @@ Public Class clsUtilities
 
             'Try
             '    strOppID = oXmlDoc.SelectSingleNode("/SalesOpportunityParams/OpprId").InnerText
-            'Catch ex As Exception
+            'Catch ex As Exception 
+            'oApplication.Log.Trace_DIET_AddOn_Error(ex)
             '    strOppID = oXmlDoc.SelectSingleNode("/SalesOpportunityParams/SequentialNo").InnerText
             'End Try
 
@@ -3485,7 +3603,9 @@ Public Class clsUtilities
             End If
             Return _retVal
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             Throw ex
+            'oApplication.Log.oApplication.Log.Trace_DIET_AddOn_Error(ex)
         End Try
     End Function
 
@@ -3522,7 +3642,9 @@ Public Class clsUtilities
             End If
             Return _retVal
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             Throw ex
+            'oApplication.Log.oApplication.Log.Trace_DIET_AddOn_Error(ex)
         End Try
     End Function
 
@@ -3612,7 +3734,9 @@ Public Class clsUtilities
             oGeneralService.Update(oGeneralData)
             Return _retVal
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             Throw ex
+            'oApplication.Log.oApplication.Log.Trace_DIET_AddOn_Error(ex)
         End Try
     End Function
 
@@ -3665,7 +3789,9 @@ Public Class clsUtilities
             oGeneralService.Update(oGeneralData)
             Return _retVal
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             Throw ex
+            'oApplication.Log.oApplication.Log.Trace_DIET_AddOn_Error(ex)
         End Try
     End Function
 
@@ -3717,7 +3843,9 @@ Public Class clsUtilities
             oGeneralService.Update(oGeneralData)
             Return _retVal
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             Throw ex
+            'oApplication.Log.oApplication.Log.Trace_DIET_AddOn_Error(ex)
         End Try
     End Function
 
@@ -3761,7 +3889,9 @@ Public Class clsUtilities
             Next
             Return _retVal
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             Throw ex
+            'oApplication.Log.oApplication.Log.Trace_DIET_AddOn_Error(ex)
         End Try
     End Function
 
@@ -3781,7 +3911,9 @@ Public Class clsUtilities
             End While
             Return dtFromDate.AddDays(intToDays - 1).ToString("yyyyMMdd")
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             Throw ex
+            'oApplication.Log.oApplication.Log.Trace_DIET_AddOn_Error(ex)
         End Try
     End Function
 
@@ -3805,7 +3937,9 @@ Public Class clsUtilities
             End If
             Return _retVal
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             Throw ex
+            'oApplication.Log.oApplication.Log.Trace_DIET_AddOn_Error(ex)
         End Try
     End Function
 
@@ -4092,7 +4226,9 @@ Public Class clsUtilities
             End If
             Return _retVal
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             Throw ex
+            'oApplication.Log.oApplication.Log.Trace_DIET_AddOn_Error(ex)
         End Try
     End Function
 
@@ -4159,10 +4295,14 @@ Public Class clsUtilities
 
                 Return _retVal
             Catch ex As Exception
+                oApplication.Log.Trace_DIET_AddOn_Error(ex)
                 Throw ex
+                'oApplication.Log.oApplication.Log.Trace_DIET_AddOn_Error(ex)
             End Try
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             Throw ex
+            'oApplication.Log.oApplication.Log.Trace_DIET_AddOn_Error(ex)
         End Try
     End Function
 
@@ -4193,7 +4333,9 @@ Public Class clsUtilities
             End If
             Return _retVal
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             Throw ex
+            'oApplication.Log.oApplication.Log.Trace_DIET_AddOn_Error(ex)
         End Try
     End Function
 
@@ -4302,7 +4444,9 @@ Public Class clsUtilities
             End If
             Return _retVal
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             Throw ex
+            'oApplication.Log.oApplication.Log.Trace_DIET_AddOn_Error(ex)
         End Try
     End Function
 
@@ -4410,7 +4554,9 @@ Public Class clsUtilities
 
             Return _retVal
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             Throw ex
+            'oApplication.Log.oApplication.Log.Trace_DIET_AddOn_Error(ex)
         End Try
     End Function
 
@@ -4501,7 +4647,9 @@ Public Class clsUtilities
             Next
 
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             Throw ex
+            'oApplication.Log.oApplication.Log.Trace_DIET_AddOn_Error(ex)
         Finally
             oUserTable = Nothing
         End Try
@@ -4619,7 +4767,9 @@ Public Class clsUtilities
             End If
 
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             Throw ex
+            'oApplication.Log.oApplication.Log.Trace_DIET_AddOn_Error(ex)
         End Try
     End Sub
 
@@ -4666,7 +4816,7 @@ Public Class clsUtilities
             strQuery += " (ISNULL(ISNULL(ISNULL(T3.U_Building,T4.U_Building),T5.MailBuildi),'') <> Convert(VarChar(500),T0.U_Building))"
             strQuery += " Or"
             strQuery += " (Select Top 1 State From CRD1 Where CardCode = T5.CardCode And AdresType = 'S' "
-            strQuery += " And Address = ISNULL(ISNULL(ISNULL(T3.U_Address,T4.U_Address),T5.ShipToDef),'')) <> T0.U_State"
+            strQuery += " And Address = ISNULL(ISNULL(ISNULL(T3.U_Address,T4.U_Address),T5.ShipToDef),'')) <> ISNULL(T0.U_State,'')     "
             strQuery += " )"
 
 
@@ -4695,7 +4845,9 @@ Public Class clsUtilities
             End If
 
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             Throw ex
+            'oApplication.Log.oApplication.Log.Trace_DIET_AddOn_Error(ex)
         End Try
     End Sub
 
@@ -4866,7 +5018,9 @@ Public Class clsUtilities
 
 
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             Throw ex
+            'oApplication.Log.oApplication.Log.Trace_DIET_AddOn_Error(ex)
         End Try
     End Sub
 
@@ -5117,7 +5271,7 @@ Public Class clsUtilities
                                         strQuery += " And VisOrder = '" & intLine & "'"
                                         oRecordSet_U.DoQuery(strQuery)
                                     End If
-                                    
+
                                     If oRecordSet_L.Fields.Item("Type").Value = "E" Then
                                         strQuery = "Update [@Z_CPR4] SET U_Applied = 'Y' "
                                         strQuery += " Where DocEntry = '" & strPRDocEntry & "'"
@@ -5217,7 +5371,9 @@ Public Class clsUtilities
 
 
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             Throw ex
+            'oApplication.Log.oApplication.Log.Trace_DIET_AddOn_Error(ex)
         End Try
     End Sub
 
@@ -5373,7 +5529,9 @@ Public Class clsUtilities
             End If
 
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             Throw ex
+            'oApplication.Log.oApplication.Log.Trace_DIET_AddOn_Error(ex)
         End Try
     End Sub
 
@@ -5630,7 +5788,9 @@ Public Class clsUtilities
 
 
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             Throw ex
+            'oApplication.Log.oApplication.Log.Trace_DIET_AddOn_Error(ex)
         End Try
     End Sub
 
@@ -5737,7 +5897,9 @@ Public Class clsUtilities
             End If
 
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             Throw ex
+            'oApplication.Log.oApplication.Log.Trace_DIET_AddOn_Error(ex)
         End Try
     End Sub
 
@@ -5752,7 +5914,9 @@ Public Class clsUtilities
                 End If
             End If
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             Throw ex
+            'oApplication.Log.oApplication.Log.Trace_DIET_AddOn_Error(ex)
         End Try
     End Sub
 
@@ -5769,7 +5933,9 @@ Public Class clsUtilities
                 End If
             End If
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             Throw ex
+            'oApplication.Log.oApplication.Log.Trace_DIET_AddOn_Error(ex)
         End Try
     End Sub
 
@@ -5953,7 +6119,9 @@ Public Class clsUtilities
 
             Return _retVal
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             Throw ex
+            'oApplication.Log.oApplication.Log.Trace_DIET_AddOn_Error(ex)
         End Try
     End Function
 
@@ -5966,7 +6134,9 @@ Public Class clsUtilities
                 _retVal = False
             End If
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             Throw ex
+            'oApplication.Log.oApplication.Log.Trace_DIET_AddOn_Error(ex)
         End Try
         Return _retVal
     End Function
@@ -5986,7 +6156,9 @@ Public Class clsUtilities
                 _retVal = True
             End If
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             Throw ex
+            'oApplication.Log.oApplication.Log.Trace_DIET_AddOn_Error(ex)
         End Try
         Return _retVal
     End Function
@@ -6006,7 +6178,9 @@ Public Class clsUtilities
                 _retVal = False
             End If
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             Throw ex
+            'oApplication.Log.oApplication.Log.Trace_DIET_AddOn_Error(ex)
         End Try
         Return _retVal
     End Function
@@ -6027,7 +6201,9 @@ Public Class clsUtilities
                 Return dblRate
             End If
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             Throw ex
+            'oApplication.Log.oApplication.Log.Trace_DIET_AddOn_Error(ex)
         End Try
         Return dblRate
     End Function
@@ -6050,7 +6226,7 @@ Public Class clsUtilities
                 oRForm.Items.Item("1").Click(SAPbouiCOM.BoCellClickType.ct_Regular)
             End If
         Catch ex As Exception
-
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
         End Try
     End Sub
 
@@ -6084,7 +6260,9 @@ Public Class clsUtilities
             _retVal = True
             Return _retVal
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             Throw ex
+            'oApplication.Log.oApplication.Log.Trace_DIET_AddOn_Error(ex)
         End Try
     End Function
 
@@ -6216,7 +6394,9 @@ Public Class clsUtilities
                 End While
             End If
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             Throw ex
+            'oApplication.Log.oApplication.Log.Trace_DIET_AddOn_Error(ex)
         End Try
     End Function
 
@@ -6285,7 +6465,9 @@ Public Class clsUtilities
                 End While
             End If
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             Throw ex
+            'oApplication.Log.oApplication.Log.Trace_DIET_AddOn_Error(ex)
         End Try
     End Function
 
@@ -6325,7 +6507,7 @@ Public Class clsUtilities
                 sw.Close()
             End If
         Catch ex1 As Exception
-            Trace_Error(ex)
+            'Trace_Error(ex)
             'Throw ex
         End Try
     End Sub

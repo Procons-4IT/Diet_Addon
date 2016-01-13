@@ -37,7 +37,9 @@ Public Class clsDislikeItem
             EnableControls(oForm, True)
             oForm.Freeze(False)
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             Throw ex
+            'oApplication.Log.oApplication.Log.Trace_DIET_AddOn_Error(ex)
         Finally
             oForm.Freeze(False)
         End Try
@@ -61,7 +63,9 @@ Public Class clsDislikeItem
             oForm.Items.Item("16").Specific.value = strDocEntry
             oForm.Items.Item("1").Click(SAPbouiCOM.BoCellClickType.ct_Regular)
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             Throw ex
+            'oApplication.Log.oApplication.Log.Trace_DIET_AddOn_Error(ex)
         Finally
             oForm.Freeze(False)
         End Try
@@ -118,7 +122,7 @@ Public Class clsDislikeItem
                                                 initialize(oForm)
                                             End If
                                         End If
-                                  
+
                                 End Select
                             Case SAPbouiCOM.BoEventTypes.et_CHOOSE_FROM_LIST
                                 oForm = oApplication.SBO_Application.Forms.Item(FormUID)
@@ -133,7 +137,7 @@ Public Class clsDislikeItem
                                     oDataTable = oCFLEvento.SelectedObjects
 
                                     If Not oForm.Mode = SAPbouiCOM.BoFormMode.fm_FIND_MODE Then
-                                       If (pVal.ItemUID = "3" And (pVal.ColUID = "V_0" Or pVal.ColUID = "V_1")) Then
+                                        If (pVal.ItemUID = "3" And (pVal.ColUID = "V_0" Or pVal.ColUID = "V_1")) Then
                                             oMatrix = oForm.Items.Item("3").Specific
                                             oMatrix.LoadFromDataSource()
                                             If Not IsNothing(oDataTable) Then
@@ -155,6 +159,7 @@ Public Class clsDislikeItem
                                         End If
                                     End If
                                 Catch ex As Exception
+                                    oApplication.Log.Trace_DIET_AddOn_Error(ex)
 
                                 End Try
                             Case SAPbouiCOM.BoEventTypes.et_LOST_FOCUS
@@ -181,6 +186,7 @@ Public Class clsDislikeItem
                                     Try
                                         reDrawForm(oForm)
                                     Catch ex As Exception
+                                        oApplication.Log.Trace_DIET_AddOn_Error(ex)
 
                                     End Try
                                 End If
@@ -188,6 +194,7 @@ Public Class clsDislikeItem
                 End Select
             End If
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             oApplication.Utilities.Message(ex.Message, SAPbouiCOM.BoStatusBarMessageType.smt_Error)
         End Try
     End Sub
@@ -249,6 +256,7 @@ Public Class clsDislikeItem
                     End If
             End Select
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             oApplication.Utilities.Message(ex.Message, SAPbouiCOM.BoStatusBarMessageType.smt_Error)
             oForm.Freeze(False)
         End Try
@@ -268,6 +276,7 @@ Public Class clsDislikeItem
                         oMenuItem.SubMenus.Item(mnu_Remove).String = "Delete Document"
                     End If
                 Catch ex As Exception
+                    oApplication.Log.Trace_DIET_AddOn_Error(ex)
                     oApplication.Utilities.Message(ex.Message, SAPbouiCOM.BoStatusBarMessageType.smt_Error)
                 End Try
             End If
@@ -295,6 +304,7 @@ Public Class clsDislikeItem
                 End Select
             End If
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             oApplication.Utilities.Message(ex.Message, SAPbouiCOM.BoStatusBarMessageType.smt_Error)
         End Try
     End Sub
@@ -327,7 +337,9 @@ Public Class clsDislikeItem
             'oForm.ActiveItem = "6"
             oMatrix.ClearRowData(oMatrix.RowCount)
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             Throw ex
+            'oApplication.Log.oApplication.Log.Trace_DIET_AddOn_Error(ex)
         End Try
     End Sub
 
@@ -344,8 +356,10 @@ Public Class clsDislikeItem
             oMatrix.LoadFromDataSource()
             aForm.Freeze(False)
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             aForm.Freeze(False)
             Throw ex
+            'oApplication.Log.oApplication.Log.Trace_DIET_AddOn_Error(ex)
         End Try
     End Sub
 #End Region
@@ -380,8 +394,10 @@ Public Class clsDislikeItem
             End Select
             aForm.Freeze(False)
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             aForm.Freeze(False)
             Throw ex
+            'oApplication.Log.oApplication.Log.Trace_DIET_AddOn_Error(ex)
         End Try
     End Sub
 
@@ -415,8 +431,10 @@ Public Class clsDislikeItem
                 End If
             Next
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             aForm.Freeze(False)
             Throw ex
+            'oApplication.Log.oApplication.Log.Trace_DIET_AddOn_Error(ex)
         End Try
     End Sub
 
@@ -440,8 +458,10 @@ Public Class clsDislikeItem
             Next
             oMatrix.LoadFromDataSource()
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             aForm.Freeze(False)
             Throw ex
+            'oApplication.Log.oApplication.Log.Trace_DIET_AddOn_Error(ex)
         End Try
     End Sub
 #End Region
@@ -505,6 +525,7 @@ Public Class clsDislikeItem
 
             Return True
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             aForm.Freeze(False)
             Return False
         End Try
@@ -519,7 +540,9 @@ Public Class clsDislikeItem
             oForm.Items.Item("6").Enabled = blnEnable
             oForm.Items.Item("7").Enabled = True
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             Throw ex
+            'oApplication.Log.oApplication.Log.Trace_DIET_AddOn_Error(ex)
         End Try
     End Sub
 
@@ -551,7 +574,9 @@ Public Class clsDislikeItem
             oCFL.SetConditions(oCons)
 
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             Throw ex
+            'oApplication.Log.oApplication.Log.Trace_DIET_AddOn_Error(ex)
         End Try
     End Sub
 
@@ -564,6 +589,7 @@ Public Class clsDislikeItem
 
             oForm.Freeze(False)
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             'oApplication.Utilities.Message(ex.Message, SAPbouiCOM.BoStatusBarMessageType.smt_Error)
             oForm.Freeze(False)
         End Try

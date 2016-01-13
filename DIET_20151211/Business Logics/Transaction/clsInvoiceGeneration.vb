@@ -28,6 +28,7 @@ Public Class clsInvoiceGeneration
             addChooseFromListConditions(oForm)
             oForm.Freeze(False)
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             oApplication.Utilities.Message(ex.Message, SAPbouiCOM.BoStatusBarMessageType.smt_Error)
         End Try
     End Sub
@@ -47,6 +48,7 @@ Public Class clsInvoiceGeneration
             oForm.DataSources.DataTables.Add("dtFailure")
 
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             oApplication.Utilities.Message(ex.Message, SAPbouiCOM.BoStatusBarMessageType.smt_Error)
         End Try
     End Sub
@@ -60,6 +62,7 @@ Public Class clsInvoiceGeneration
                 Case mnu_FIRST, mnu_LAST, mnu_NEXT, mnu_PREVIOUS
             End Select
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             oApplication.Utilities.Message(ex.Message, SAPbouiCOM.BoStatusBarMessageType.smt_Error)
             oForm.Freeze(False)
         End Try
@@ -113,6 +116,7 @@ Public Class clsInvoiceGeneration
                                                 End If
                                                 oLoadForm.Close()
                                             Catch ex As Exception
+                                                oApplication.Log.Trace_DIET_AddOn_Error(ex)
                                                 oLoadForm.Close()
                                                 oSuccessGrid = oForm.Items.Item("19").Specific
                                                 oSuccessGrid.DataTable = oForm.DataSources.DataTables.Item("dtSuccess")
@@ -191,6 +195,7 @@ Public Class clsInvoiceGeneration
                                     Try
                                         reDrawForm(oForm)
                                     Catch ex As Exception
+                                        oApplication.Log.Trace_DIET_AddOn_Error(ex)
 
                                     End Try
                                 End If
@@ -198,6 +203,7 @@ Public Class clsInvoiceGeneration
                 End Select
             End If
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             oForm.Freeze(False)
             oApplication.Utilities.Message(ex.Message, SAPbouiCOM.BoStatusBarMessageType.smt_Error)
             oForm = oApplication.SBO_Application.Forms.Item(FormUID)
@@ -317,7 +323,8 @@ Public Class clsInvoiceGeneration
     '        gridFormat(oForm)
     '        fillHeader(oForm, "16")
     '        oForm.Freeze(False)
-    '    Catch ex As Exception
+    '    Catch ex As Exception 
+    '.Log.Trace_DIET_AddOn_Error(ex)
     '        oForm.Freeze(False)
     '    End Try
 
@@ -436,6 +443,7 @@ Public Class clsInvoiceGeneration
             fillHeader(oForm, "16")
             oForm.Freeze(False)
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             oForm.Freeze(False)
         End Try
 
@@ -510,7 +518,9 @@ Public Class clsInvoiceGeneration
             oOrderGrid.CollapseLevel = 1
 
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             Throw ex
+            'oApplication.Log.oApplication.Log.Trace_DIET_AddOn_Error(ex)
         End Try
     End Sub
 
@@ -529,8 +539,10 @@ Public Class clsInvoiceGeneration
             Next
             aForm.Freeze(False)
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             aForm.Freeze(False)
             Throw ex
+            'oApplication.Log.oApplication.Log.Trace_DIET_AddOn_Error(ex)
         End Try
     End Sub
 
@@ -550,6 +562,7 @@ Public Class clsInvoiceGeneration
 
             oForm.Freeze(False)
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             oForm.Freeze(False)
         End Try
     End Sub
@@ -588,7 +601,9 @@ Public Class clsInvoiceGeneration
 
 
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             Throw ex
+            'oApplication.Log.oApplication.Log.Trace_DIET_AddOn_Error(ex)
         End Try
     End Sub
 
@@ -601,7 +616,9 @@ Public Class clsInvoiceGeneration
             Next
             oForm.Freeze(False)
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             Throw ex
+            'oApplication.Log.oApplication.Log.Trace_DIET_AddOn_Error(ex)
         End Try
     End Sub
 
@@ -614,7 +631,9 @@ Public Class clsInvoiceGeneration
             Next
             oForm.Freeze(False)
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             Throw ex
+            'oApplication.Log.oApplication.Log.Trace_DIET_AddOn_Error(ex)
         End Try
     End Sub
 
@@ -772,6 +791,7 @@ Public Class clsInvoiceGeneration
             oCFL.SetConditions(oCons)
 
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
 
         End Try
     End Sub
@@ -806,6 +826,7 @@ Public Class clsInvoiceGeneration
 
             Return True
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             oApplication.Utilities.Message(ex.Message, SAPbouiCOM.BoStatusBarMessageType.smt_Error)
             Return False
         End Try
@@ -1006,6 +1027,7 @@ Public Class clsInvoiceGeneration
 
                         End If
                     Catch ex As Exception
+                        oApplication.Log.Trace_DIET_AddOn_Error(ex)
                         oDTFailure.Rows.Add(1)
                         oDTFailure.SetValue("Customer Code", intID_F, strCustomerCode)
                         oDTFailure.SetValue("Customer Name", intID_F, strCustomer)
@@ -1017,6 +1039,7 @@ Public Class clsInvoiceGeneration
             _retVal = True
             Return _retVal
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
 
             ''Newly Added for Scope On 31102015
             'If oApplication.Company.InTransaction Then
@@ -1025,6 +1048,7 @@ Public Class clsInvoiceGeneration
             ''Newly Added for Scope On 31102015
 
             Throw ex
+            'oApplication.Log.oApplication.Log.Trace_DIET_AddOn_Error(ex)
         End Try
     End Function
 
@@ -1242,6 +1266,7 @@ Public Class clsInvoiceGeneration
                         End If
 
                     Catch ex As Exception
+                        oApplication.Log.Trace_DIET_AddOn_Error(ex)
 
                         oDTFailure.Rows.Add(1)
                         oDTFailure.SetValue("Customer Code", intID_F, strCustomerCode)
@@ -1258,6 +1283,7 @@ Public Class clsInvoiceGeneration
             _retVal = True
             Return _retVal
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
 
             ''Newly Added for Scope On 31102015
             'If oApplication.Company.InTransaction Then
@@ -1266,6 +1292,7 @@ Public Class clsInvoiceGeneration
             ''Newly Added for Scope On 31102015
 
             Throw ex
+            'oApplication.Log.oApplication.Log.Trace_DIET_AddOn_Error(ex)
         End Try
     End Function
 
@@ -1394,7 +1421,9 @@ End Class
 '        End If
 
 '        Return _retVal
-'    Catch ex As Exception
-'        Throw ex
+'    Catch ex As Exception 
+'oApplication.Log.Trace_DIET_AddOn_Error(ex)
+'        Throw ex 
+''oApplication.Log.oApplication.Log.Trace_DIET_AddOn_Error(ex)
 '    End Try
 'End Function

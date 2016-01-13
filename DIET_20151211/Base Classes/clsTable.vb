@@ -29,7 +29,9 @@ Public NotInheritable Class clsTable
             End If
             System.Runtime.InteropServices.Marshal.ReleaseComObject(oUserTablesMD)
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             Throw ex
+            'oApplication.Log.oApplication.Log.Trace_DIET_AddOn_Error(ex)
         Finally
             oUserTablesMD = Nothing
             GC.WaitForPendingFinalizers()
@@ -84,7 +86,9 @@ Public NotInheritable Class clsTable
             End If
 
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             Throw ex
+            'oApplication.Log.oApplication.Log.Trace_DIET_AddOn_Error(ex)
         Finally
             oUserFieldMD = Nothing
             GC.WaitForPendingFinalizers()
@@ -146,6 +150,7 @@ Public NotInheritable Class clsTable
             Else
             End If
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             MsgBox(ex.Message)
 
         Finally
@@ -185,7 +190,9 @@ Public NotInheritable Class clsTable
 
             ' System.Runtime.InteropServices.Marshal.ReleaseComObject(oRecordSet)
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             Throw ex
+            'oApplication.Log.oApplication.Log.Trace_DIET_AddOn_Error(ex)
         Finally
             System.Runtime.InteropServices.Marshal.ReleaseComObject(oRecordSet)
             oRecordSet = Nothing
@@ -223,7 +230,9 @@ Public NotInheritable Class clsTable
             End If
 
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             Throw ex
+            'oApplication.Log.oApplication.Log.Trace_DIET_AddOn_Error(ex)
 
         Finally
             System.Runtime.InteropServices.Marshal.ReleaseComObject(oUserKeysMD)
@@ -372,7 +381,9 @@ Public NotInheritable Class clsTable
             End If
 
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             Throw ex
+            'oApplication.Log.oApplication.Log.Trace_DIET_AddOn_Error(ex)
 
         Finally
             System.Runtime.InteropServices.Marshal.ReleaseComObject(oUserObjectMD)
@@ -434,7 +445,9 @@ Public NotInheritable Class clsTable
             End If
 
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             Throw ex
+            'oApplication.Log.oApplication.Log.Trace_DIET_AddOn_Error(ex)
 
         Finally
             System.Runtime.InteropServices.Marshal.ReleaseComObject(oUserObjectMD)
@@ -1130,10 +1143,12 @@ Public NotInheritable Class clsTable
 
             oApplication.SBO_Application.StatusBar.SetText("Database creation completed...", SAPbouiCOM.BoMessageTime.bmt_Short, SAPbouiCOM.BoStatusBarMessageType.smt_Warning)
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             'If oApplication.Company.InTransaction() Then
             '    oApplication.Company.EndTransaction(SAPbobsCOM.BoWfTransOpt.wf_RollBack)
             'End If
             Throw ex
+            'oApplication.Log.oApplication.Log.Trace_DIET_AddOn_Error(ex)
         Finally
             GC.Collect()
             GC.WaitForPendingFinalizers()
@@ -1169,7 +1184,9 @@ Public NotInheritable Class clsTable
             UpdateUDO_1("Z_OCPM", "Customer_Program", "Z_OCPM", "", "", True, "Z_CPM7", SAPbobsCOM.BoUDOObjType.boud_Document)
 
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             Throw ex
+            'oApplication.Log.oApplication.Log.Trace_DIET_AddOn_Error(ex)
         End Try
     End Sub
 #End Region

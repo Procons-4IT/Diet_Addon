@@ -1,14 +1,18 @@
+Imports System.IO
+
 Public Class clsLog_Error
     Inherits Object
 
     Private Const log_PROCESS_ORDERS As String = "Log_ProcessOrders.txt"
     Private Const log_INVOICING As String = "Log_Invoicing.txt"
+    Private Const log_DIET As String = "Log_DIET.txt"
 
     Private oFSO As Scripting.FileSystemObject
 
     Public Enum Log As Integer
         lg_PROCESS_ORDER = 1
         lg_INVOICING
+        lg_DIET = 3
     End Enum
 
     Public Sub New()
@@ -18,10 +22,13 @@ Public Class clsLog_Error
 
     Public Sub WriteToLog(ByVal sText As String, ByVal Type As Log)
         Dim sLogPath As String
-        Dim sLogFilePath As String
+        Dim sLogPath_T As String
+        Dim sLogFilePath As String = String.Empty
         Dim oStream As Scripting.TextStream
         Try
             sLogPath = oApplication.Utilities.getApplicationPath() & "\Log"
+
+            sLogPath_T = oApplication.Utilities.getUserTempPath() & "\Log"
 
             If Not oFSO.FolderExists(sLogPath) Then
                 oFSO.CreateFolder(sLogPath)
@@ -30,10 +37,10 @@ Public Class clsLog_Error
             Select Case Type
                 Case Log.lg_PROCESS_ORDER
                     sLogFilePath = sLogPath & "\" & log_PROCESS_ORDERS
-
                 Case Log.lg_INVOICING
                     sLogFilePath = sLogPath & "\" & log_INVOICING
-
+                Case Log.lg_DIET
+                    sLogFilePath = sLogPath_T & "\" & log_DIET
             End Select
 
             If Not oFSO.FileExists(sLogFilePath) Then
@@ -46,10 +53,50 @@ Public Class clsLog_Error
             oStream.Write(sText)
 
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             Throw (ex)
         Finally
             oStream.Close()
             oStream = Nothing
+        End Try
+    End Sub
+
+    Public Sub Trace_DIET_AddOn_Error(ByVal ex As Exception)
+        Try
+            Dim strFile As String = "\DIET_" + System.DateTime.Now.ToString("yyyyMMdd") + ".txt"
+            Dim strPath As String = oApplication.Utilities.getUserTempPath() + strFile
+            If Not File.Exists(strPath) Then
+                Dim fileStream As FileStream
+                fileStream = New FileStream(strPath, FileMode.Create, FileAccess.Write)
+                Dim sw As New StreamWriter(fileStream)
+                sw.BaseStream.Seek(0, SeekOrigin.End)
+                'sw.WriteLine(strContent)
+                Dim strMessage As String = vbCrLf & "Message ---> " & ex.Message & _
+                vbCrLf & "HelpLink ---> " & ex.HelpLink & _
+                vbCrLf & "Source ---> " & ex.Source & _
+                vbCrLf & "StackTrace ---> " & ex.StackTrace & _
+                vbCrLf & "TargetSite ---> " & ex.TargetSite.ToString()
+                sw.WriteLine("======")
+                sw.WriteLine("Log Time : " & System.DateTime.Now.ToLongTimeString() & " Message Stack : " & strMessage)
+                sw.Flush()
+                sw.Close()
+            Else
+                Dim fileStream As FileStream
+                fileStream = New FileStream(strPath, FileMode.Append, FileAccess.Write)
+                Dim sw As New StreamWriter(fileStream)
+                sw.BaseStream.Seek(0, SeekOrigin.End)
+                'sw.WriteLine(strContent)
+                Dim strMessage As String = vbCrLf & "Message ---> " & ex.Message & _
+                vbCrLf & "HelpLink ---> " & ex.HelpLink & _
+                vbCrLf & "Source ---> " & ex.Source & _
+                vbCrLf & "StackTrace ---> " & ex.StackTrace & _
+                vbCrLf & "TargetSite ---> " & ex.TargetSite.ToString()
+                sw.WriteLine("======")
+                sw.WriteLine("Log Time : " & System.DateTime.Now.ToLongTimeString() & " Message Stack : " & strMessage)
+                sw.Flush()
+                sw.Close()
+            End If
+        Catch ex1 As Exception
         End Try
     End Sub
 

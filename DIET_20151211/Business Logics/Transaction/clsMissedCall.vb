@@ -34,6 +34,7 @@ Public Class clsMissedCall
             FillCombo(oForm)
             oForm.Freeze(False)
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             oApplication.Utilities.Message(ex.Message, SAPbouiCOM.BoStatusBarMessageType.smt_Error)
         End Try
     End Sub
@@ -112,6 +113,7 @@ Public Class clsMissedCall
                                     Try
                                         reDrawForm(oForm)
                                     Catch ex As Exception
+                                        oApplication.Log.Trace_DIET_AddOn_Error(ex)
 
                                     End Try
                                 End If
@@ -128,6 +130,7 @@ Public Class clsMissedCall
                                         Try
                                             oForm.Items.Item(pVal.ItemUID).Specific.value = strValue
                                         Catch ex As Exception
+                                            oApplication.Log.Trace_DIET_AddOn_Error(ex)
                                             oForm.Items.Item(pVal.ItemUID).Specific.value = strValue
                                         End Try
                                     ElseIf pVal.ItemUID = "35" Or pVal.ItemUID = "36" Then
@@ -136,6 +139,7 @@ Public Class clsMissedCall
                                         Try
                                             oForm.Items.Item(pVal.ItemUID).Specific.value = strName
                                         Catch ex As Exception
+                                            oApplication.Log.Trace_DIET_AddOn_Error(ex)
                                             oForm.Items.Item(pVal.ItemUID).Specific.value = strName
                                         End Try
                                         If pVal.ItemUID = "35" Then
@@ -150,6 +154,7 @@ Public Class clsMissedCall
                                         Try
                                             oForm.Items.Item(pVal.ItemUID).Specific.value = strValue
                                         Catch ex As Exception
+                                            oApplication.Log.Trace_DIET_AddOn_Error(ex)
                                             oForm.Items.Item(pVal.ItemUID).Specific.value = strValue
                                         End Try
                                     ElseIf pVal.ItemUID = "32" Then
@@ -158,10 +163,12 @@ Public Class clsMissedCall
                                         Try
                                             oForm.Items.Item(pVal.ItemUID).Specific.value = strValue
                                         Catch ex As Exception
+                                            oApplication.Log.Trace_DIET_AddOn_Error(ex)
                                             oForm.Items.Item(pVal.ItemUID).Specific.value = strValue
                                         End Try
                                     End If
                                 Catch ex As Exception
+                                    oApplication.Log.Trace_DIET_AddOn_Error(ex)
 
                                 End Try
                             Case SAPbouiCOM.BoEventTypes.et_LOST_FOCUS
@@ -179,6 +186,7 @@ Public Class clsMissedCall
                 End Select
             End If
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             oApplication.Utilities.Message(ex.Message, SAPbouiCOM.BoStatusBarMessageType.smt_Error)
         End Try
     End Sub
@@ -193,6 +201,7 @@ Public Class clsMissedCall
                 Case mnu_FIRST, mnu_LAST, mnu_NEXT, mnu_PREVIOUS
             End Select
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             oApplication.Utilities.Message(ex.Message, SAPbouiCOM.BoStatusBarMessageType.smt_Error)
             oForm.Freeze(False)
         End Try
@@ -204,6 +213,7 @@ Public Class clsMissedCall
         Try
 
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             oApplication.Utilities.Message(ex.Message, SAPbouiCOM.BoStatusBarMessageType.smt_Error)
         End Try
     End Sub
@@ -235,6 +245,7 @@ Public Class clsMissedCall
 
             Return True
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             oApplication.Utilities.Message(ex.Message, SAPbouiCOM.BoStatusBarMessageType.smt_Error)
             Return False
         End Try
@@ -254,6 +265,7 @@ Public Class clsMissedCall
             End If
             Return True
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             oApplication.Utilities.Message(ex.Message, SAPbouiCOM.BoStatusBarMessageType.smt_Error)
             Return False
         End Try
@@ -271,6 +283,7 @@ Public Class clsMissedCall
             'oForm.Items.Item("24").TextStyle = 5
             changeLabel(oForm)
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             oApplication.Utilities.Message(ex.Message, SAPbouiCOM.BoStatusBarMessageType.smt_Error)
         End Try
     End Sub
@@ -661,7 +674,9 @@ Public Class clsMissedCall
             oCFL.SetConditions(oCons)
 
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             Throw ex
+            'oApplication.Log.oApplication.Log.Trace_DIET_AddOn_Error(ex)
         End Try
     End Sub
 
@@ -760,6 +775,7 @@ Public Class clsMissedCall
 
             oForm.Freeze(False)
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             oForm.Freeze(False)
             oApplication.Utilities.Message(ex.Message, SAPbouiCOM.BoStatusBarMessageType.smt_Error)
         End Try
@@ -816,6 +832,7 @@ Public Class clsMissedCall
             Next
 
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             Throw ex
         End Try
     End Sub
@@ -831,6 +848,7 @@ Public Class clsMissedCall
 
             oForm.Freeze(False)
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             'oApplication.Utilities.Message(ex.Message, SAPbouiCOM.BoStatusBarMessageType.smt_Error)
             oForm.Freeze(False)
         End Try
@@ -841,6 +859,7 @@ Public Class clsMissedCall
             oStatic = oForm.Items.Item("17").Specific
             oStatic.Caption = "Step " & oForm.PaneLevel & " of 3"
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             oApplication.Utilities.Message(ex.Message, SAPbouiCOM.BoStatusBarMessageType.smt_Error)
         End Try
     End Sub

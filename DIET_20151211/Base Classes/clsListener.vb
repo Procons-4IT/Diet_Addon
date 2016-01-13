@@ -1,3 +1,5 @@
+Imports SAPbobsCOM
+
 Public Class clsListener
     Inherits Object
 
@@ -30,6 +32,7 @@ Public Class clsListener
             SetApplication()
 
         Catch ex As Exception
+            'oApplication.Log.oApplication.Log.Trace_DIET_AddOn_Error(ex)
             Throw ex
         End Try
     End Sub
@@ -89,7 +92,7 @@ Public Class clsListener
             objFilter.AddEx(frm_INVOICES) 'Invoice
             objFilter.AddEx(frm_Delivery) 'Delivery
             objFilter.AddEx(frm_SalesOpp) 'Sales Opp
-           
+
 
             objFilter.AddEx(frm_Z_ODLK) 'Dislike
             objFilter.AddEx(frm_Z_OMST) 'Medical
@@ -174,6 +177,7 @@ Public Class clsListener
             objFilter.AddEx(frm_PickList) 'Pick List
             objFilter.AddEx(frm_Z_OCPM) 'Customer Program
             objFilter.AddEx(frm_Z_ODWT) 'Delivery Wizard
+            objFilter.AddEx(frm_Customer) 'Customer
 
             objFilter = objFilters.Add(SAPbouiCOM.BoEventTypes.et_FORM_DATA_LOAD)
             objFilter.AddEx(frm_Z_ODLK) 'Dislike
@@ -303,6 +307,7 @@ Public Class clsListener
 
             SetFilter(objFilters)
         Catch ex As Exception
+            'oApplication.Log.oApplication.Log.Trace_DIET_AddOn_Error(ex)
             Throw ex
         End Try
 
@@ -352,6 +357,18 @@ Public Class clsListener
                                     oApplication.Utilities.AddCustomerProfileFromCustomer(oForm, BusinessObjectInfo.ObjectKey.ToString())
                                 End If
                             End If
+                        Case SAPbouiCOM.BoEventTypes.et_FORM_DATA_UPDATE
+                            If Not BusinessObjectInfo.BeforeAction Then
+                                If BusinessObjectInfo.ActionSuccess Then
+                                    Dim oCustomer As SAPbobsCOM.BusinessPartners = Nothing
+                                    oCustomer = oApplication.Company.GetBusinessObject(BoObjectTypes.oBusinessPartners)
+                                    If oCustomer.Browser.GetByKeys(BusinessObjectInfo.ObjectKey) Then
+                                        If oCustomer.CardType = BoCardTypes.cCustomer Then
+                                            oApplication.Utilities.UpdateOpenOrderAddresses(oCustomer.CardCode) 'Update Open Order Based On Addresses if Differ.
+                                        End If
+                                    End If
+                                End If
+                            End If
                     End Select
                 Case frm_PickList
                     Select Case BusinessObjectInfo.EventType
@@ -374,6 +391,7 @@ Public Class clsListener
                 End If
             End If
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             Utilities.Message(ex.Message, SAPbouiCOM.BoStatusBarMessageType.smt_Error)
         End Try
     End Sub
@@ -497,6 +515,7 @@ Public Class clsListener
 
             End If
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             Utilities.Message(ex.Message, SAPbouiCOM.BoStatusBarMessageType.smt_Error)
         Finally
             oMenuObject = Nothing
@@ -723,6 +742,7 @@ Public Class clsListener
                 _Collection.Item(FormUID).ItemEvent(FormUID, pVal, BubbleEvent)
             End If
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             Utilities.Message(ex.Message, SAPbouiCOM.BoStatusBarMessageType.smt_Error)
         Finally
             GC.WaitForPendingFinalizers()
@@ -754,7 +774,7 @@ Public Class clsListener
                 oMenuObject = New clsCaloriesAdjustment
                 oMenuObject.RightClickEvent(eventInfo, BubbleEvent)
             ElseIf oForm.TypeEx = frm_Z_OCLP Then
-                oMenuObject = New clsCaloriesPlan 
+                oMenuObject = New clsCaloriesPlan
                 oMenuObject.RightClickEvent(eventInfo, BubbleEvent)
             ElseIf oForm.TypeEx = frm_Z_OTTI Then
                 oMenuObject = New clsDietTiming
@@ -779,6 +799,7 @@ Public Class clsListener
                 oMenuObject.RightClickEvent(eventInfo, BubbleEvent)
             End If
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             oApplication.Utilities.Message(ex.Message, SAPbouiCOM.BoStatusBarMessageType.smt_Error)
         End Try
     End Sub
@@ -795,6 +816,7 @@ Public Class clsListener
                     CloseApp()
             End Select
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             MessageBox.Show(ex.Message, "Termination Error", MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly)
         End Try
     End Sub
@@ -823,7 +845,9 @@ Public Class clsListener
             ThreadClose.Sleep(10)
             System.Windows.Forms.Application.Exit()
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             Throw ex
+            'oApplication.Log.oApplication.Log.Trace_DIET_AddOn_Error(ex)
         Finally
             oApplication = Nothing
             GC.WaitForPendingFinalizers()
@@ -850,7 +874,9 @@ Public Class clsListener
             End If
 
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             Throw ex
+            'oApplication.Log.oApplication.Log.Trace_DIET_AddOn_Error(ex)
         Finally
             SboGuiApi = Nothing
         End Try
@@ -870,6 +896,7 @@ Public Class clsListener
             oSystemForms = Nothing
 
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             MessageBox.Show(ex.Message, "Addon Termination Error", MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly)
         Finally
             GC.WaitForPendingFinalizers()

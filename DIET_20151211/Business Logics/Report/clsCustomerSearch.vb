@@ -33,6 +33,7 @@ Public Class clsCustomerSearch
             FillCombo(oForm)
             oForm.Freeze(False)
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             oApplication.Utilities.Message(ex.Message, SAPbouiCOM.BoStatusBarMessageType.smt_Error)
         End Try
     End Sub
@@ -90,6 +91,7 @@ Public Class clsCustomerSearch
                                     Try
                                         reDrawForm(oForm)
                                     Catch ex As Exception
+                                        oApplication.Log.Trace_DIET_AddOn_Error(ex)
 
                                     End Try
                                 End If
@@ -106,6 +108,7 @@ Public Class clsCustomerSearch
                                         Try
                                             oForm.Items.Item(pVal.ItemUID).Specific.value = strValue
                                         Catch ex As Exception
+                                            oApplication.Log.Trace_DIET_AddOn_Error(ex)
                                             oForm.Items.Item(pVal.ItemUID).Specific.value = strValue
                                         End Try
                                     ElseIf pVal.ItemUID = "12" Then
@@ -114,6 +117,7 @@ Public Class clsCustomerSearch
                                         Try
                                             oForm.Items.Item(pVal.ItemUID).Specific.value = strValue
                                         Catch ex As Exception
+                                            oApplication.Log.Trace_DIET_AddOn_Error(ex)
                                             oForm.Items.Item(pVal.ItemUID).Specific.value = strValue
                                         End Try
                                     ElseIf pVal.ItemUID = "32" Then
@@ -122,16 +126,19 @@ Public Class clsCustomerSearch
                                         Try
                                             oForm.Items.Item(pVal.ItemUID).Specific.value = strValue
                                         Catch ex As Exception
+                                            oApplication.Log.Trace_DIET_AddOn_Error(ex)
                                             oForm.Items.Item(pVal.ItemUID).Specific.value = strValue
                                         End Try
                                     End If
                                 Catch ex As Exception
+                                    oApplication.Log.Trace_DIET_AddOn_Error(ex)
 
                                 End Try
                         End Select
                 End Select
             End If
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             oApplication.Utilities.Message(ex.Message, SAPbouiCOM.BoStatusBarMessageType.smt_Error)
         End Try
     End Sub
@@ -146,6 +153,7 @@ Public Class clsCustomerSearch
                 Case mnu_FIRST, mnu_LAST, mnu_NEXT, mnu_PREVIOUS
             End Select
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             oApplication.Utilities.Message(ex.Message, SAPbouiCOM.BoStatusBarMessageType.smt_Error)
             oForm.Freeze(False)
         End Try
@@ -157,6 +165,7 @@ Public Class clsCustomerSearch
         Try
 
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             oApplication.Utilities.Message(ex.Message, SAPbouiCOM.BoStatusBarMessageType.smt_Error)
         End Try
     End Sub
@@ -179,6 +188,7 @@ Public Class clsCustomerSearch
 
             Return True
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             oApplication.Utilities.Message(ex.Message, SAPbouiCOM.BoStatusBarMessageType.smt_Error)
             Return False
         End Try
@@ -198,6 +208,7 @@ Public Class clsCustomerSearch
             CType(oForm.Items.Item("15").Specific, SAPbouiCOM.ComboBox).ExpandType = SAPbouiCOM.BoExpandType.et_DescriptionOnly
             changeLabel(oForm)
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             oApplication.Utilities.Message(ex.Message, SAPbouiCOM.BoStatusBarMessageType.smt_Error)
         End Try
     End Sub
@@ -432,7 +443,9 @@ Public Class clsCustomerSearch
             End If
 
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             Throw ex
+            'oApplication.Log.oApplication.Log.Trace_DIET_AddOn_Error(ex)
         End Try
     End Sub
 
@@ -513,6 +526,7 @@ Public Class clsCustomerSearch
 
             oForm.Freeze(False)
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             oForm.Freeze(False)
             oApplication.Utilities.Message(ex.Message, SAPbouiCOM.BoStatusBarMessageType.smt_Error)
         End Try
@@ -558,7 +572,9 @@ Public Class clsCustomerSearch
             'Next
 
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             Throw ex
+            'oApplication.Log.oApplication.Log.Trace_DIET_AddOn_Error(ex)
         End Try
     End Sub
 
@@ -573,6 +589,7 @@ Public Class clsCustomerSearch
 
             oForm.Freeze(False)
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             'oApplication.Utilities.Message(ex.Message, SAPbouiCOM.BoStatusBarMessageType.smt_Error)
             oForm.Freeze(False)
         End Try
@@ -583,6 +600,7 @@ Public Class clsCustomerSearch
             oStatic = oForm.Items.Item("17").Specific
             oStatic.Caption = "Step " & oForm.PaneLevel & " of 3"
         Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
             oApplication.Utilities.Message(ex.Message, SAPbouiCOM.BoStatusBarMessageType.smt_Error)
         End Try
     End Sub
