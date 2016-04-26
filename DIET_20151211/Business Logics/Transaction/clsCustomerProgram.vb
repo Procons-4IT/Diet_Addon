@@ -527,16 +527,16 @@ Public Class clsCustomerProgram
                                                 If strICurrency = strLCurrency Then
                                                     If strICurrency = oDBDataSource.GetValue("U_DocCur", 0).Trim Then
                                                         oDBDataSourceLines_1.SetValue("U_Price", pVal.Row + index - 1, dblBasePrice)
-                                                        oDBDataSourceLines_1.SetValue("U_LineTotal", pVal.Row + index - 1, dblBasePrice)
+                                                        oDBDataSourceLines_1.SetValue("U_LineTotal", pVal.Row + index - 1, dblBasePrice * CInt(strNoofDays))
                                                     Else
                                                         getPrice(oDBDataSource.GetValue("U_DocCur", 0).Trim, strICurrency, dblBasePrice, dblItemPrice)
                                                         oDBDataSourceLines_1.SetValue("U_Price", pVal.Row + index - 1, dblItemPrice)
-                                                        oDBDataSourceLines_1.SetValue("U_LineTotal", pVal.Row + index - 1, dblItemPrice)
+                                                        oDBDataSourceLines_1.SetValue("U_LineTotal", pVal.Row + index - 1, dblItemPrice * CInt(strNoofDays))
                                                     End If
                                                 Else
                                                     getPrice(oDBDataSource.GetValue("U_DocCur", 0).Trim, strICurrency, dblBasePrice, dblItemPrice)
                                                     oDBDataSourceLines_1.SetValue("U_Price", pVal.Row + index - 1, dblItemPrice)
-                                                    oDBDataSourceLines_1.SetValue("U_LineTotal", pVal.Row + index - 1, dblItemPrice)
+                                                    oDBDataSourceLines_1.SetValue("U_LineTotal", pVal.Row + index - 1, dblItemPrice * CInt(strNoofDays))
                                                 End If
                                             Next
 
@@ -566,8 +566,7 @@ Public Class clsCustomerProgram
                                     Try
                                         reDrawForm(oForm)
                                     Catch ex As Exception
-                                        oApplication.Log.Trace_DIET_AddOn_Error(ex)
-
+                                        'oApplication.Log.Trace_DIET_AddOn_Error(ex)
                                     End Try
                                 End If
                         End Select
@@ -691,6 +690,11 @@ Public Class clsCustomerProgram
                                         oRecordSet.DoQuery(strQuery)
 
                                         strQuery = "PROCON_UPDATEONOFFSTATUS_u"
+                                        oRecordSet.DoQuery(strQuery)
+
+                                        strQuery = " Update RDR1 SET U_CanFrom = 'C' "
+                                        strQuery += ", Freetxt = '" & strCancelRemarks & "'"
+                                        strQuery += " Where U_ProgramID = '" + strDocEntry + "'"
                                         oRecordSet.DoQuery(strQuery)
 
                                         oApplication.SBO_Application.MessageBox("Program Registration Canceled Successfully...")
@@ -854,13 +858,29 @@ Public Class clsCustomerProgram
 
                     Case False
                         Select Case BusinessObjectInfo.EventType
-                            Case SAPbouiCOM.BoEventTypes.et_FORM_DATA_ADD, SAPbouiCOM.BoEventTypes.et_FORM_DATA_UPDATE
+                            Case SAPbouiCOM.BoEventTypes.et_FORM_DATA_ADD
                                 If BusinessObjectInfo.ActionSuccess Then
-                                    oForm = oApplication.SBO_Application.Forms.ActiveForm()
+                                    oForm = oApplication.SBO_Application.Forms.Item(BusinessObjectInfo.FormUID)
+                                    Try
+                                        Dim oXmlDoc As System.Xml.XmlDocument = New Xml.XmlDocument()
+                                        oXmlDoc.LoadXml(BusinessObjectInfo.ObjectKey)
+                                        Dim strDocEntry As String = oXmlDoc.SelectSingleNode("/Customer_ProgramParams/DocEntry").InnerText
+                                        oApplication.Utilities.updateCustomerProgramInProgram(strDocEntry)
+                                    Catch ex As Exception
+                                        oApplication.Log.Trace_DIET_AddOn_Error(ex)
+                                        strSQL = "Select Max(DocEntry) As 'DocEntry' From [@Z_OCPM] Where UserSign = '" & oApplication.Company.UserSignature.ToString & "'"
+                                        Dim strDocEntry As String = oApplication.Utilities.getRecordSetValueString(strSQL, "DocEntry")
+                                        oApplication.Utilities.updateCustomerProgramInProgram(strDocEntry)
+                                    End Try
+                                End If
+                            Case SAPbouiCOM.BoEventTypes.et_FORM_DATA_UPDATE
+                                If BusinessObjectInfo.ActionSuccess Then
+                                    oForm = oApplication.SBO_Application.Forms.Item(BusinessObjectInfo.FormUID)
                                     Dim oXmlDoc As System.Xml.XmlDocument = New Xml.XmlDocument()
                                     oXmlDoc.LoadXml(BusinessObjectInfo.ObjectKey)
                                     Dim strDocEntry As String = oXmlDoc.SelectSingleNode("/Customer_ProgramParams/DocEntry").InnerText
                                     oApplication.Utilities.updateCustomerProgramInProgram(strDocEntry)
+                                    loadDocuments(oForm)
                                 End If
                             Case SAPbouiCOM.BoEventTypes.et_FORM_DATA_LOAD
                                 oForm = oApplication.SBO_Application.Forms.Item(BusinessObjectInfo.FormUID)
@@ -875,7 +895,8 @@ Public Class clsCustomerProgram
                                     End If
 
                                     If (oDBDataSource.GetValue("U_DocStatus", oDBDataSource.Offset) = "L" _
-                                        Or oDBDataSource.GetValue("U_DocStatus", oDBDataSource.Offset) = "C") Then
+                                        Or oDBDataSource.GetValue("U_DocStatus", oDBDataSource.Offset) = "C" _
+                                        Or oDBDataSource.GetValue("U_Cancel", oDBDataSource.Offset) = "Y") Then
 
                                         oForm.Items.Item("12").SetAutoManagedAttribute(SAPbouiCOM.BoAutoManagedAttr.ama_Editable, 1, SAPbouiCOM.BoModeVisualBehavior.mvb_False) 'From Date
                                         oForm.Items.Item("13").SetAutoManagedAttribute(SAPbouiCOM.BoAutoManagedAttr.ama_Editable, 1, SAPbouiCOM.BoModeVisualBehavior.mvb_False) 'To Date
@@ -1905,7 +1926,7 @@ Public Class clsCustomerProgram
 
             oForm.Freeze(False)
         Catch ex As Exception
-            oApplication.Log.Trace_DIET_AddOn_Error(ex)
+            'oApplication.Log.Trace_DIET_AddOn_Error(ex)
             'oApplication.Utilities.Message(ex.Message, SAPbouiCOM.BoStatusBarMessageType.smt_Error)
             oForm.Freeze(False)
         End Try
@@ -2026,7 +2047,8 @@ Public Class clsCustomerProgram
             strQuery = " Select "
             strQuery += " T3.U_PrgDate, "
             strQuery += " (Case WHEN ISNULL(T3.U_AppStatus,'I') = 'I' THEN 'INCLUDE' WHEN ISNULL(T3.U_AppStatus,'I') = 'E' THEN 'EXCLUDE' END) As U_AppStatus  , "
-            strQuery += " (Case WHEN ISNULL(T3.U_ONOFFSTA,'O') = 'O' THEN 'ON' WHEN ISNULL(T3.U_ONOFFSTA,'O') = 'F' THEN 'OFF' END) As U_ONOFFSTA  "
+            strQuery += " (Case WHEN ISNULL(T3.U_ONOFFSTA,'O') = 'O' THEN 'ON' WHEN ISNULL(T3.U_ONOFFSTA,'O') = 'F' THEN 'OFF' END) As U_ONOFFSTA,  "
+            strQuery += " (Case When ISNULL(T3.U_AppStatus,'I') = 'I' And ISNULL(T3.U_ONOFFSTA,'O') = 'O' Then 1 Else 0 END ) As 'No' "
             strQuery += " From [@Z_OCPM] T0  JOIN OITM T1 On T0.U_PrgCode = T1.ItemCode  "
             strQuery += " JOIN [@Z_CPM1] T3 On T3.DocEntry = T0.DocEntry And T3.U_PrgDate Is Not Null  "
             strQuery += " And T3.U_PrgDate Between T0.U_PFromDate And T0.U_PToDate  "
@@ -2040,6 +2062,12 @@ Public Class clsCustomerProgram
             oGrid.Columns.Item("U_PrgDate").TitleObject.Caption = "Program Date"
             oGrid.Columns.Item("U_AppStatus").TitleObject.Caption = "Include/Exclude Status."
             oGrid.Columns.Item("U_ONOFFSTA").TitleObject.Caption = "On/Off Status"
+            oGrid.Columns.Item("No").TitleObject.Caption = "No"
+
+            Dim oEditTextColumn As SAPbouiCOM.EditTextColumn
+            oEditTextColumn = oGrid.Columns.Item("No")
+            oEditTextColumn.ColumnSetting.SumType = SAPbouiCOM.BoColumnSumType.bst_Auto
+
             oApplication.Utilities.assignLineNo(oGrid, oForm)
 
             For index As Integer = 0 To oGrid.DataTable.Rows.Count - 1

@@ -113,8 +113,7 @@ Public Class clsMissedCall
                                     Try
                                         reDrawForm(oForm)
                                     Catch ex As Exception
-                                        oApplication.Log.Trace_DIET_AddOn_Error(ex)
-
+                                        'oApplication.Log.Trace_DIET_AddOn_Error(ex)
                                     End Try
                                 End If
                             Case SAPbouiCOM.BoEventTypes.et_CHOOSE_FROM_LIST
@@ -848,7 +847,7 @@ Public Class clsMissedCall
 
             oForm.Freeze(False)
         Catch ex As Exception
-            oApplication.Log.Trace_DIET_AddOn_Error(ex)
+            'oApplication.Log.Trace_DIET_AddOn_Error(ex)
             'oApplication.Utilities.Message(ex.Message, SAPbouiCOM.BoStatusBarMessageType.smt_Error)
             oForm.Freeze(False)
         End Try

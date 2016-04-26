@@ -669,6 +669,7 @@ Public NotInheritable Class clsTable
             addField("OCRD", "DOB", "Date of Birth", SAPbobsCOM.BoFieldTypes.db_Date, 10, SAPbobsCOM.BoFldSubTypes.st_None, "", "", "")
             AddFields("OCRD", "Occup", "Occupation", SAPbobsCOM.BoFieldTypes.db_Alpha, , 100)
             addField("OCRD", "sequencetype", "Sequence Type", SAPbobsCOM.BoFieldTypes.db_Alpha, 2, SAPbobsCOM.BoFldSubTypes.st_None, "P1,P2", "P1,P2", "P1")
+            addField("OCRD", "ALOD", "All prof Old Dates", SAPbobsCOM.BoFieldTypes.db_Alpha, 1, SAPbobsCOM.BoFldSubTypes.st_None, "N,Y", "No,Yes", "N")
 
             'Oppurtunity
             AddFields("OOPR", "RegNo", "Registration No", SAPbobsCOM.BoFieldTypes.db_Alpha, , 10)
@@ -753,6 +754,7 @@ Public NotInheritable Class clsTable
             addField("Z_CPR4", "ExDate", "Exclude Date", SAPbobsCOM.BoFieldTypes.db_Date, 10, SAPbobsCOM.BoFldSubTypes.st_None, "", "", "")
             AddFields("Z_CPR4", "Remarks", "Remarks", SAPbobsCOM.BoFieldTypes.db_Alpha, , 100)
             addField("Z_CPR4", "Applied", "Is Applied", SAPbobsCOM.BoFieldTypes.db_Alpha, 1, SAPbobsCOM.BoFldSubTypes.st_None, "N,Y", "No,Yes", "N")
+            AddFields("Z_CPR4", "Include", "Include Food", SAPbobsCOM.BoFieldTypes.db_Alpha, , 1)
 
             'Customer Profile - Child5.
             AddTables("Z_CPR5", "Customer Profile - Child5", SAPbobsCOM.BoUTBTableType.bott_DocumentLines)
@@ -846,6 +848,7 @@ Public NotInheritable Class clsTable
             AddFields("Z_OCPM", "CRemarks", "Cancellation Remarks", SAPbobsCOM.BoFieldTypes.db_Alpha, , 254)
             addField("Z_OCPM", "IsSequence", "IsSequence", SAPbobsCOM.BoFieldTypes.db_Alpha, 1, SAPbobsCOM.BoFldSubTypes.st_None, "N,Y", "NO,YES", "N")
             addField("Z_OCPM", "RmvDays", "Remove Days", SAPbobsCOM.BoFieldTypes.db_Numeric, 10, SAPbobsCOM.BoFldSubTypes.st_None, "", "", "")
+            AddFields("Z_OCPM", "ReRun", "ReRun", SAPbobsCOM.BoFieldTypes.db_Alpha, , 1)
 
             'Customer Program - Child1.
             AddTables("Z_CPM1", "Customer Program - Child1", SAPbobsCOM.BoUTBTableType.bott_DocumentLines)
@@ -1130,6 +1133,12 @@ Public NotInheritable Class clsTable
 
             AddFields("ODLN", "InvRef", "Invoice Ref", SAPbobsCOM.BoFieldTypes.db_Alpha, , 30)
             AddFields("ODLN", "InvNo", "Invoice No", SAPbobsCOM.BoFieldTypes.db_Alpha, , 30)
+
+            AddTables("Z_OERR", "ERROR LOG", SAPbobsCOM.BoUTBTableType.bott_NoObject)
+            addField("Z_OERR", "DATE", "ERROR DATE", SAPbobsCOM.BoFieldTypes.db_Date, 10, SAPbobsCOM.BoFldSubTypes.st_None, "", "", "")
+            AddFields("Z_OERR", "ERROR", "ERROR", SAPbobsCOM.BoFieldTypes.db_Memo, , 254)
+            AddFields("Z_OERR", "USER", "SAP USER", SAPbobsCOM.BoFieldTypes.db_Alpha, , 30)
+            addField("Z_OERR", "TYPE", "TYPE", SAPbobsCOM.BoFieldTypes.db_Alpha, 1, SAPbobsCOM.BoFldSubTypes.st_None, "A,E", "Add-On,External", "A")
 
             '---- User Defined Object
             CreateUDO()

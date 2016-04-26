@@ -26,6 +26,7 @@ Public Class clsCustomerProfile
     Dim oGrid As SAPbouiCOM.Grid
     Public intSelectedMatrixrow As Integer = 0
     Private RowtoDelete As Integer
+    Private RowtoDeleteDate As String
     Private oCombo As SAPbouiCOM.ComboBox
     Private strQuery As String = String.Empty
     Private oLoadForm As SAPbouiCOM.Form
@@ -46,6 +47,7 @@ Public Class clsCustomerProfile
             oForm.Freeze(True)
             initialize(oForm)
 
+            oForm.Settings.EnableRowFormat = False
             oForm.EnableMenu(mnu_ADD_ROW, True)
             oForm.EnableMenu(mnu_DELETE_ROW, True)
             oForm.EnableMenu(mnu_ADD, False)
@@ -78,6 +80,7 @@ Public Class clsCustomerProfile
             oForm = oApplication.SBO_Application.Forms.Item(strUID)
             oForm.Freeze(True)
             initialize(oForm)
+            oForm.Settings.EnableRowFormat = False
             oForm.EnableMenu(mnu_ADD_ROW, True)
             oForm.EnableMenu(mnu_DELETE_ROW, True)
             oForm.EnableMenu(mnu_ADD, False)
@@ -94,12 +97,13 @@ Public Class clsCustomerProfile
             End Try
             loadProgramsAndVisits(oForm)
             oForm.EnableMenu(mnu_FIND, False)
+
             Try
                 loadComboColumn(oForm)
             Catch ex As Exception
                 oApplication.Log.Trace_DIET_AddOn_Error(ex)
-
             End Try
+
             oForm.Items.Item("13").Click(SAPbouiCOM.BoCellClickType.ct_Regular)
             oForm.Items.Item("9").Enabled = False
             oForm.Items.Item("10").Enabled = False
@@ -122,6 +126,7 @@ Public Class clsCustomerProfile
             oForm = oApplication.SBO_Application.Forms.Item(strUID)
             oForm.Freeze(True)
             initialize(oForm)
+            oForm.Settings.EnableRowFormat = False
             oForm.EnableMenu(mnu_ADD_ROW, True)
             oForm.EnableMenu(mnu_DELETE_ROW, True)
             oForm.EnableMenu(mnu_ADD, False)
@@ -160,7 +165,7 @@ Public Class clsCustomerProfile
                             Case SAPbouiCOM.BoEventTypes.et_ITEM_PRESSED
                                 oForm = oApplication.SBO_Application.Forms.Item(FormUID)
                                 If pVal.ItemUID = "1" And (oForm.Mode = SAPbouiCOM.BoFormMode.fm_ADD_MODE Or oForm.Mode = SAPbouiCOM.BoFormMode.fm_UPDATE_MODE) Then
-                                    oForm.Freeze(True)
+                                    'oForm.Freeze(True)
                                     If validation(oForm) = False Then
                                         oForm.Freeze(False)
                                         BubbleEvent = False
@@ -184,7 +189,6 @@ Public Class clsCustomerProfile
                                 End If
                             Case SAPbouiCOM.BoEventTypes.et_CLICK
                                 oForm = oApplication.SBO_Application.Forms.Item(FormUID)
-
                                 If (Not oForm.Mode = SAPbouiCOM.BoFormMode.fm_FIND_MODE) Then
                                     alldataSource(oForm)
                                     If (pVal.ItemUID = "24" Or pVal.ItemUID = "25" Or pVal.ItemUID = "26" _
@@ -194,8 +198,31 @@ Public Class clsCustomerProfile
                                         'changePane(oForm, pVal.ItemUID)
                                         If pVal.ItemUID = "36" Then
                                             oForm.Items.Item("37").Click(SAPbouiCOM.BoCellClickType.ct_Regular)
+                                        ElseIf pVal.ItemUID = "26" Then
+                                            oMatrix = oForm.Items.Item("6").Specific
+                                            oApplication.Utilities.SortColumn(oForm, "6", "V_0")
+                                            If oMatrix.RowCount > 0 Then
+                                                oMatrix.Columns.Item("V_0").Cells.Item(1).Click(SAPbouiCOM.BoCellClickType.ct_Regular)
+                                            End If
                                         End If
                                         oForm.Freeze(False)
+                                    End If
+                                    If pVal.ItemUID = "24" Then
+                                        oForm.Settings.MatrixUID = "3"
+                                    ElseIf pVal.ItemUID = "25" Then
+                                        oForm.Settings.MatrixUID = "4"
+                                    ElseIf pVal.ItemUID = "26" Then
+                                        oForm.Settings.MatrixUID = "6"
+                                    ElseIf pVal.ItemUID = "37" Then
+                                        oForm.Settings.MatrixUID = "39"
+                                    ElseIf pVal.ItemUID = "38" Then
+                                        oForm.Settings.MatrixUID = "40"
+                                    ElseIf pVal.ItemUID = "41" Then
+                                        oForm.Settings.MatrixUID = "44"
+                                    ElseIf pVal.ItemUID = "42" Then
+                                        oForm.Settings.MatrixUID = "45"
+                                    ElseIf pVal.ItemUID = "43" Then
+                                        oForm.Settings.MatrixUID = "46"
                                     End If
                                 End If
 
@@ -204,6 +231,12 @@ Public Class clsCustomerProfile
                                         Or pVal.ItemUID = "45" Or pVal.ItemUID = "46") Then
                                     If (Not oForm.Mode = SAPbouiCOM.BoFormMode.fm_FIND_MODE) Then
                                         intSelectedMatrixrow = pVal.Row
+                                        If pVal.ItemUID = "6" Then
+                                            oMatrix = oForm.Items.Item("6").Specific
+                                            If pVal.Row > 0 Then
+                                                RowtoDeleteDate = oApplication.Utilities.getMatrixValues(oMatrix, "V_0", pVal.Row)
+                                            End If
+                                        End If
                                         If pVal.ItemUID = "44" Then
                                             oMatrix = oForm.Items.Item(pVal.ItemUID).Specific
                                             If pVal.Row < oMatrix.VisualRowCount Then
@@ -215,7 +248,6 @@ Public Class clsCustomerProfile
                                         End If
                                     End If
                                 End If
-
                             Case SAPbouiCOM.BoEventTypes.et_MATRIX_LINK_PRESSED
                                 If pVal.ItemUID = "8" And pVal.ColUID = "DocEntry" And pVal.Row > -1 Then
                                     oGrid = oForm.Items.Item("8").Specific
@@ -261,7 +293,13 @@ Public Class clsCustomerProfile
                                                 oRecordExist.DoQuery(strQuery)
                                                 If oRecordExist.EoF Then
                                                     If Not oApplication.Utilities.validateDate(oForm, strFDate, -1) Then
-                                                        Dim strMessage As String = "Exclude From Date Should be Greater than Or Equal Yesterday Date..."
+                                                        Dim strMessage As String
+                                                        If oApplication.Utilities.GetAllowOlderDates(oForm, oDBDataSource.GetValue("U_CardCode", 0).ToString.Trim()) Then
+                                                            strMessage = "Exclude From Date Should be Greater than Or Equal Yesterday Date..."
+                                                            oApplication.Utilities.Message(strMessage, SAPbouiCOM.BoStatusBarMessageType.smt_Error)
+                                                            BubbleEvent = False
+                                                            Exit Sub
+                                                        End If
                                                         If Not oApplication.Utilities.valCustomerProgramDate(oForm, oDBDataSource.GetValue("U_CardCode", 0).ToString.Trim(), strFDate) Then
                                                             strMessage = " Open Delivery Document Exists & Linked to Invoice "
                                                             oApplication.Utilities.Message(strMessage, SAPbouiCOM.BoStatusBarMessageType.smt_Error)
@@ -328,9 +366,11 @@ Public Class clsCustomerProfile
                                                 oRecordExist.DoQuery(strQuery)
                                                 If oRecordExist.EoF Then
                                                     If Not oApplication.Utilities.validateDate(oForm, strFDate, -1) Then
-                                                        'oApplication.Utilities.Message("Exclude From Date Should be Greater than Or Equal Yesterday Date...", SAPbouiCOM.BoStatusBarMessageType.smt_Error)
-                                                        'BubbleEvent = False
-                                                        'Exit Sub
+                                                        If oApplication.Utilities.GetAllowOlderDates(oForm, oDBDataSource.GetValue("U_CardCode", 0).ToString.Trim()) Then
+                                                            oApplication.Utilities.Message("Remove From/To Date Should be Greater than Or Equal Yesterday Date...", SAPbouiCOM.BoStatusBarMessageType.smt_Error)
+                                                            BubbleEvent = False
+                                                            Exit Sub
+                                                        End If
                                                         Dim strMessage As String = "Remove From Date Should be Greater than Or Equal Yesterday Date..."
                                                         If Not oApplication.Utilities.valCustomerProgramDate(oForm, oDBDataSource.GetValue("U_CardCode", 0).ToString.Trim(), strFDate) Then
                                                             strMessage = " Open Delivery Document Exists & Linked to Invoice  "
@@ -412,7 +452,7 @@ Public Class clsCustomerProfile
                                                 oRecordExist.DoQuery(strQuery)
                                                 If oRecordExist.EoF Then
                                                     If Not oApplication.Utilities.validateDate(oForm, strFDate, -1) Then
-                                                        oApplication.Utilities.Message("Exclude From Date Should be Greater than Or Equal Yesterday Date...", SAPbouiCOM.BoStatusBarMessageType.smt_Error)
+                                                        oApplication.Utilities.Message("Suspend From/To Date Should be Greater than Or Equal Yesterday Date...", SAPbouiCOM.BoStatusBarMessageType.smt_Error)
                                                         BubbleEvent = False
                                                         Exit Sub
                                                     Else
@@ -478,6 +518,118 @@ Public Class clsCustomerProfile
                                             End If
                                         End If
                                 End Select
+
+                                If oForm.Mode = SAPbouiCOM.BoFormMode.fm_UPDATE_MODE Then
+
+                                    If pVal.ItemUID = "14" Or pVal.ItemUID = "15" _
+                                        Or pVal.ItemUID = "16" Or pVal.ItemUID = "17" _
+                                        Or pVal.ItemUID = "18" Or pVal.ItemUID = "19" Or pVal.ItemUID = "20" _
+                                        Then
+
+                                        Dim oOptional As Boolean = CType(oForm.Items.Item(pVal.ItemUID).Specific, SAPbouiCOM.CheckBox).Checked
+                                        Dim strQuery As String = " Select Convert(VarChar(8),Max(U_PToDate),112) As 'Max Date' From [@Z_OCPM]"
+                                        strQuery += " Where U_CardCode = '" & oDBDataSource.GetValue("U_CardCode", 0).ToString().Trim() & "' "
+                                        strQuery += " And ISNULL(U_Cancel,'N') = 'N'  "
+                                        strQuery += " And U_NoOfDays > 0  "
+                                        strQuery += " And U_DocStatus = 'O' "
+                                        strQuery += " Having Max(U_PToDate) Is Not Null "
+                                        Dim oRecordExist As SAPbobsCOM.Recordset
+                                        oRecordExist = oApplication.Company.GetBusinessObject(SAPbobsCOM.BoObjectTypes.BoRecordset)
+                                        oRecordExist.DoQuery(strQuery)
+                                        If oOptional Then
+                                            If Not oRecordExist.EoF Then
+                                                Dim strMaxDate As String = oRecordExist.Fields.Item(0).Value
+                                                Dim dtMaxDate As Date = strMaxDate.Substring(0, 4) + "-" + strMaxDate.Substring(4, 2) + "-" + strMaxDate.Substring(6, 2)
+                                                Dim dtCurrentDate As Date = System.DateTime.Now.Date
+                                                If dtMaxDate >= dtCurrentDate Then
+                                                    Dim intDateDiff As Integer = DateDiff(DateInterval.Day, dtCurrentDate, dtMaxDate) + 1
+                                                    oMatrix = oForm.Items.Item("6").Specific
+                                                    oDBDataSourceLines4 = oForm.DataSources.DBDataSources.Item("@Z_CPR4")
+
+                                                    While intDateDiff - 1 >= 0
+                                                        Dim intDay As Integer = oApplication.Utilities.getDay(pVal.ItemUID)
+                                                        If dtCurrentDate.AddDays(intDateDiff - 1).DayOfWeek = intDay Then
+                                                            Dim intAddRows As Integer = 1
+                                                            If intAddRows >= 1 Then
+                                                                Dim blnExExist As Boolean = False
+                                                                For count = 0 To oDBDataSourceLines4.Size - 1
+                                                                    If oDBDataSourceLines4.GetValue("U_ExDate", count).Trim() = dtCurrentDate.AddDays(intDateDiff - 1).ToString("yyyyMMdd") Then
+                                                                        blnExExist = True
+                                                                    End If
+                                                                Next
+
+                                                                If Not blnExExist Then
+                                                                    oForm.Freeze(True)
+                                                                    If oMatrix.RowCount > 0 Then
+                                                                        If oDBDataSourceLines4.GetValue("U_ExDate", oMatrix.RowCount - 1).Trim().Length <> 0 Then
+                                                                            oMatrix.AddRow(intAddRows, oMatrix.RowCount)
+                                                                            oMatrix.FlushToDataSource()
+                                                                        End If
+                                                                    Else
+                                                                        oMatrix.AddRow(intAddRows, oMatrix.RowCount)
+                                                                        oMatrix.FlushToDataSource()
+                                                                    End If
+                                                                    oDBDataSourceLines4.SetValue("LineId", oMatrix.RowCount - 1, oMatrix.RowCount.ToString())
+                                                                    oDBDataSourceLines4.SetValue("U_ExDate", oMatrix.RowCount - 1, dtCurrentDate.AddDays(intDateDiff - 1).ToString("yyyyMMdd"))
+                                                                    oDBDataSourceLines4.SetValue("U_Applied", oMatrix.RowCount - 1, "N")
+                                                                    oMatrix.LoadFromDataSource()
+                                                                    oMatrix.FlushToDataSource()
+                                                                    oForm.Freeze(False)
+                                                                End If
+
+                                                            End If
+                                                        End If
+                                                        intDateDiff = intDateDiff - 1
+                                                    End While
+
+                                                End If
+                                            End If
+                                        Else
+                                            If Not oRecordExist.EoF Then
+                                                Dim strMaxDate As String = oRecordExist.Fields.Item(0).Value
+                                                Dim dtMaxDate As Date = strMaxDate.Substring(0, 4) + "-" + strMaxDate.Substring(4, 2) + "-" + strMaxDate.Substring(6, 2)
+                                                Dim dtCurrentDate As Date = System.DateTime.Now.Date
+                                                If dtMaxDate >= dtCurrentDate Then
+                                                    Dim intDateDiff As Integer = DateDiff(DateInterval.Day, dtCurrentDate, dtMaxDate) + 1
+                                                    oMatrix = oForm.Items.Item("6").Specific
+                                                    oDBDataSourceLines4 = oForm.DataSources.DBDataSources.Item("@Z_CPR4")
+                                                    While intDateDiff - 1 >= 0
+                                                        Dim intDay As Integer = oApplication.Utilities.getDay(pVal.ItemUID)
+                                                        If dtCurrentDate.AddDays(intDateDiff - 1).DayOfWeek = intDay Then
+                                                            oForm.Freeze(True)
+                                                            oMatrix.LoadFromDataSource()
+                                                            For count = 0 To oDBDataSourceLines4.Size - 1
+                                                                If oDBDataSourceLines4.GetValue("U_ExDate", count).Trim() = dtCurrentDate.AddDays(intDateDiff - 1).ToString("yyyyMMdd") Then
+                                                                    oDBDataSourceLines4.RemoveRecord(count)
+                                                                    oMatrix.LoadFromDataSource()
+                                                                    oMatrix.FlushToDataSource()
+                                                                    Exit For
+                                                                End If
+                                                            Next
+                                                            oForm.Freeze(False)
+                                                        End If
+                                                        intDateDiff = intDateDiff - 1
+                                                    End While
+
+                                                    For count = 0 To oDBDataSourceLines4.Size - 1
+                                                        oDBDataSourceLines4.SetValue("LineId", count, count + 1)
+                                                    Next
+                                                    oMatrix.LoadFromDataSource()
+                                                    oMatrix.FlushToDataSource()
+                                                End If
+                                            End If
+                                        End If
+                                        oApplication.Utilities.SortColumn(oForm, "6", "V_0")
+                                    End If
+                                End If
+                            Case SAPbouiCOM.BoEventTypes.et_CLICK
+                                oForm = oApplication.SBO_Application.Forms.Item(FormUID)
+                                If oForm.Mode = SAPbouiCOM.BoFormMode.fm_UPDATE_MODE Then
+                                    If pVal.ItemUID = "26" Then
+                                        oMatrix = oForm.Items.Item("6").Specific
+                                        oMatrix.Columns.Item("V_0").Cells.Item(1).Click(SAPbouiCOM.BoCellClickType.ct_Regular)
+                                    End If
+                                End If
                             Case SAPbouiCOM.BoEventTypes.et_CHOOSE_FROM_LIST
                                 oForm = oApplication.SBO_Application.Forms.Item(FormUID)
                                 alldataSource(oForm)
@@ -568,7 +720,6 @@ Public Class clsCustomerProfile
                                     End If
                                 Catch ex As Exception
                                     oApplication.Log.Trace_DIET_AddOn_Error(ex)
-
                                 End Try
                             Case SAPbouiCOM.BoEventTypes.et_LOST_FOCUS
                                 oForm = oApplication.SBO_Application.Forms.Item(FormUID)
@@ -639,8 +790,7 @@ Public Class clsCustomerProfile
                                             End If
                                         End If
                                     Catch ex As Exception
-                                        oApplication.Log.Trace_DIET_AddOn_Error(ex)
-
+                                        'oApplication.Log.Trace_DIET_AddOn_Error(ex)
                                     End Try
                                 End If
                             Case SAPbouiCOM.BoEventTypes.et_COMBO_SELECT
@@ -674,9 +824,12 @@ Public Class clsCustomerProfile
                                     If intSelectedMatrixrow > 0 Then
                                         oMatrix = oForm.Items.Item(strItem).Specific
                                         'If CType(oMatrix.Columns.Item("V_2").Cells.Item(intSelectedMatrixrow).Specific, SAPbouiCOM.ComboBox).Value = "Y" Then
-                                        'oApplication.Utilities.Message("Cannot Delete Row As its Already Applied...", SAPbouiCOM.BoStatusBarMessageType.smt_Error)
-                                        'BubbleEvent = False
-                                        'Exit Sub
+                                        Dim strFDate As String = CType(oMatrix.Columns.Item("V_0").Cells.Item(intSelectedMatrixrow).Specific, SAPbouiCOM.EditText).Value
+                                        If strFDate.Length <> 0 Then
+                                            oApplication.Utilities.Message("Cannot Delete Rows in Exclude...", SAPbouiCOM.BoStatusBarMessageType.smt_Error)
+                                            BubbleEvent = False
+                                            Exit Sub
+                                        End If
                                         'End If
                                     End If
                                 ElseIf strItem = "45" Then
@@ -754,6 +907,19 @@ Public Class clsCustomerProfile
                                         End If
                                     Next
 
+                                    'Disable Exclude when Older Dates.
+                                    For index As Integer = 1 To oMatrix.VisualRowCount
+                                        Dim strDate As String = oApplication.Utilities.getMatrixValues(oMatrix, "V_0", index)
+                                        If strDate <= System.DateTime.Now.ToString("yyyyMMdd") And strDate <> "" Then
+                                            oMatrix.CommonSetting.SetCellEditable(index, 1, False)
+                                        Else
+                                            'oMatrix.CommonSetting.SetCellEditable(index, 1, True)
+                                            oMatrix.CommonSetting.SetRowEditable(index, True)
+                                        End If
+                                    Next
+
+                                    oApplication.Utilities.SortColumn(oForm, "6", "V_0")
+
                                     'Disable Remove when Applied
                                     oMatrix = oForm.Items.Item("45").Specific
                                     For index As Integer = 1 To oMatrix.VisualRowCount
@@ -802,56 +968,118 @@ Public Class clsCustomerProfile
 
                                         Dim strCardCode As String = oApplication.Utilities.getRecordSetValueString("Select U_CardCode From [@Z_OCPR] Where DocEntry = '" & strDocEntry & "'", "U_CardCode")
 
-                                        CType(oLoadForm.Items.Item("4").Specific, SAPbouiCOM.StaticText).Caption = "Updating Open Sales Order...based on Customer Profile exclude/remove/Suspend"
-                                        oApplication.Utilities.CloseOrderQuantityRemoveSuspendDates_P(strDocEntry) 'Close Open Order Based On based on Customer Profile exclude/remove/Suspend Dates.
+                                        Try
+                                            CType(oLoadForm.Items.Item("4").Specific, SAPbouiCOM.StaticText).Caption = "Updating Open Sales Order...based on Customer Profile exclude/remove/Suspend"
+                                            oApplication.Utilities.CloseOrderQuantityRemoveSuspendDates_P(strDocEntry, strCardCode) 'Close Open Order Based On based on Customer Profile exclude/remove/Suspend Dates.
+                                        Catch ex As Exception
+                                            oApplication.Log.Trace_DIET_AddOn_Error(ex)
+                                        End Try
+                                        
+                                        Try
+                                            CType(oLoadForm.Items.Item("4").Specific, SAPbouiCOM.StaticText).Caption = "Updating Open Delivery ...based on Customer Profile exclude/remove/Suspend"
+                                            oApplication.Utilities.CancelDeliveryQuantityRemoveSuspendDatesAndExclude(strDocEntry, strCardCode) 'Close Open Delivery Based On Remove/Suspend/Exclude Dates.
+                                        Catch ex As Exception
+                                            oApplication.Log.Trace_DIET_AddOn_Error(ex)
+                                        End Try
 
-                                        CType(oLoadForm.Items.Item("4").Specific, SAPbouiCOM.StaticText).Caption = "Updating Open Delivery ...based on Customer Profile exclude/remove/Suspend"
-                                        oApplication.Utilities.CancelDeliveryQuantityRemoveSuspendDatesAndExclude(strDocEntry) 'Close Open Delivery Based On Remove/Suspend/Exclude Dates.
-
-                                        CType(oLoadForm.Items.Item("4").Specific, SAPbouiCOM.StaticText).Caption = "Updating Open Sales Order...based on Customer Profile exclude/remove/Suspend"
-                                        oApplication.Utilities.CloseOrderQuantityRemoveSuspendDates_P(strDocEntry) 'Close Open Order Based On Remove/Suspend/Exclude Dates.
-
+                                        Try
+                                            CType(oLoadForm.Items.Item("4").Specific, SAPbouiCOM.StaticText).Caption = "Updating Open Sales Order...based on Customer Profile exclude/remove/Suspend"
+                                            oApplication.Utilities.CloseOrderQuantityRemoveSuspendDates_P(strDocEntry, strCardCode) 'Close Open Order Based On Remove/Suspend/Exclude Dates.
+                                        Catch ex As Exception
+                                            oApplication.Log.Trace_DIET_AddOn_Error(ex)
+                                        End Try
 
                                         'tricky bit contradictory....20151211
                                         '====================
 
                                         'Newly Added for Overlapping...20151209
-                                        CType(oLoadForm.Items.Item("4").Specific, SAPbouiCOM.StaticText).Caption = "Updating Overlapping Program..."
-                                        oApplication.Utilities.updateProgramDates_IfOverLapping(oForm, strDocEntry, strCardCode)
+                                        Try
+                                            CType(oLoadForm.Items.Item("4").Specific, SAPbouiCOM.StaticText).Caption = "Updating Overlapping Program..."
+                                            oApplication.Utilities.updateProgramDates_IfOverLapping(oForm, strDocEntry, strCardCode)
+                                        Catch ex As Exception
+                                            oApplication.Log.Trace_DIET_AddOn_Error(ex)
+                                        End Try
 
-                                        CType(oLoadForm.Items.Item("4").Specific, SAPbouiCOM.StaticText).Caption = "Updating Remove Date For No of Days..."
-                                        oApplication.Utilities.UpdateProgramNoofDaysBasedOnRemoveDate(oForm, strDocEntry)
+                                        Try
+                                            CType(oLoadForm.Items.Item("4").Specific, SAPbouiCOM.StaticText).Caption = "Updating Remove Date For No of Days..."
+                                            oApplication.Utilities.UpdateProgramNoofDaysBasedOnRemoveDate(oForm, strDocEntry)
+                                        Catch ex As Exception
+                                            oApplication.Log.Trace_DIET_AddOn_Error(ex)
+                                        End Try
 
-                                        CType(oLoadForm.Items.Item("4").Specific, SAPbouiCOM.StaticText).Caption = "Updating Program To Date..."
-                                        oApplication.Utilities.UpdateProgramToDate(oForm, strDocEntry)
+                                        Try
+                                            CType(oLoadForm.Items.Item("4").Specific, SAPbouiCOM.StaticText).Caption = "Updating Program To Date..."
+                                            oApplication.Utilities.UpdateProgramToDate(oForm, strDocEntry)
+                                        Catch ex As Exception
+                                            oApplication.Log.Trace_DIET_AddOn_Error(ex)
+                                        End Try
 
                                         '====================
 
-                                        'this should be executed after Overlapping process get executed.
-                                        CType(oLoadForm.Items.Item("4").Specific, SAPbouiCOM.StaticText).Caption = "Updating Open Delivery ...based on Customer Profile Overlapping/Exclude"
-                                        oApplication.Utilities.CancelDeliveryQuantityExcludeOnOverlapping(strDocEntry) 'Close Open Delivery Based On Overlapping/Exclude Dates.
+                                        Try
+                                            CType(oLoadForm.Items.Item("4").Specific, SAPbouiCOM.StaticText).Caption = "Updating Open Delivery ...based on Customer Profile Overlapping/Exclude"
+                                            oApplication.Utilities.CancelDeliveryQuantityExcludeOnOverlapping(strDocEntry) 'Close Open Delivery Based On Overlapping/Exclude Dates.
+                                        Catch ex As Exception
+                                            oApplication.Log.Trace_DIET_AddOn_Error(ex)
+                                        End Try
+                                        'this should be executed after Overlapping process get executed.                                        
 
-                                        CType(oLoadForm.Items.Item("4").Specific, SAPbouiCOM.StaticText).Caption = "Updating Open Sales Order...based on Customer Profile Overlapping/Exclude "
-                                        oApplication.Utilities.CloseOrderQuantityExcludeOnOverlapping(strDocEntry) 'Close Open Order Based On Overlapping/Exclude Dates.
+                                        Try
+                                            CType(oLoadForm.Items.Item("4").Specific, SAPbouiCOM.StaticText).Caption = "Updating Open Sales Order...based on Customer Profile Overlapping/Exclude "
+                                            oApplication.Utilities.CloseOrderQuantityExcludeOnOverlapping(strDocEntry) 'Close Open Order Based On Overlapping/Exclude Dates.
+                                        Catch ex As Exception
+                                            oApplication.Log.Trace_DIET_AddOn_Error(ex)
+                                        End Try
 
+                                        Try
+                                            CType(oLoadForm.Items.Item("4").Specific, SAPbouiCOM.StaticText).Caption = "Updating Program On/Off..."
+                                            oApplication.Utilities.UpdateProgramDateOnOffStatus(oForm, strDocEntry) 'Update Customer On/Off In Program
+                                        Catch ex As Exception
+                                            oApplication.Log.Trace_DIET_AddOn_Error(ex)
+                                        End Try
                                         'Independent Process...based on Program From/ProgramTo the Status will be updated
-                                        CType(oLoadForm.Items.Item("4").Specific, SAPbouiCOM.StaticText).Caption = "Updating Program On/Off..."
-                                        oApplication.Utilities.UpdateProgramDateOnOffStatus(oForm, strDocEntry) 'Update Customer On/Off In Program
+                                        
+                                        Try
+                                            CType(oLoadForm.Items.Item("4").Specific, SAPbouiCOM.StaticText).Caption = "Updating Open Order for Calories Changes ..."
+                                            oApplication.Utilities.UpdateOrderQuantityBasedOnCalories(strDocEntry) 'Update Open Order Based On Calories if Differ.
+                                        Catch ex As Exception
+                                            oApplication.Log.Trace_DIET_AddOn_Error(ex)
+                                        End Try
 
-                                        CType(oLoadForm.Items.Item("4").Specific, SAPbouiCOM.StaticText).Caption = "Updating Open Order for Calories Changes ..."
-                                        oApplication.Utilities.UpdateOrderQuantityBasedOnCalories(strDocEntry) 'Update Open Order Based On Calories if Differ.
+                                        Try
+                                            CType(oLoadForm.Items.Item("4").Specific, SAPbouiCOM.StaticText).Caption = "Updating Open Order for Address Changes ..."
+                                            oApplication.Utilities.UpdateOpenOrderAddresses(strCardCode) 'Update Open Order Based On Addresses if Differ.
+                                        Catch ex As Exception
+                                            oApplication.Log.Trace_DIET_AddOn_Error(ex)
+                                        End Try
 
-                                        CType(oLoadForm.Items.Item("4").Specific, SAPbouiCOM.StaticText).Caption = "Updating Open Order for Address Changes ..."
-                                        oApplication.Utilities.UpdateOpenOrderAddresses(strCardCode) 'Update Open Order Based On Addresses if Differ.
+                                        Try
+                                            CType(oLoadForm.Items.Item("4").Specific, SAPbouiCOM.StaticText).Caption = "Updating Program Services..."
+                                            oApplication.Utilities.updateServiceRegistrationRows(oForm, strCardCode) 'Service Quantity & Applied Date of the Service
+                                        Catch ex As Exception
+                                            oApplication.Log.Trace_DIET_AddOn_Error(ex)
+                                        End Try
 
-                                        CType(oLoadForm.Items.Item("4").Specific, SAPbouiCOM.StaticText).Caption = "Updating Program Services..."
-                                        oApplication.Utilities.updateServiceRegistrationRows(oForm, strCardCode) 'Service Quantity & Applied Date of the Service
+                                        Try
+                                            CType(oLoadForm.Items.Item("4").Specific, SAPbouiCOM.StaticText).Caption = "Updating Program Registrations..."
+                                            oApplication.Utilities.updateRegistrationRows(oForm, strCardCode) 'Row level calculation & Document Level Calculation.
+                                        Catch ex As Exception
+                                            oApplication.Log.Trace_DIET_AddOn_Error(ex)
+                                        End Try
 
-                                        CType(oLoadForm.Items.Item("4").Specific, SAPbouiCOM.StaticText).Caption = "Updating Program Registrations..."
-                                        oApplication.Utilities.updateRegistrationRows(oForm, strCardCode) 'Row level calculation & Document Level Calculation.
+                                        Try
+                                            CType(oLoadForm.Items.Item("4").Specific, SAPbouiCOM.StaticText).Caption = "Updating Customer On/Off..."
+                                            oApplication.Utilities.UpdateONOFFStatus(oForm, strDocEntry) 'Update Customer On/Off If Program Document Not Exists
+                                        Catch ex As Exception
+                                            oApplication.Log.Trace_DIET_AddOn_Error(ex)
+                                        End Try
 
-                                        CType(oLoadForm.Items.Item("4").Specific, SAPbouiCOM.StaticText).Caption = "Updating Customer On/Off..."
-                                        oApplication.Utilities.UpdateONOFFStatus(oForm, strDocEntry) 'Update Customer On/Off If Program Document Not Exists
+                                        Try
+                                            CType(oLoadForm.Items.Item("4").Specific, SAPbouiCOM.StaticText).Caption = "Updating Customer Program ReRun..."
+                                            oApplication.Utilities.UpdateReRunStatus(oForm, strDocEntry) 'Update Re Run Status Flag
+                                        Catch ex As Exception
+                                            oApplication.Log.Trace_DIET_AddOn_Error(ex)
+                                        End Try
 
                                         CType(oLoadForm.Items.Item("4").Specific, SAPbouiCOM.StaticText).Caption = "COMPLETED..."
 
@@ -933,7 +1161,6 @@ Public Class clsCustomerProfile
                 CType(oForm.Items.Item("44").Specific, SAPbouiCOM.Matrix).Columns.Item("V_6").ExpandType = SAPbouiCOM.BoExpandType.et_DescriptionOnly
             Catch ex As Exception
                 oApplication.Log.Trace_DIET_AddOn_Error(ex)
-
             End Try
             oForm.Update()
         Catch ex As Exception
@@ -1026,28 +1253,30 @@ Public Class clsCustomerProfile
                 Next
             Next
 
-            oMatrix = oForm.Items.Item("6").Specific
-            For index As Integer = 1 To oMatrix.VisualRowCount
-                Dim strCode As String = oApplication.Utilities.getMatrixValues(oMatrix, "V_0", index)
-                'If Not oApplication.Utilities.validateDate(oForm, strCode, -1) Then
-                '    oApplication.Utilities.Message("Exclude From Date Should be Greater than Or Equal Current Date...", SAPbouiCOM.BoStatusBarMessageType.smt_Error)
-                '    Return False
-                'End If
-                If strCode.Trim() = "" And oMatrix.VisualRowCount > 1 Then
-                    oApplication.Utilities.Message("Please Remove blank row in Exclude", SAPbouiCOM.BoStatusBarMessageType.smt_Error)
-                    Return False
-                End If
-                For intRow As Integer = 1 To oMatrix.VisualRowCount
-                    If index <> intRow Then
-                        Dim strCode1 As String = oApplication.Utilities.getMatrixValues(oMatrix, "V_0", intRow)
-                        If strCode = strCode1 Then
-                            oApplication.Utilities.Message("Exclude Date : " + strCode1.ToString(), SAPbouiCOM.BoStatusBarMessageType.smt_Error)
-                            Return False
-                        End If
-                    End If
-                Next
-            Next
-
+            'Commented because of Performance in Update. On 03032016
+            ''
+            'oMatrix = oForm.Items.Item("6").Specific
+            'For index As Integer = 1 To oMatrix.VisualRowCount
+            '    Dim strCode As String = oApplication.Utilities.getMatrixValues(oMatrix, "V_0", index)
+            '    'If Not oApplication.Utilities.validateDate(oForm, strCode, -1) Then
+            '    '    oApplication.Utilities.Message("Exclude From Date Should be Greater than Or Equal Current Date...", SAPbouiCOM.BoStatusBarMessageType.smt_Error)
+            '    '    Return False
+            '    'End If
+            '    If strCode.Trim() = "" And oMatrix.VisualRowCount > 1 Then
+            '        oApplication.Utilities.Message("Please Remove blank row in Exclude", SAPbouiCOM.BoStatusBarMessageType.smt_Error)
+            '        Return False
+            '    End If
+            '    For intRow As Integer = 1 To oMatrix.VisualRowCount
+            '        If index <> intRow Then
+            '            Dim strCode1 As String = oApplication.Utilities.getMatrixValues(oMatrix, "V_0", intRow)
+            '            If strCode = strCode1 Then
+            '                oApplication.Utilities.Message("Exclude Date : " + strCode1.ToString(), SAPbouiCOM.BoStatusBarMessageType.smt_Error)
+            '                Return False
+            '            End If
+            '        End If
+            '    Next
+            'Next
+            '
             oMatrix = oForm.Items.Item("39").Specific
             For index As Integer = 1 To oMatrix.VisualRowCount
                 Dim strFromDate As String = oApplication.Utilities.getMatrixValues(oMatrix, "V_0", index)
@@ -1093,7 +1322,6 @@ Public Class clsCustomerProfile
                         Dim strCode1 As String = oApplication.Utilities.getMatrixValues(oMatrix, "V_0", intRow)
                         If strCode = strCode1 Then
                             For intCol As Integer = 0 To oMatrix.Columns.Count - 1
-
                                 If oMatrix.Columns.Item(intCol).UniqueID = "V_4" Or oMatrix.Columns.Item(intCol).UniqueID = "V_5" Or oMatrix.Columns.Item(intCol).UniqueID = "V_6" _
                                     Or oMatrix.Columns.Item(intCol).UniqueID = "V_7" Or oMatrix.Columns.Item(intCol).UniqueID = "V_8" Or oMatrix.Columns.Item(intCol).UniqueID = "V_9" Then
 
@@ -1365,6 +1593,11 @@ Public Class clsCustomerProfile
             oMatrix.Columns.Item("V_0").Cells.Item(oMatrix.RowCount).Click(SAPbouiCOM.BoCellClickType.ct_Regular)
             AssignLineNo(aForm, strItem)
 
+            If aForm.PaneLevel = "3" Then
+                oApplication.Utilities.SortColumn(aForm, "6", "V_0", "A")
+                oMatrix.Columns.Item("V_0").Cells.Item(1).Click(SAPbouiCOM.BoCellClickType.ct_Regular)
+            End If
+
             aForm.Freeze(False)
         Catch ex As Exception
             oApplication.Log.Trace_DIET_AddOn_Error(ex)
@@ -1502,7 +1735,18 @@ Public Class clsCustomerProfile
                 Me.RowtoDelete = intSelectedMatrixrow
                 oMatrix.LoadFromDataSource()
                 oMatrix.FlushToDataSource()
-                oDBDataSourceLines.RemoveRecord(Me.RowtoDelete - 1)
+
+                If aForm.PaneLevel = "3" Then
+                    For count = 0 To oDBDataSourceLines.Size - 1
+                        If RowtoDeleteDate = oDBDataSourceLines.GetValue("U_ExDate", count).Trim() Then
+                            oDBDataSourceLines.RemoveRecord(count)
+                            Exit For
+                        End If
+                    Next
+                Else
+                    oDBDataSourceLines.RemoveRecord(Me.RowtoDelete - 1)
+                End If
+
                 oMatrix.LoadFromDataSource()
                 oMatrix.FlushToDataSource()
                 For count = 0 To oDBDataSourceLines.Size - 1
@@ -1510,6 +1754,10 @@ Public Class clsCustomerProfile
                 Next
                 oMatrix.LoadFromDataSource()
                 oMatrix.FlushToDataSource()
+            End If
+
+            If aForm.PaneLevel = "3" Then
+                oApplication.Utilities.SortColumn(aForm, "6", "V_0")
             End If
 
         Catch ex As Exception
@@ -1708,7 +1956,7 @@ Public Class clsCustomerProfile
             oForm.Items.Item("34").Height = oForm.Items.Item("3").Height + 15
             oForm.Freeze(False)
         Catch ex As Exception
-            oApplication.Log.Trace_DIET_AddOn_Error(ex)
+            'oApplication.Log.Trace_DIET_AddOn_Error(ex)
             'oApplication.Utilities.Message(ex.Message, SAPbouiCOM.BoStatusBarMessageType.smt_Error)
             oForm.Freeze(False)
         End Try

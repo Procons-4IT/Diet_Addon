@@ -2364,37 +2364,37 @@ Public Class clsUtilities
                     Case DayOfWeek.Monday
                         If oRecordSet.Fields.Item("U_Monday").Value = "Y" Then
                             _retVal = "E"
-                            Exit Select
+                            'Exit Select
                         End If
                     Case DayOfWeek.Tuesday
                         If oRecordSet.Fields.Item("U_Tuesday").Value = "Y" Then
                             _retVal = "E"
-                            Exit Select
+                            'Exit Select
                         End If
                     Case DayOfWeek.Wednesday
                         If oRecordSet.Fields.Item("U_Wednesday").Value = "Y" Then
                             _retVal = "E"
-                            Exit Select
+                            'Exit Select
                         End If
                     Case DayOfWeek.Thursday
                         If oRecordSet.Fields.Item("U_Thursday").Value = "Y" Then
                             _retVal = "E"
-                            Exit Select
+                            'Exit Select
                         End If
                     Case DayOfWeek.Friday
                         If oRecordSet.Fields.Item("U_Friday").Value = "Y" Then
                             _retVal = "E"
-                            Exit Select
+                            'Exit Select
                         End If
                     Case DayOfWeek.Saturday
                         If oRecordSet.Fields.Item("U_Saturday").Value = "Y" Then
                             _retVal = "E"
-                            Exit Select
+                            'Exit Select
                         End If
                     Case DayOfWeek.Sunday
                         If oRecordSet.Fields.Item("U_Sunday").Value = "Y" Then
                             _retVal = "E"
-                            Exit Select
+                            'Exit Select
                         End If
                 End Select
             End If
@@ -2404,9 +2404,21 @@ Public Class clsUtilities
                 strQuery = "Select T0.DocEntry From [@Z_CPR4] T0 JOIN [@Z_OCPR] T1 On T0.DocEntry = T1.DocEntry "
                 strQuery += " Where T1.U_CardCode = '" + strCardCode + "'"
                 strQuery += " And Convert(VarChar(8),T0.U_ExDate,112) = '" + dtPrgDate.ToString("yyyyMMdd") + "'"
+                strQuery += " And ISNULL(T0.U_Include,'N') = 'N' "
                 oRecordSet.DoQuery(strQuery)
                 If Not oRecordSet.EoF Then
                     _retVal = "E"
+                Else
+                    _retVal = "I"
+                End If
+            Else
+                strQuery = "Select T0.DocEntry From [@Z_CPR4] T0 JOIN [@Z_OCPR] T1 On T0.DocEntry = T1.DocEntry "
+                strQuery += " Where T1.U_CardCode = '" + strCardCode + "'"
+                strQuery += " And Convert(VarChar(8),T0.U_ExDate,112) = '" + dtPrgDate.ToString("yyyyMMdd") + "'"
+                strQuery += " And ISNULL(T0.U_Include,'N') = 'Y' "
+                oRecordSet.DoQuery(strQuery)
+                If Not oRecordSet.EoF Then
+                    _retVal = "I"
                 End If
             End If
 
@@ -2457,47 +2469,61 @@ Public Class clsUtilities
                     Case DayOfWeek.Monday
                         If oRecordSet.Fields.Item("U_Monday").Value = "Y" Then
                             _retVal = "E"
-                            Exit Select
+                            'Exit Select
                         End If
                     Case DayOfWeek.Tuesday
                         If oRecordSet.Fields.Item("U_Tuesday").Value = "Y" Then
                             _retVal = "E"
-                            Exit Select
+                            'Exit Select
                         End If
                     Case DayOfWeek.Wednesday
                         If oRecordSet.Fields.Item("U_Wednesday").Value = "Y" Then
                             _retVal = "E"
-                            Exit Select
+                            'Exit Select
                         End If
                     Case DayOfWeek.Thursday
                         If oRecordSet.Fields.Item("U_Thursday").Value = "Y" Then
                             _retVal = "E"
-                            Exit Select
+                            'Exit Select
                         End If
                     Case DayOfWeek.Friday
                         If oRecordSet.Fields.Item("U_Friday").Value = "Y" Then
                             _retVal = "E"
-                            Exit Select
+                            'Exit Select
                         End If
                     Case DayOfWeek.Saturday
                         If oRecordSet.Fields.Item("U_Saturday").Value = "Y" Then
                             _retVal = "E"
-                            Exit Select
+                            'Exit Select
                         End If
                     Case DayOfWeek.Sunday
                         If oRecordSet.Fields.Item("U_Sunday").Value = "Y" Then
                             _retVal = "E"
-                            Exit Select
+                            'Exit Select
                         End If
                 End Select
             End If
 
-            strQuery = "Select T0.DocEntry From [@Z_CPR4] T0 JOIN [@Z_OCPR] T1 On T0.DocEntry = T1.DocEntry "
-            strQuery += " Where T1.U_CardCode = '" + strCardCode + "'"
-            strQuery += " And Convert(VarChar(8),T0.U_ExDate,112) = '" + dtPrgDate.ToString("yyyyMMdd") + "'"
-            oRecordSet.DoQuery(strQuery)
-            If Not oRecordSet.EoF Then
-                _retVal = "E"
+            If _retVal = "I" Then
+                strQuery = "Select T0.DocEntry From [@Z_CPR4] T0 JOIN [@Z_OCPR] T1 On T0.DocEntry = T1.DocEntry "
+                strQuery += " Where T1.U_CardCode = '" + strCardCode + "'"
+                strQuery += " And Convert(VarChar(8),T0.U_ExDate,112) = '" + dtPrgDate.ToString("yyyyMMdd") + "'"
+                strQuery += " And ISNULL(T0.U_Include,'N') = 'N' "
+                oRecordSet.DoQuery(strQuery)
+                If Not oRecordSet.EoF Then
+                    _retVal = "E"
+                Else
+                    _retVal = "I"
+                End If
+            Else
+                strQuery = "Select T0.DocEntry From [@Z_CPR4] T0 JOIN [@Z_OCPR] T1 On T0.DocEntry = T1.DocEntry "
+                strQuery += " Where T1.U_CardCode = '" + strCardCode + "'"
+                strQuery += " And Convert(VarChar(8),T0.U_ExDate,112) = '" + dtPrgDate.ToString("yyyyMMdd") + "'"
+                strQuery += " And ISNULL(T0.U_Include,'N') = 'Y' "
+                oRecordSet.DoQuery(strQuery)
+                If Not oRecordSet.EoF Then
+                    _retVal = "I"
+                End If
             End If
 
             Return _retVal
@@ -3774,14 +3800,28 @@ Public Class clsUtilities
                 oGeneralParams.SetProperty("DocEntry", oRecordSet.Fields.Item(0).Value)
                 oGeneralData = oGeneralService.GetByParams(oGeneralParams)
                 oGeneralDataCollection = oGeneralData.Child("Z_CPM1")
-                For intRow As Integer = 0 To intNoofDays
-                    strQuery = "Select DocEntry,LineId,U_AppStatus From [@Z_CPM1] Where DocEntry = '" + strProRef + "' And Convert(VarChar(8),U_PrgDate,112) = '" + dtFromDate.AddDays(intRow).ToString("yyyyMMdd") + "'"
+                For intRow As Integer = 0 To intNoofDays - 1
+                    strQuery = "Select DocEntry,LineId,VisOrder,U_AppStatus From [@Z_CPM1] Where DocEntry = '" + strProRef + "' And Convert(VarChar(8),U_PrgDate,112) = '" + dtFromDate.AddDays(intRow).ToString("yyyyMMdd") + "'"
                     oRecordSet.DoQuery(strQuery)
                     If oRecordSet.EoF Then
                         oChildData = oGeneralDataCollection.Add()
                         oChildData.SetProperty("U_PrgDate", dtFromDate.AddDays(intRow))
                         Dim strIncStatus As String = checkExclude(strCardCode, dtFromDate.AddDays(intRow))
                         oChildData.SetProperty("U_AppStatus", strIncStatus.Trim())
+                        If strIncStatus = "E" Then
+                            Dim strCPRef As String = oApplication.Utilities.getRecordSetValueString("Select DocEntry From [@Z_OCPR] Where U_CardCode = '" & strCardCode & "'", "DocEntry")
+                            addExcludeDocumentRow(strCardCode, strCPRef, dtFromDate.AddDays(intRow).ToString("yyyyMMdd"))
+                        End If
+                    Else
+                        Dim strIncStatus As String = checkExclude(strCardCode, dtFromDate.AddDays(intRow))
+                        If strIncStatus = "E" Then
+                            Dim strCPRef As String = oApplication.Utilities.getRecordSetValueString("Select DocEntry From [@Z_OCPR] Where U_CardCode = '" & strCardCode & "'", "DocEntry")
+                            addExcludeDocumentRow(strCardCode, strCPRef, dtFromDate.AddDays(intRow).ToString("yyyyMMdd"))
+                        End If
+                        'oChildData = oGeneralDataCollection.Item(oRecordSet.Fields.Item("VisOrder").Value)
+                        'oGeneralDataCollection = oGeneralData.Child("Z_CPM1")
+                        'oChildData = oGeneralDataCollection.Item(1)
+                        'oChildData.SetProperty("U_AppStatus", strIncStatus.Trim())
                     End If
                 Next
             End If
@@ -3935,6 +3975,41 @@ Public Class clsUtilities
                 strQuery += " Where DocEntry = '" + strDocEntry + "'"
                 oRecordSet_U.DoQuery(strQuery)
             End If
+
+
+
+            Return _retVal
+        Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
+            Throw ex
+            'oApplication.Log.oApplication.Log.Trace_DIET_AddOn_Error(ex)
+        End Try
+    End Function
+
+    Public Function UpdateReRunStatus(ByVal oForm As SAPbouiCOM.Form, ByVal strDocEntry As String) As Boolean
+        Dim _retVal As Boolean = False
+        Dim strQuery As String = String.Empty
+        Try
+            Dim oRecordSet As SAPbobsCOM.Recordset
+            Dim oRecordSet_U As SAPbobsCOM.Recordset
+            oRecordSet = oApplication.Company.GetBusinessObject(BoObjectTypes.BoRecordset)
+            oRecordSet_U = oApplication.Company.GetBusinessObject(BoObjectTypes.BoRecordset)
+
+            strQuery = " Select DocEntry,U_CardCode "
+            strQuery += " From [@Z_OCPM] Where U_CardCode = (Select U_CardCode From [@Z_OCPR] Where DocEntry = '" + strDocEntry + "')"
+            strQuery += " And U_ReRun = 'Y' "
+            oRecordSet.DoQuery(strQuery)
+            If Not oRecordSet.EoF Then
+                While Not oRecordSet.EoF
+                    Dim strDocEntry1 As String = oRecordSet.Fields.Item(0).Value
+                    strQuery = " Update [@Z_OCPM] SET "
+                    strQuery += " U_ReRun = 'N' "
+                    strQuery += " Where DocEntry = '" + strDocEntry1 + "'"
+                    oRecordSet_U.DoQuery(strQuery)
+                    oRecordSet.MoveNext()
+                End While
+            End If
+
             Return _retVal
         Catch ex As Exception
             oApplication.Log.Trace_DIET_AddOn_Error(ex)
@@ -3961,7 +4036,11 @@ Public Class clsUtilities
             strQuery = " Select T0.DocEntry "
             strQuery += " From [@Z_OCPM] T0  "
             strQuery += " Where T0.U_CardCode = (Select U_CardCode From [@Z_OCPR] Where DocEntry = '" + strDocEntry + "')"
-            strQuery += " And  T0.U_RemDays > 0 "
+            'strQuery += " And T0.U_RemDays > 0 "
+            strQuery += " And ( "
+            strQuery += " T0.U_RemDays > 0 OR (Convert(VarChar(8),U_PToDate,112) >='" & System.DateTime.Now.AddDays(-1).ToString("yyyyMMdd") & "') "
+            strQuery += " OR ( T0.U_ReRun = 'Y' ) "
+            strQuery += " ) "
             strQuery += " And T0.U_DocStatus = 'O' "
             If strPRef <> "" Then
                 strQuery += " And T0.DocEntry = '" & strPRef & "'"
@@ -3976,7 +4055,11 @@ Public Class clsUtilities
                     strQuery += " From [@Z_OCPM] T0 JOIN [@Z_CPM6] T1 On T0.DocEntry = T1.DocEntry "
                     strQuery += " Where T0.U_CardCode = (Select U_CardCode From [@Z_OCPR] Where DocEntry = '" + strDocEntry + "')"
                     strQuery += " And T0.DocEntry = '" & strPGRef & "'"
-                    strQuery += " And  T0.U_RemDays > 0 "
+                    strQuery += " And ( "
+                    strQuery += " T0.U_RemDays > 0 "
+                    strQuery += " OR (Convert(VarChar(8),U_PToDate,112) >='" & System.DateTime.Now.AddDays(-1).ToString("yyyyMMdd") & "') "
+                    strQuery += " OR (T0.U_ReRun = 'Y') "
+                    strQuery += " ) "
                     strQuery += " Order By T1.LineId "
                     oRecordSet_L.DoQuery(strQuery)
 
@@ -4076,7 +4159,9 @@ Public Class clsUtilities
                                     strQuery = " Select Convert(Varchar(8),Max(T0.U_DelDate+1),112) As 'FD' From DLN1 T0 "
                                     strQuery += " JOIN [@Z_CPM6] T1 On T0.U_ProgramID = T1.DocEntry "
                                     strQuery += " And T0.U_DelDate BetWeen T1.U_Fdate And T1.U_Edate "
-                                    strQuery += " And (T0.LineStatus = 'O' Or (T0.LineStatus = 'C' And T0.TargetType = '-1')) "
+                                    strQuery += " And (T0.LineStatus = 'O' "
+                                    strQuery += " Or (T0.LineStatus = 'C' And T0.TargetType = '-1')"
+                                    strQuery += " ) "
                                     strQuery += " JOIN ODLN T2 On T0.DocEntry = T2.DocEntry And T2.CANCELED = 'N' "
                                     strQuery += " Where T0.U_ProgramID = '" & strPGRef & "' "
                                     strQuery += " And T1.LineId = '" & strPGLine & "'"
@@ -4177,6 +4262,7 @@ Public Class clsUtilities
                     strQuery += " Where DocEntry = '" + strPGRef + "' And ISNULL(U_NoofDays,0) > 0 "
                     oRecordSet_L.DoQuery(strQuery)
                     If Not oRecordSet_L.EoF Then
+
                         Dim strPFromDt As String = oRecordSet_L.Fields.Item("FD").Value
                         Dim strPToDt As String = oRecordSet_L.Fields.Item("LD").Value
 
@@ -4185,6 +4271,21 @@ Public Class clsUtilities
                         strQuery += " U_PToDate = '" + strPToDt + "'"
                         strQuery += " Where DocEntry = '" + oRecordSet.Fields.Item("DocEntry").Value.ToString() + "'"
                         oRecordSet_U.DoQuery(strQuery)
+
+                    Else
+
+                        strQuery = " Select Convert(VarChar(8),Min(U_Fdate),112) As 'FD',Convert(VarChar(8),Max(U_Edate),112) As 'LD' From [@Z_CPM6] "
+                        strQuery += " Where DocEntry = '" + strPGRef + "' And ISNULL(U_NoofDays,0) = 0 "
+                        oRecordSet_L.DoQuery(strQuery)
+                        If Not oRecordSet_L.EoF Then
+                            Dim strPFromDt As String = oRecordSet_L.Fields.Item("FD").Value
+                            Dim strPToDt As String = oRecordSet_L.Fields.Item("LD").Value
+                            strQuery = "Update [@Z_OCPM] SET "
+                            strQuery += " U_PFromDate = '" + strPFromDt + "',"
+                            strQuery += " U_PToDate = '" + strPToDt + "'"
+                            strQuery += " Where DocEntry = '" + oRecordSet.Fields.Item("DocEntry").Value.ToString() + "'"
+                            oRecordSet_U.DoQuery(strQuery)
+                        End If
 
                     End If
 
@@ -4306,6 +4407,57 @@ Public Class clsUtilities
         End Try
     End Function
 
+    Private Function addExcludeDocumentRow(ByVal strCardCode As String, ByVal strCPRef As String, ByVal strExDate As String) As Boolean
+        Try
+
+            Dim _retVal As Boolean = False
+            Dim strQuery As String = String.Empty
+
+            Dim oGeneralService As SAPbobsCOM.GeneralService
+            Dim oGeneralData As SAPbobsCOM.GeneralData
+            Dim oGeneralParams As SAPbobsCOM.GeneralDataParams
+            Dim oCompanyService As SAPbobsCOM.CompanyService
+            Dim oGeneralDataCollection As SAPbobsCOM.GeneralDataCollection
+            Dim oChildData As SAPbobsCOM.GeneralData
+            oCompanyService = oApplication.Company.GetCompanyService()
+
+            Dim oDoc As SAPbobsCOM.SalesOpportunities = Nothing
+            Dim oRecordSet As SAPbobsCOM.Recordset
+            Try
+                oGeneralService = oCompanyService.GetGeneralService("Z_OCPR")
+                oGeneralData = oGeneralService.GetDataInterface(SAPbobsCOM.GeneralServiceDataInterfaces.gsGeneralData)
+                oGeneralParams = oGeneralService.GetDataInterface(SAPbobsCOM.GeneralServiceDataInterfaces.gsGeneralDataParams)
+                Dim dtFromDate As Date = CDate(strExDate.Substring(0, 4) + "-" + strExDate.Substring(4, 2) + "-" + strExDate.Substring(6, 2))
+                Dim dtCurrDate As Date = CDate(System.DateTime.Now.Year.ToString() + "-" + System.DateTime.Now.Month.ToString() + "-" + System.DateTime.Now.Day.ToString())
+
+                If dtFromDate > dtCurrDate Then
+                    strQuery = " Select U_ExDate From [@Z_CPR4] Where DocEntry = '" & strCPRef & "'"
+                    strQuery += " And Convert(VarChar(8),U_ExDate,112) = '" & strExDate & "'"
+                    oRecordSet = oApplication.Company.GetBusinessObject(SAPbobsCOM.BoObjectTypes.BoRecordset)
+                    oRecordSet.DoQuery(strQuery)
+                    If oRecordSet.EoF Then
+                        oGeneralParams.SetProperty("DocEntry", strCPRef)
+                        oGeneralData = oGeneralService.GetByParams(oGeneralParams)
+                        oGeneralDataCollection = oGeneralData.Child("Z_CPR4")
+                        oChildData = oGeneralDataCollection.Add()
+                        oChildData.SetProperty("U_ExDate", dtFromDate.AddDays(0))
+                        oGeneralService.Update(oGeneralData)
+                    End If
+                End If
+                
+                Return _retVal
+            Catch ex As Exception
+                oApplication.Log.Trace_DIET_AddOn_Error(ex)
+                Throw ex
+                'oApplication.Log.oApplication.Log.Trace_DIET_AddOn_Error(ex)
+            End Try
+        Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
+            Throw ex
+            'oApplication.Log.oApplication.Log.Trace_DIET_AddOn_Error(ex)
+        End Try
+    End Function
+
     Public Function updateProgramNoofDayAndToDate(ByVal oForm As SAPbouiCOM.Form, ByVal strDocEntry As String, ByVal intTNoofDays As Integer) As Boolean
         Dim _retVal As Boolean = False
         Dim strQuery As String = String.Empty
@@ -4355,7 +4507,8 @@ Public Class clsUtilities
             strQuery = " Select T0.DocEntry "
             strQuery += " From [@Z_OCPM] T0  "
             strQuery += " Where T0.U_CardCode = (Select U_CardCode From [@Z_OCPR] Where DocEntry = '" + strDocEntry + "')"
-            strQuery += " And  T0.U_RemDays > 0 "
+            'strQuery += " And (ISNULL(T0.U_RemDays,0) > 0) "
+            strQuery += " And (T0.U_RemDays > 0 OR (Convert(VarChar(8),U_PToDate,112) >='" & System.DateTime.Now.AddDays(-1).ToString("yyyyMMdd") & "')) "
             strQuery += " And T0.U_DocStatus = 'O' "
             oRecordSet.DoQuery(strQuery)
             If Not oRecordSet.EoF Then
@@ -4401,6 +4554,12 @@ Public Class clsUtilities
                                 strQuery += " U_RmvDays = - ISNULL(U_RmvDays,0)  - " & oRec_TD.RecordCount.ToString & ""
                                 strQuery += " Where DocEntry = '" + strPGRef + "'"
                                 strQuery += " And LineId = '" & oRecordSet_L.Fields.Item(0).Value.ToString & "' "
+                                oRecordSet_U.DoQuery(strQuery)
+
+                                'Rerun the Program Date 
+                                strQuery = " Update [@Z_OCPM] SET "
+                                strQuery += " U_ReRun = 'Y' "
+                                strQuery += " Where DocEntry = '" + strPGRef + "'"
                                 oRecordSet_U.DoQuery(strQuery)
 
                             End If
@@ -4465,7 +4624,10 @@ Public Class clsUtilities
             strQuery += " ,Convert(Varchar(8),U_PToDate,112) As U_PToDate From [@Z_OCPM] T0  "
             strQuery += " Where T0.U_DocStatus = 'O'  "
             strQuery += " And T0.U_CardCode = '" + strCardCode + "'"
-            strQuery += " And T0.U_RemDays > 0 "
+            'strQuery += " And T0.U_RemDays > 0 "
+            strQuery += " And ( T0.U_RemDays > 0 "
+            strQuery += " OR (Convert(VarChar(8),U_PToDate,112) >='" & System.DateTime.Now.AddDays(-1).ToString("yyyyMMdd") & "') "
+            strQuery += " ) "
             strQuery += " Order By U_PFromDate "
             oRecordSet.DoQuery(strQuery)
             If Not oRecordSet.EoF Then
@@ -5024,7 +5186,7 @@ Public Class clsUtilities
         End Try
     End Sub
 
-    Public Sub CloseOrderQuantityRemoveSuspendDates_P(ByVal strPRDocEntry As String)
+    Public Sub CloseOrderQuantityRemoveSuspendDates_P(ByVal strPRDocEntry As String, ByVal strCardCode As String)
         Try
             Dim ohtConOrder As Hashtable
             ohtConOrder = New Hashtable
@@ -5048,6 +5210,7 @@ Public Class clsUtilities
             strQuery += " JOIN RDR1 T3 ON T3.BaseCard = T0.U_CardCode "
             strQuery += " And Convert(VarChar(8),T3.U_DelDate,112) BETWEEN Convert(VarChar(8),T1.U_ExDate,112) AND Convert(VarChar(8),T1.U_ExDate,112) "
             strQuery += " And T3.LineStatus = 'O' "
+            strQuery += " And ISNULL(T1.U_Include,'N') = 'N' "
             strQuery += " Where T0.DocEntry = '" & strPRDocEntry & "'"
             strQuery += " UNION ALL  "
             strQuery += " Select T3.DocEntry "
@@ -5065,6 +5228,13 @@ Public Class clsUtilities
             strQuery += " ) "
             strQuery += " And T3.LineStatus = 'O' "
             strQuery += " Where T0.DocEntry = '" & strPRDocEntry & "'"
+            strQuery += " And T3.U_DelDate Not In  "
+            strQuery += " ( "
+            strQuery += " Select T0.U_ExDate From [@Z_CPR4] T0 "
+            strQuery += " JOIN [@Z_OCPR] T1 On T0.DocEntry = T1.DocEntry   "
+            strQuery += " Where ISNULL(T0.U_Include,'N') = 'Y' "
+            strQuery += " And T1.U_CardCode = '" & strCardCode & "' "
+            strQuery += " ) "
             strQuery += " UNION ALL  "
             strQuery += " Select T3.DocEntry "
             strQuery += " From [@Z_OCPR] T0  "
@@ -5118,6 +5288,7 @@ Public Class clsUtilities
                         strQuery += " JOIN RDR1 T3 ON T3.BaseCard = T0.U_CardCode "
                         strQuery += " And Convert(VarChar(8),T3.U_DelDate,112) BETWEEN Convert(VarChar(8),T1.U_ExDate,112) AND Convert(VarChar(8),T1.U_ExDate,112) "
                         strQuery += " And T3.LineStatus = 'O' "
+                        strQuery += " And ISNULL(T1.U_Include,'N') = 'N' "
                         strQuery += " Where T0.DocEntry = '" & strPRDocEntry & "'"
                         strQuery += " And T3.DocEntry = '" & intDocEntry.ToString & "'"
                         strQuery += " UNION ALL  "
@@ -5138,6 +5309,13 @@ Public Class clsUtilities
                         strQuery += " Where T0.DocEntry = '" & strPRDocEntry & "'"
                         strQuery += " And T3.DocEntry = '" & intDocEntry.ToString & "'"
                         strQuery += " And T3.U_DelDate > GetDate() "
+                        strQuery += " And T3.U_DelDate Not In  "
+                        strQuery += " ( "
+                        strQuery += " Select T0.U_ExDate From [@Z_CPR4] T0 "
+                        strQuery += " JOIN [@Z_OCPR] T1 On T0.DocEntry = T1.DocEntry   "
+                        strQuery += " Where ISNULL(T0.U_Include,'N') = 'Y' "
+                        strQuery += " And T1.U_CardCode = '" & strCardCode & "' "
+                        strQuery += " ) "
                         strQuery += " UNION ALL  "
                         strQuery += " Select T3.DocEntry,T3.VisOrder As LineNum,'R' As 'Type',T1.LineId "
                         strQuery += " From [@Z_OCPR] T0  "
@@ -5377,7 +5555,7 @@ Public Class clsUtilities
         End Try
     End Sub
 
-    Public Sub CancelDeliveryQuantityRemoveSuspendDatesAndExclude(ByVal strPRDocEntry As String)
+    Public Sub CancelDeliveryQuantityRemoveSuspendDatesAndExclude(ByVal strPRDocEntry As String, ByVal strCardCode As String)
         Try
             Dim strQuery As String = String.Empty
             Dim oRecordSet As SAPbobsCOM.Recordset
@@ -5393,6 +5571,7 @@ Public Class clsUtilities
             strQuery += " JOIN ODLN T4 On T3.DocEntry = T4.DocEntry "
             strQuery += " And Convert(VarChar(8),T3.U_DelDate,112) BETWEEN Convert(VarChar(8),T1.U_ExDate,112) AND Convert(VarChar(8),T1.U_ExDate,112) "
             strQuery += " And T3.LineStatus = 'O' And (ISNULL(T4.U_InvRef,'') = '') "
+            strQuery += " And ISNULL(T1.U_Include,'N') = 'N' "
             strQuery += " Where T0.DocEntry = '" & strPRDocEntry & "'"
             strQuery += " UNION ALL  "
             strQuery += " Select T3.DocEntry,'ED' As 'Type',T3.LineNum As 'LineId' "
@@ -5412,6 +5591,13 @@ Public Class clsUtilities
             strQuery += " And T3.LineStatus = 'O' And (ISNULL(T4.U_InvRef,'') = '') "
             strQuery += " Where T0.DocEntry = '" & strPRDocEntry & "'"
             strQuery += " And T3.U_DelDate > GetDate() "
+            strQuery += " And T3.U_DelDate Not In  "
+            strQuery += " ( "
+            strQuery += " Select T0.U_ExDate From [@Z_CPR4] T0 "
+            strQuery += " JOIN [@Z_OCPR] T1 On T0.DocEntry = T1.DocEntry   "
+            strQuery += " Where ISNULL(T0.U_Include,'N') = 'Y' "
+            strQuery += " And T1.U_CardCode = '" & strCardCode & "' "
+            strQuery += " ) "
             strQuery += " UNION ALL  "
             strQuery += " Select T3.DocEntry,'R' As 'Type',T1.LineId "
             strQuery += " From [@Z_OCPR] T0  "
@@ -5462,6 +5648,10 @@ Public Class clsUtilities
                         If oDelivery.DocumentStatus = SAPbobsCOM.BoStatus.bost_Open Then
                             If oRecordSet.Fields.Item("Type").Value = "R" Then
                                 intStatus = oDelivery.Close()
+
+                                'oDelivery_C = oDelivery.CreateCancellationDocument()
+                                'intStatus = oDelivery_C.Add()
+
                                 If intStatus = 0 Then
 
                                     strQuery = "Update DLN1 SET U_CanFrom = '" & oRecordSet.Fields.Item("Type").Value & "'"
@@ -5471,6 +5661,9 @@ Public Class clsUtilities
                                     strQuery = "Update [@Z_CPR8] SET U_Applied = 'Y' "
                                     strQuery += " Where DocEntry = '" & strPRDocEntry & "'"
                                     strQuery += " And LineId = '" & strPRLine & "'"
+                                    oRecordSet_U.DoQuery(strQuery)
+
+                                    strQuery += " Exec PROCON_UPDATEORDERDAYS_u '" & oDelivery.Lines.BaseEntry.ToString() & "'"
                                     oRecordSet_U.DoQuery(strQuery)
 
                                 End If
@@ -5579,7 +5772,7 @@ Public Class clsUtilities
                         oRecordSet_L = oApplication.Company.GetBusinessObject(BoObjectTypes.BoRecordset)
                         oRecordSet_P = oApplication.Company.GetBusinessObject(BoObjectTypes.BoRecordset)
 
-                        strQuery += " Select T3.DocEntry,T3.VisOrder As LineNum,'' As 'Type',T3.LineNum "
+                        strQuery = " Select T3.DocEntry,T3.VisOrder As LineNum,'' As 'Type',T3.LineNum As LineId "
                         strQuery += " From [@Z_OCPR] T0  "
                         strQuery += " JOIN RDR1 T3 ON T3.BaseCard = T0.U_CardCode "
                         strQuery += " JOIN [@Z_OCPM] T4 On T4.U_CardCode = T3.BaseCard "
@@ -5953,7 +6146,13 @@ Public Class clsUtilities
             strQuery += " From [@Z_OCPR] T0  "
             strQuery += " JOIN [@Z_OCPM] T1 ON T1.U_CardCode = T0.U_CardCode "
             strQuery += " JOIN [@Z_CPM1] T2 ON T2.DocEntry = T1.DocEntry "
-            strQuery += " And T1.U_RemDays > 0 And ISNULL(T1.U_Transfer,'N') = 'N' "
+            strQuery += " And ISNULL(T1.U_Transfer,'N') = 'N' "
+            'strQuery += " And T1.U_RemDays > 0 "
+            strQuery += " And (  "
+            strQuery += " T1.U_RemDays > 0  "
+            strQuery += " OR ( Convert(VarChar(8),U_PToDate,112) >=  '" & System.DateTime.Now.AddDays(-1).ToString("yyyyMMdd") & "' ) "
+            strQuery += " OR T1.U_ReRun = 'Y' "
+            strQuery += " ) "
             strQuery += " Where T0.DocEntry = '" & strDocEntry & "'"
             strQuery += " And T1.U_DocStatus = 'O' "
             oRecordSet.DoQuery(strQuery)
@@ -5990,7 +6189,12 @@ Public Class clsUtilities
             strQuery += " JOIN [@Z_CPM1] T3 ON T3.DocEntry = T2.DocEntry "
             strQuery += " And Convert(VarChar(8),T3.U_PrgDate,112) BETWEEN Convert(VarChar(8),T1.U_FDate,112) AND Convert(VarChar(8),T1.U_TDate,112) "
             strQuery += " And ISNULL(T3.U_ONOFFSTA,'O') = 'O' AND ISNULL(T3.U_AppStatus,'I') = 'I' "
-            strQuery += " And T2.U_RemDays > 0 And ISNULL(T2.U_Transfer,'N') = 'N' "
+            'strQuery += " And T2.U_RemDays > 0 "
+            strQuery += " And ( T2.U_RemDays > 0  "
+            strQuery += " OR ( Convert(VarChar(8),T2.U_PToDate,112) >=  '" & System.DateTime.Now.AddDays(-1).ToString("yyyyMMdd") & "' ) "
+            strQuery += " OR ( T2.U_ReRun = 'Y' ) "
+            strQuery += " ) "
+            strQuery += " And ISNULL(T2.U_Transfer,'N') = 'N' "
             strQuery += " Where T0.DocEntry = '" & strDocEntry & "'"
             strQuery += " UNION ALL  "
             strQuery += " Select T3.DocEntry,T3.LineId "
@@ -6005,7 +6209,12 @@ Public Class clsUtilities
             strQuery += " (Convert(VarChar(8),T3.U_PrgDate,112) BETWEEN Convert(VarChar(8),T1.U_FDate,112) AND Convert(VarChar(8),T1.U_TDate,112)) "
             strQuery += " ) "
             strQuery += " And ISNULL(T3.U_ONOFFSTA,'O') = 'O' AND ISNULL(T3.U_AppStatus,'I') = 'I' "
-            strQuery += " And T2.U_RemDays > 0 And ISNULL(T2.U_Transfer,'N') = 'N' "
+            'strQuery += " And T2.U_RemDays > 0 "
+            strQuery += " And ( T2.U_RemDays > 0  "
+            strQuery += " OR ( Convert(VarChar(8),T2.U_PToDate,112) >=  '" & System.DateTime.Now.AddDays(-1).ToString("yyyyMMdd") & "' ) "
+            strQuery += " OR ( T2.U_ReRun = 'Y' ) "
+            strQuery += " ) "
+            strQuery += " And ISNULL(T2.U_Transfer,'N') = 'N' "
             strQuery += " Where T0.DocEntry = '" & strDocEntry & "'"
 
             oRecordSet.DoQuery(strQuery)
@@ -6053,7 +6262,12 @@ Public Class clsUtilities
             'strQuery += " AND (Convert(VarChar(8),T2.U_PrgDate,112) >=  Convert(VarChar(8),T3.U_FDate,112) AND Convert(VarChar(8),T2.U_PrgDate,112) <= Convert(VarChar(8),T3.U_TDate,112)) "
             'strQuery += " ) "
             strQuery += " And ISNULL(T2.U_ONOFFSTA,'O') = 'F' And ISNULL(T2.U_AppStatus,'I') = 'I' "
-            strQuery += " And T1.U_RemDays > 0 And ISNULL(T1.U_Transfer,'N') = 'N' "
+            'strQuery += " And T1.U_RemDays > 0 "
+            strQuery += " And ( T1.U_RemDays > 0  "
+            strQuery += " OR ( Convert(VarChar(8),T1.U_PToDate,112) >=  '" & System.DateTime.Now.AddDays(-1).ToString("yyyyMMdd") & "' ) "
+            strQuery += " OR ( T1.U_ReRun = 'Y' ) "
+            strQuery += " ) "
+            strQuery += " And ISNULL(T1.U_Transfer,'N') = 'N' "
             strQuery += " Where T0.DocEntry = '" & strDocEntry & "'"
             strQuery += " And ISNULL(T0.U_ONOFFSTA,'O') = 'O' "
             'strQuery += " UNION ALL "
@@ -6224,6 +6438,44 @@ Public Class clsUtilities
                 oRForm.Visible = False
                 CType(oRForm.Items.Item("1000003").Specific, SAPbouiCOM.EditText).Value = strDocNum
                 oRForm.Items.Item("1").Click(SAPbouiCOM.BoCellClickType.ct_Regular)
+            End If
+        Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
+        End Try
+    End Sub
+
+    Public Function getDay(ByVal strType As String) As System.DayOfWeek
+        Try
+            Select Case strType
+                Case "15"
+                    Return System.DayOfWeek.Monday
+                Case "16"
+                    Return System.DayOfWeek.Tuesday
+                Case "17"
+                    Return System.DayOfWeek.Wednesday
+                Case "18"
+                    Return System.DayOfWeek.Thursday
+                Case "19"
+                    Return System.DayOfWeek.Friday
+                Case "20"
+                    Return System.DayOfWeek.Saturday
+                Case "21"
+                    Return System.DayOfWeek.Sunday
+            End Select
+        Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
+        End Try
+    End Function
+
+    Public Sub SortColumn(ByVal AForm As SAPbouiCOM.Form, itemID As String, colID As String, Optional ByVal strType As String = "D")
+        Try
+            Dim oMatrix As SAPbouiCOM.Matrix
+            oMatrix = AForm.Items.Item(itemID).Specific
+            Dim oColumn As SAPbouiCOM.Column = oMatrix.Columns.Item(colID)
+            If strType = "D" Then
+                oColumn.TitleObject.Sort(SAPbouiCOM.BoGridSortType.gst_Descending)
+            Else
+                oColumn.TitleObject.Sort(SAPbouiCOM.BoGridSortType.gst_Ascending)
             End If
         Catch ex As Exception
             oApplication.Log.Trace_DIET_AddOn_Error(ex)
@@ -6511,5 +6763,25 @@ Public Class clsUtilities
             'Throw ex
         End Try
     End Sub
+
+    Public Function GetAllowOlderDates(ByVal oForm As SAPbouiCOM.Form, strCardCode As String) As Boolean
+        Dim _retVal As Boolean = True
+        Try
+            Dim oRecordSet As SAPbobsCOM.Recordset
+            oRecordSet = DirectCast(oApplication.Company.GetBusinessObject(SAPbobsCOM.BoObjectTypes.BoRecordset), SAPbobsCOM.Recordset)
+            Dim strQry As String = " Select ISNULL(U_ALOD,'N') As U_ALOD FROM OCRD Where CardCode   "
+            strQry += " = '" & strCardCode & "' And U_ALOD = 'Y' "
+            oRecordSet.DoQuery(strQry)
+            If Not oRecordSet.EoF Then
+                _retVal = False
+            Else
+                _retVal = True
+            End If
+        Catch ex As Exception
+            oApplication.Log.Trace_DIET_AddOn_Error(ex)
+            Throw ex
+        End Try
+        Return _retVal
+    End Function
 
 End Class

@@ -199,8 +199,7 @@ Public Class clsDeliveryWizard
                                     Try
                                         reDrawForm(oForm)
                                     Catch ex As Exception
-                                        oApplication.Log.Trace_DIET_AddOn_Error(ex)
-
+                                        'oApplication.Log.Trace_DIET_AddOn_Error(ex)
                                     End Try
                                 End If
                         End Select
@@ -465,7 +464,7 @@ Public Class clsDeliveryWizard
 
             oForm.Freeze(False)
         Catch ex As Exception
-            oApplication.Log.Trace_DIET_AddOn_Error(ex)
+            'oApplication.Log.Trace_DIET_AddOn_Error(ex)
             oForm.Freeze(False)
         End Try
     End Sub

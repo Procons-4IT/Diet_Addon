@@ -367,7 +367,6 @@ Public Class clsMenuDefinition
                                     End If
                                 Catch ex As Exception
                                     oApplication.Log.Trace_DIET_AddOn_Error(ex)
-
                                 End Try
                             Case SAPbouiCOM.BoEventTypes.et_LOST_FOCUS
                                 oForm = oApplication.SBO_Application.Forms.Item(FormUID)
@@ -451,8 +450,7 @@ Public Class clsMenuDefinition
                                     Try
                                         reDrawForm(oForm)
                                     Catch ex As Exception
-                                        oApplication.Log.Trace_DIET_AddOn_Error(ex)
-
+                                        ' oApplication.Log.Trace_DIET_AddOn_Error(ex)
                                     End Try
                                 End If
                             Case SAPbouiCOM.BoEventTypes.et_PICKER_CLICKED
@@ -671,17 +669,13 @@ Public Class clsMenuDefinition
             Try
                 oForm.Items.Item("7_").Visible = False
             Catch ex As Exception
-                oApplication.Log.Trace_DIET_AddOn_Error(ex)
-
+                'oApplication.Log.Trace_DIET_AddOn_Error(ex)
             End Try
-
-
             oForm.Items.Item("_20").Visible = True
             oForm.Items.Item("_21").Visible = True
 
             oForm.Items.Item("6").Click(SAPbouiCOM.BoCellClickType.ct_Regular)
             oForm.Items.Item("47_").Click(SAPbouiCOM.BoCellClickType.ct_Regular)
-
             MatrixId = "3"
             oForm.Update()
         Catch ex As Exception
@@ -1877,7 +1871,7 @@ Public Class clsMenuDefinition
 
             oForm.Freeze(False)
         Catch ex As Exception
-            oApplication.Log.Trace_DIET_AddOn_Error(ex)
+            'oApplication.Log.Trace_DIET_AddOn_Error(ex)
             'oApplication.Utilities.Message(ex.Message, SAPbouiCOM.BoStatusBarMessageType.smt_Error)
             oForm.Freeze(False)
         End Try

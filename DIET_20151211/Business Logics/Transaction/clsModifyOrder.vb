@@ -322,7 +322,7 @@ Public Class clsModifyOrder
                                     Try
                                         reDrawForm(oForm)
                                     Catch ex As Exception
-                                        oApplication.Log.Trace_DIET_AddOn_Error(ex)
+                                        ' oApplication.Log.Trace_DIET_AddOn_Error(ex)
 
                                     End Try
                                 End If
@@ -1318,6 +1318,7 @@ Public Class clsModifyOrder
                                             'oOrder.Lines.LineTotal = 0
 
                                             If oOrder.Lines.LineStatus = SAPbobsCOM.BoStatus.bost_Open Then
+                                                'oOrder.Lines.UserFields.Fields.Item("U_CanFrom").Value = "M"
                                                 oOrder.Lines.LineStatus = SAPbobsCOM.BoStatus.bost_Close
                                                 blnUpdate = True
                                             End If
@@ -1345,6 +1346,12 @@ Public Class clsModifyOrder
                                 intStatus = oOrder.Update()
 
                                 If intStatus = 0 Then
+
+                                    'Updating the Older Food Cancellation Status to Modified As Per nicole.
+                                    strQuery = "Update RDR1 SET U_CanFrom = 'M' "
+                                    strQuery += " Where DocEntry = '" & intDocEntry & "'"
+                                    strQuery += " And VisOrder = '" & intLine & "'"
+                                    oRecordSet_U.DoQuery(strQuery)
 
                                     Dim oTOrder As SAPbobsCOM.Documents = oApplication.Company.GetBusinessObject(SAPbobsCOM.BoObjectTypes.oOrders)
                                     If oTOrder.GetByKey(intDocEntry) Then
@@ -2577,7 +2584,7 @@ Public Class clsModifyOrder
 
             oForm.Freeze(False)
         Catch ex As Exception
-            oApplication.Log.Trace_DIET_AddOn_Error(ex)
+            'oApplication.Log.Trace_DIET_AddOn_Error(ex)
             oForm.Freeze(False)
         End Try
     End Sub

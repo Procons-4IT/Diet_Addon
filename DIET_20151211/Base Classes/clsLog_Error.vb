@@ -63,6 +63,36 @@ Public Class clsLog_Error
 
     Public Sub Trace_DIET_AddOn_Error(ByVal ex As Exception)
         Try
+            Dim oUserTable As SAPbobsCOM.UserTable
+            Dim sCode As String
+            Try
+                oUserTable = oApplication.Company.UserTables.Item("Z_OERR")
+                sCode = oApplication.Utilities.getMaxCode("@Z_OERR", "Code")
+
+                Dim strMessage As String = vbCrLf & "Message ---> " & ex.Message & _
+                vbCrLf & "HelpLink ---> " & ex.HelpLink & _
+                vbCrLf & "Source ---> " & ex.Source & _
+                vbCrLf & "StackTrace ---> " & ex.StackTrace & _
+                vbCrLf & "TargetSite ---> " & ex.TargetSite.ToString()
+
+                If Not oUserTable.GetByKey(sCode) Then
+
+                    oUserTable.Code = sCode
+                    oUserTable.Name = sCode
+                    With oUserTable.UserFields.Fields
+                        .Item("U_DATE").Value = System.DateTime.Now
+                        .Item("U_ERROR").Value = strMessage
+                        .Item("U_USER").Value = oApplication.Company.UserName
+                    End With
+                    If oUserTable.Add <> 0 Then
+                        Throw New Exception(oApplication.Company.GetLastErrorDescription)
+                    End If
+
+                End If
+            Catch ex1 As Exception
+            Finally
+                oUserTable = Nothing
+            End Try
             Dim strFile As String = "\DIET_" + System.DateTime.Now.ToString("yyyyMMdd") + ".txt"
             Dim strPath As String = oApplication.Utilities.getUserTempPath() + strFile
             If Not File.Exists(strPath) Then
